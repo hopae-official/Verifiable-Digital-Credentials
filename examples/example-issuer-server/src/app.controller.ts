@@ -54,6 +54,16 @@ export class AppController {
     return this.tokenService.createToken(dto);
   }
 
+  @Get('start')
+  async getStart() {
+    return this.credentialService.getStart();
+  }
+
+  @Get('credential-offer')
+  async getCredentialOffer() {
+    return this.credentialService.getOffer();
+  }
+
   @Header('Cache-Control', 'no-store')
   @Post('credential')
   async createCredential(
