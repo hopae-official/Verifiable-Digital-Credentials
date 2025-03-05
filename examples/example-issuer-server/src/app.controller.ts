@@ -9,6 +9,16 @@ export class AppController {
     private readonly nonceService: NonceService,
   ) {}
 
+  @Get('.well-known/oauth-authorization-server')
+  getAuthorizationServerMetadata() {
+    return this.appService.getAuthorizationServerMetadata();
+  }
+
+  @Get('.well-known/openid-credential-issuer')
+  async getMetadata() {
+    return this.appService.getCredentialMetadata();
+  }
+
   @Header('Cache-Control', 'no-store')
   @Post('nonce')
   async createNonce() {
