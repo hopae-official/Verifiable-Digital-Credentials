@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { NonceService } from './nonce.service';
+import { TokenService } from './token.service';
 
 @Module({
   imports: [
@@ -11,6 +12,6 @@ import { NonceService } from './nonce.service';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, NonceService],
+  providers: [AppService, NonceService, TokenService],
 })
 export class AppModule {}

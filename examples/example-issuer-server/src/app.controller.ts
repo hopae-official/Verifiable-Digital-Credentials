@@ -1,12 +1,22 @@
-import { Controller, Get, Header, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Header,
+  Post,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { NonceService } from './nonce.service';
+import { TokenService } from './token.service';
+import { TokenDto } from './dto';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
     private readonly nonceService: NonceService,
+    private readonly tokenService: TokenService,
   ) {}
 
   @Get('.well-known/oauth-authorization-server')
@@ -28,5 +38,16 @@ export class AppController {
   @Post('nonce')
   async createNonce() {
     return this.nonceService.createNonce();
+  }
+
+  @Header('Cache-Control', 'no-store')
+  @Post('token')
+  async createToken(@Body() dto: TokenDto) {
+    if (dto.grant_type !== 'authorization_code') {
+      throw new BadRequestException({
+        error: 'invalid_grant',
+      });
+    }
+    return this.tokenService.createToken(dto);
   }
 }

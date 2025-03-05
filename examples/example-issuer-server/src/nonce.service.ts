@@ -9,7 +9,7 @@ export class NonceService {
   private nonceMap: Map<string, boolean>; // key = nonce, value = validity
 
   constructor(private readonly configService: ConfigService) {
-    const jwkStr = this.configService.get('NONCE_JWK');
+    const jwkStr = this.configService.get('JWK');
     const jwk = JSON.parse(jwkStr);
     this.priKey = createPrivateKey({
       key: { ...jwk, kty: 'EC' },
