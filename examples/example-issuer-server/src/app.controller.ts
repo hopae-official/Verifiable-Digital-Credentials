@@ -4,12 +4,14 @@ import {
   Controller,
   Get,
   Header,
+  Headers,
   Post,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { NonceService } from './nonce.service';
 import { TokenService } from './token.service';
-import { TokenDto } from './dto';
+import { CredentialDto, TokenDto } from './dto';
+import { CredentialService } from './credential.service';
 
 @Controller()
 export class AppController {
@@ -17,6 +19,7 @@ export class AppController {
     private readonly appService: AppService,
     private readonly nonceService: NonceService,
     private readonly tokenService: TokenService,
+    private readonly credentialService: CredentialService,
   ) {}
 
   @Get('.well-known/oauth-authorization-server')
@@ -49,5 +52,15 @@ export class AppController {
       });
     }
     return this.tokenService.createToken(dto);
+  }
+
+  @Header('Cache-Control', 'no-store')
+  @Post('credential')
+  async createCredential(
+    @Body() dto: CredentialDto,
+    @Headers('Authorization') bearer: string,
+  ) {
+    this.tokenService.verifyToken(bearer.split(' ')[1]);
+    return this.credentialService.create(dto);
   }
 }

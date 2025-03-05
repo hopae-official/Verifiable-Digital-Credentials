@@ -51,4 +51,11 @@ export class TokenService {
       ],
     };
   }
+
+  verifyToken(token: string) {
+    const payload = jwt.verify(token, this.priKey, {
+      algorithms: ['ES256'],
+    });
+    return payload;
+  }
 }

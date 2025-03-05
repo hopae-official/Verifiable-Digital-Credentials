@@ -6,3 +6,8 @@ export class TokenDto {
   tx_code?: string;
   authorization_details?: string;
 }
+
+export class CredentialDto {
+  credential_identifier: string;
+  // TODO: add proof
+}
