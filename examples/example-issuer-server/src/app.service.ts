@@ -8,7 +8,7 @@ export class AppService {
 
   constructor(private readonly configService: ConfigService) {
     this.credentialIssuer = this.configService.getOrThrow('ISSUER');
-    this.jwks = [JSON.parse(this.configService.getOrThrow('JWK'))];
+    this.jwks = [JSON.parse(this.configService.getOrThrow('PUB_JWK'))];
   }
 
   getJwks() {
