@@ -46,7 +46,9 @@ export class AppController {
   @Header('Cache-Control', 'no-store')
   @Post('token')
   async createToken(@Body() dto: TokenDto) {
-    if (dto.grant_type !== 'authorization_code') {
+    if (
+      dto.grant_type !== 'urn:ietf:params:oauth:grant-type:pre-authorized_code'
+    ) {
       throw new BadRequestException({
         error: 'invalid_grant',
       });
