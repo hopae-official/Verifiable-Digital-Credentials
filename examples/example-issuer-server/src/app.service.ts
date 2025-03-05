@@ -4,9 +4,17 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class AppService {
   private readonly credentialIssuer: string;
+  private readonly jwks: JsonWebKey[];
 
   constructor(private readonly configService: ConfigService) {
     this.credentialIssuer = this.configService.getOrThrow('ISSUER');
+    this.jwks = [this.configService.getOrThrow('NONCE_JWK')];
+  }
+
+  getJwks() {
+    return {
+      keys: this.jwks,
+    };
   }
 
   getAuthorizationServerMetadata() {

@@ -14,6 +14,11 @@ export class AppController {
     return this.appService.getAuthorizationServerMetadata();
   }
 
+  @Get('.well-known/jwks.json')
+  async getJwks() {
+    return this.appService.getJwks();
+  }
+
   @Get('.well-known/openid-credential-issuer')
   async getMetadata() {
     return this.appService.getCredentialMetadata();
