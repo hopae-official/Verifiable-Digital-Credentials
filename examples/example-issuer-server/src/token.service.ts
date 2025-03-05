@@ -2,12 +2,13 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TokenDto } from './dto';
 import * as jwt from 'jsonwebtoken';
-import { createPrivateKey, KeyObject } from 'crypto';
+import { createPrivateKey, createPublicKey, KeyObject } from 'crypto';
 
 @Injectable()
 export class TokenService {
   private readonly credentialIssuer: string;
   private priKey: KeyObject;
+  private pubKey: KeyObject;
 
   constructor(private readonly configService: ConfigService) {
     this.credentialIssuer = this.configService.getOrThrow('ISSUER');
@@ -17,6 +18,7 @@ export class TokenService {
       key: { ...jwk, kty: 'EC' },
       format: 'jwk',
     });
+    this.pubKey = createPublicKey(this.priKey);
   }
 
   createToken(dto: TokenDto) {
@@ -53,7 +55,7 @@ export class TokenService {
   }
 
   verifyToken(token: string) {
-    const payload = jwt.verify(token, this.priKey, {
+    const payload = jwt.verify(token, this.pubKey, {
       algorithms: ['ES256'],
     });
     return payload;
