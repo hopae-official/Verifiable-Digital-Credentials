@@ -1,0 +1,25 @@
+name: ci-build-and-test
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - run: pnpm add -g pnpm
+      - name: 'Setup Node.js with pnpm cache'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - run: pnpm install
+      # TODO: uncomment when linting is implemented
+      # - run: pnpm lint
+      - run: pnpm build
+      - run: pnpm test
