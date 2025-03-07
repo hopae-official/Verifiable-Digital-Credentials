@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CredentialDto } from './dto';
 import { ConfigService } from '@nestjs/config';
+import { IssuerService } from './issuer.service';
 
 function createOpenIdCredentialOfferUrl(credentialOfferUri: string): string {
   const encodedUri = encodeURIComponent(credentialOfferUri);
@@ -12,15 +13,19 @@ function createOpenIdCredentialOfferUrl(credentialOfferUri: string): string {
 export class CredentialService {
   private readonly credentialIssuer: string;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly issuerService: IssuerService,
+  ) {
     this.credentialIssuer = this.configService.getOrThrow('ISSUER');
   }
 
-  create(dto: CredentialDto) {
+  async create(dto: CredentialDto) {
+    const vc = await this.issuerService.createVc();
     return {
       credentials: [
         {
-          credential: '', // TODO: fill in
+          credential: vc,
         },
       ],
     };
@@ -45,7 +50,7 @@ export class CredentialService {
   }
 
   getStart() {
-    const credentialEndpoint = `${this.credentialIssuer}/credential`;
+    const credentialEndpoint = `${this.credentialIssuer}/credential-offer`;
     const link = createOpenIdCredentialOfferUrl(credentialEndpoint);
     return {
       link,

@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { NonceService } from './nonce.service';
 import { TokenService } from './token.service';
 import { CredentialService } from './credential.service';
+import { IssuerService } from './issuer.service';
 
 @Module({
   imports: [
@@ -13,6 +14,12 @@ import { CredentialService } from './credential.service';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, NonceService, TokenService, CredentialService],
+  providers: [
+    AppService,
+    NonceService,
+    TokenService,
+    CredentialService,
+    IssuerService,
+  ],
 })
 export class AppModule {}
