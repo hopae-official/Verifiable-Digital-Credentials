@@ -22,6 +22,11 @@ export class AppController {
     private readonly credentialService: CredentialService,
   ) {}
 
+  @Get('healthcheck')
+  healthcheck() {
+    return 'OK';
+  }
+
   @Get('.well-known/oauth-authorization-server')
   getAuthorizationServerMetadata() {
     return this.appService.getAuthorizationServerMetadata();
