@@ -15,7 +15,7 @@ export class AppService {
       request_uri_method: 'post',
     });
 
-    return `openid4vp://?${query.toString()}`;
+    return { link: `openid4vp://?${query.toString()}` };
   }
 
   request() {
