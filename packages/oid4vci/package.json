@@ -11,6 +11,14 @@
       "require": "./dist/index.js"
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hopae-official/Verifiable-Digital-Credentials.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hopae-official/Verifiable-Digital-Credentials/issues"
+  },
+  "homepage": "https://vdcs.js.org",
   "scripts": {
     "build": "rm -rf **/dist && tsup",
     "lint": "biome lint ./src",

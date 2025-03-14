@@ -13,12 +13,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/lukasjhan/digital-credentials.git"
+    "url": "https://github.com/hopae-official/Verifiable-Digital-Credentials.git"
   },
   "bugs": {
-    "url": "https://github.com/lukasjhan/digital-credentials/issues"
+    "url": "https://github.com/hopae-official/Verifiable-Digital-Credentials/issues"
   },
-  "homepage": "https://github.com/lukasjhan/digital-credentials#readme",
+  "homepage": "https://vdcs.js.org",
   "scripts": {
     "build": "rm -rf **/dist && tsup",
     "lint": "biome lint ./src",
