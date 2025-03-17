@@ -1,26 +1,13 @@
-import {
-  Image,
-  StyleSheet,
-  Text,
-  Touchable,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
-import { useQuery } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTestQuery } from '@/queries';
 
 export default function HomeScreen() {
-  const { isPending, error, data } = useQuery({
-    queryKey: ['repoData'],
-    queryFn: () =>
-      fetch('https://api.github.com/repos/TanStack/query').then((res) =>
-        res.json(),
-      ),
-  });
-  console.log('home', isPending, error, data);
+  const { isPending, error, data } = useTestQuery();
+
   if (isPending) return <Text>'Loading...'</Text>;
 
   if (error) return <Text>'An error has occurred: ' + error.message</Text>;
