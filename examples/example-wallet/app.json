@@ -32,6 +32,12 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "The app scans QR to save a mobile pass or verify your passes."
+        }
       ]
     ],
     "experiments": {
