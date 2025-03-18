@@ -1,12 +1,12 @@
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 import { ThemedView } from '@/components/ThemedView';
 import { useCredentialOfferQuery } from '@/queries';
+import { useEffect } from 'react';
 
 export default function CredentialOfferScreen() {
   const params = useLocalSearchParams<{ credentialOfferUri: string }>();
-  console.log('params', params.credentialOfferUri);
 
   const { data, isLoading } = useCredentialOfferQuery({
     credentialOfferUri: params.credentialOfferUri,
@@ -18,6 +18,16 @@ export default function CredentialOfferScreen() {
     ];
   const credentialIssuer = data?.credential_issuer;
 
+  useEffect(() => {
+    if (!preAuthorizedCode) return;
+
+    setTimeout(() => {
+      router.replace({
+        pathname: '/Issue/TokenRequestStep',
+        params: { preAuthorizedCode, credentialIssuer },
+      });
+    }, 1000);
+  }, [preAuthorizedCode]);
   return (
     <>
       <Stack.Screen options={{ title: 'Credential Offer Step' }} />
