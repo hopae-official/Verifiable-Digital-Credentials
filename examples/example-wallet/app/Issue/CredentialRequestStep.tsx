@@ -2,35 +2,42 @@ import { router, Stack } from 'expo-router';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 import { ThemedView } from '@/components/ThemedView';
-import { useTokenRequestMutation } from '@/queries';
+import { useCredentialRequestMutation } from '@/queries';
 import { useEffect, useState } from 'react';
 
-export default function TokenRequestStepScreen() {
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+export default function CredentialRequestStepScreen() {
+  const [credential, setCredential] = useState<string | null>(null);
 
-  const { mutate: tokenRequestMutate, isPending } = useTokenRequestMutation({
-    onSuccess: (data) => {
-      if (!data.access_token) return;
+  const { mutate: credentialRequestMutate, isPending } =
+    useCredentialRequestMutation({
+      onSuccess: (data) => {
+        const credential = data.credentials[0].credential;
 
-      setAccessToken(data.access_token);
+        if (!credential) return;
 
-      router.replace({ pathname: '/Issue/CredentialRequestStep' });
-    },
-  });
+        setCredential(credential);
+      },
+    });
 
   useEffect(() => {
-    // @Description: Request access token
-    // @Reference: https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html#name-pre-authorized-code-flow (Step 4)
-    tokenRequestMutate();
+    // @Description: Request credential
+    // @Reference: https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html#name-pre-authorized-code-flow (Step 5)
+    credentialRequestMutate();
   }, []);
+
+  useEffect(() => {
+    if (!credential) return;
+
+    router.replace({ pathname: '/', params: { credential } });
+  }, [credential]);
 
   return (
     <>
-      <Stack.Screen options={{ title: 'Token Request Step' }} />
+      <Stack.Screen options={{ title: 'Credential Request Step' }} />
       <ThemedView style={styles.container}>
         {isPending && (
           <>
-            <Text>Fetching Token...</Text>
+            <Text>Fetching Credential...</Text>
             <ActivityIndicator
               style={styles.loadingSpinner}
               color={'black'}
@@ -38,12 +45,12 @@ export default function TokenRequestStepScreen() {
             />
           </>
         )}
-        {accessToken && (
+        {credential && (
           <>
-            <Text style={styles.title}>Token Request Success</Text>
+            <Text style={styles.title}>Credential Request Success</Text>
             <View style={styles.descWrapper}>
-              <Text style={styles.boldText}>accessToken</Text>
-              <Text style={styles.text}>{accessToken}</Text>
+              <Text style={styles.boldText}>credential</Text>
+              <Text style={styles.text}>{credential}</Text>
             </View>
           </>
         )}

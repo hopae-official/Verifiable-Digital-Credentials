@@ -42,9 +42,39 @@ export const useTokenRequestMutation = (
 
       return res.data;
     },
+    ...options,
+  });
+};
 
-    onSuccess: (data) => {
-      console.log('mutation result', data);
+type CredentialMutationRes = {
+  credentials: Array<{ credential: string }>;
+};
+
+export const useCredentialRequestMutation = (
+  options?: UseMutationOptions<CredentialMutationRes>,
+) => {
+  return useMutation({
+    mutationFn: async () => {
+      // Todo: Enhance token management
+      const tokenRes = await axios.post('https://issuer.dev.hopae.com/token', {
+        // @Todo: Replace with actual data
+        grant_type: 'urn:ietf:params:oauth:grant-type:pre-authorized_code',
+        pre_authorized_code: '8swr2odf8sd2ndokdg',
+        tx_code: '1111',
+      });
+
+      const token = tokenRes.data.access_token;
+
+      const res = await axios.post(
+        'https://issuer.dev.hopae.com/credential',
+        {
+          // @Todo: Replace with actual data
+          credential_identifier: 'UniversityDegreeCredential',
+        },
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      return res.data;
     },
     ...options,
   });
