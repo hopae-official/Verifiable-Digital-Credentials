@@ -79,3 +79,14 @@ export const useCredentialRequestMutation = (
     ...options,
   });
 };
+
+export const useVerifyMetadataMutation = (options?: UseMutationOptions) => {
+  return useMutation({
+    mutationFn: async () => {
+      const res = await axios.post('https://verifier.dev.hopae.com/request');
+
+      return res.data;
+    },
+    ...options,
+  });
+};

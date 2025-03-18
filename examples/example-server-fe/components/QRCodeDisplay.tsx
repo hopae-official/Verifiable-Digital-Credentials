@@ -8,6 +8,7 @@ interface QRCodeDisplayProps {
 }
 
 export default function QRCodeDisplay({ qrCodeUrl }: QRCodeDisplayProps) {
+  console.log('qrCodeUrl', qrCodeUrl)
   return (
     <div style={{ textAlign: 'center', margin: '20px' }}>
       <h1>QR Code</h1>
