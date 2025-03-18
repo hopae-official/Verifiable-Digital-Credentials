@@ -15,7 +15,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
-        onPress={() => router.navigate('/qr')}
+        onPress={() => router.navigate('/Issue/QR')}
         style={styles.qrButton}
       >
         <View>
