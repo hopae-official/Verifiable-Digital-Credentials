@@ -20,9 +20,13 @@ export default function QRScanScreen() {
   useEffect(() => {
     if (!credentialOfferUri) return;
 
+    // Todo: Remove this mock URI
+    const mockCredentialOfferUri =
+      'https://issuer.dev.hopae.com/credential-offer';
+
     router.replace({
       pathname: '/Issue/CredentialOffer',
-      params: { credentialOfferUri },
+      params: { credentialOfferUri: mockCredentialOfferUri },
     });
   }, [credentialOfferUri]);
 
