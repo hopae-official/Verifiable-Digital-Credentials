@@ -542,7 +542,14 @@ importers:
 
   packages/vc-api: {}
 
-  packages/wallet: {}
+  packages/wallet:
+    dependencies:
+      '@sd-jwt/decode':
+        specifier: ^0.9.2
+        version: 0.9.2
+      '@sd-jwt/hash':
+        specifier: ^0.9.2
+        version: 0.9.2
 
 packages:
 
