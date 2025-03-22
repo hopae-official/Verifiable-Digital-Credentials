@@ -4,6 +4,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { router, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTestQuery } from '@/queries';
+import { Button } from '@/components/ui/button';
 
 export default function HomeScreen() {
   const { isPending, error, data } = useTestQuery();
@@ -33,6 +34,10 @@ export default function HomeScreen() {
         ) : (
           <ThemedText>You don't have any credentials yet</ThemedText>
         )}
+
+        <Button variant="outline" className="shadow shadow-foreground/5">
+          <Text>Test Button</Text>
+        </Button>
       </View>
     </SafeAreaView>
   );
