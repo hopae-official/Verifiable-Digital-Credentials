@@ -5,6 +5,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTestQuery } from '@/queries';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
 export default function HomeScreen() {
   const { isPending, error, data } = useTestQuery();
@@ -35,9 +36,16 @@ export default function HomeScreen() {
           <ThemedText>You don't have any credentials yet</ThemedText>
         )}
 
-        <Button variant="outline" className="shadow shadow-foreground/5">
-          <Text>Test Button</Text>
-        </Button>
+        <Card style={{ width: 300, marginTop: 20 }}>
+          <Button
+            variant="outline"
+            className="w-full shadow shadow-foreground/5"
+            style={{ width: '100%', height: 60 }}
+            onPress={()=> router.navigate('/Issue/CredentialTypeSelection')}
+          >
+            <Text style={{ fontSize: 30 }}>+</Text>
+          </Button>
+        </Card>
       </View>
     </SafeAreaView>
   );
