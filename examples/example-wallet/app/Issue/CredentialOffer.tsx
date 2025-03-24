@@ -12,6 +12,8 @@ export default function CredentialOfferScreen() {
     credentialOfferUri: params.credentialOfferUri,
   });
 
+  console.log('data', data);
+
   const preAuthorizedCode =
     data?.grants['urn:ietf:params:oauth:grant-type:pre-authorized_code'][
       'pre-authorized_code'

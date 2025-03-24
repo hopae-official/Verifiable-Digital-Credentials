@@ -4,6 +4,7 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { ThemedView } from '@/components/ThemedView';
 import { useCredentialRequestMutation } from '@/queries';
 import { useEffect, useState } from 'react';
+//import test from '@/packages/wallet';
 
 export default function CredentialRequestStepScreen() {
   const [credential, setCredential] = useState<string | null>(null);
@@ -28,7 +29,7 @@ export default function CredentialRequestStepScreen() {
   useEffect(() => {
     if (!credential) return;
 
-    router.replace({ pathname: '/', params: { credential } });
+    // router.replace({ pathname: '/', params: { credential } });
   }, [credential]);
 
   return (

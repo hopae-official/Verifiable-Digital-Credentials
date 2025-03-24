@@ -4,15 +4,27 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { ThemedView } from '@/components/ThemedView';
 
 import { Card } from '@/components/ui/card';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { Colors } from '@/constants/Colors';
 
 export default function CredentialTypeSelectionScreen() {
-
   return (
     <>
-      <Stack.Screen options={{ title: 'Credential Type Selection' }} />
+      <Stack.Screen
+        options={{
+          title: '',
+          //headerBackTitle: 'Back',
+          //headerTitle: () => null,
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => router.back()}>
+              <Ionicons name="chevron-back" size={24} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
       <ThemedView style={styles.container}>
         <Text style={styles.descText}>
-          Select the type of credential to be issued
+          Select the type of credential to be issued.
         </Text>
         <Card
           style={{
@@ -20,19 +32,23 @@ export default function CredentialTypeSelectionScreen() {
             marginTop: 20,
             gap: 10,
             padding: 10,
-            backgroundColor: 'lightgray',
+            backgroundColor: Colors.light.lightBlue,
           }}
         >
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              router.navigate('/Issue/QR');
+            }}
+          >
             <Card style={styles.credentialLabel}>
               <Text style={styles.credentialLabelText}>University Deploma</Text>
-              <Text style={styles.credentialLabelText}>{'>'}</Text>
+              <Ionicons name="add" size={20} color="black" />
             </Card>
           </TouchableOpacity>
           <TouchableOpacity>
             <Card style={styles.credentialLabel}>
               <Text style={styles.credentialLabelText}>Driver's Lisense</Text>
-              <Text style={styles.credentialLabelText}>{'>'}</Text>
+              <Ionicons name="add" size={20} color="black" />
             </Card>
           </TouchableOpacity>
           <TouchableOpacity>
@@ -40,7 +56,7 @@ export default function CredentialTypeSelectionScreen() {
               <Text style={styles.credentialLabelText}>
                 Resident Registration Card
               </Text>
-              <Text style={styles.credentialLabelText}>{'>'}</Text>
+              <Ionicons name="add" size={20} color="black" />
             </Card>
           </TouchableOpacity>
         </Card>
@@ -52,25 +68,11 @@ export default function CredentialTypeSelectionScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     padding: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  descWrapper: {
-    gap: 8,
-    borderColor: 'black',
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 5,
-    height: 400,
-    justifyContent: 'center',
   },
   descText: {
     fontSize: 17,
+    fontWeight: 'bold',
   },
   link: {
     marginTop: 15,
@@ -85,6 +87,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   credentialLabelText: {
-    fontSize: 16,
+    fontSize: 15,
   },
 });

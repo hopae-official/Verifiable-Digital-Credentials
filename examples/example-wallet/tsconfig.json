@@ -6,7 +6,8 @@
     "paths": {
       "@/*": [
         "*"
-      ]
+      ],
+      "@wallet/*": ["packages/wallet/*"]
     }
   },
   "include": [

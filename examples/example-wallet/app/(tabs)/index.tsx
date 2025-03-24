@@ -1,11 +1,11 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-import { ThemedText } from '@/components/ThemedText';
 import { router, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTestQuery } from '@/queries';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function HomeScreen() {
   const { isPending, error, data } = useTestQuery();
@@ -15,17 +15,9 @@ export default function HomeScreen() {
   if (isPending) return <Text>'Loading...'</Text>;
 
   if (error) return <Text>'An error has occurred: ' + error.message</Text>;
-
+  console.log('credential', credential);
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity
-        onPress={() => router.navigate('/Issue/QR')}
-        style={styles.qrButton}
-      >
-        <View>
-          <Text style={styles.buttonText}>QR</Text>
-        </View>
-      </TouchableOpacity>
       <View style={styles.listContainer}>
         {credential ? (
           <View style={styles.credentialWrapper}>
@@ -33,17 +25,33 @@ export default function HomeScreen() {
             <Text>{credential}</Text>
           </View>
         ) : (
-          <ThemedText>You don't have any credentials yet</ThemedText>
+          <>
+            <Ionicons name="wallet-outline" size={100} color="black" />
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: 'bold',
+                marginTop: 20,
+                padding: 20,
+              }}
+            >
+              Welcome
+            </Text>
+            <Text style={{ fontSize: 13, color: 'gray', textAlign: 'center' }}>
+              You don't have any credentials yet. To add your first credential,
+              tap the button
+            </Text>
+          </>
         )}
 
         <Card style={{ width: 300, marginTop: 20 }}>
           <Button
-            variant="outline"
+            variant="default"
             className="w-full shadow shadow-foreground/5"
-            style={{ width: '100%', height: 60 }}
-            onPress={()=> router.navigate('/Issue/CredentialTypeSelection')}
+            style={{ width: '100%', backgroundColor: 'darkblue' }}
+            onPress={() => router.navigate('/Issue/CredentialTypeSelection')}
           >
-            <Text style={{ fontSize: 30 }}>+</Text>
+            <Text style={{ color: 'white' }}>Add a credential</Text>
           </Button>
         </Card>
       </View>

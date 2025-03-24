@@ -55,7 +55,7 @@ export default function QRScanScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: 'QR Scan' }} />
+      <Stack.Screen options={{ title: 'QR Scan', headerBackTitle: 'Back' }} />
       <ThemedView style={styles.container}>
         <ThemedText type="title">QR Scanner</ThemedText>
         <Link href="/" style={styles.link}>
