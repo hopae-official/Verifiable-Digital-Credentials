@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
     padding: 10,
     flex: 1,
   },
-  cardTextWrapper: {},
   cardText: {
     color: 'white',
     fontSize: 18,

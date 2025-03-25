@@ -27,7 +27,7 @@ export default function VerifyQRScanScreen() {
       onSuccess: (data) => {
         console.log('vefiry metadata', data);
 
-        router.replace({
+        router.navigate({
           pathname: '/Verify/SelectCredential',
         });
       },

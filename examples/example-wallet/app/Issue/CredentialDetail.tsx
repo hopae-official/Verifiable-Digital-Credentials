@@ -10,13 +10,19 @@ import {
 import { CredentialDecoder } from '@vdcs/wallet';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Card } from '@/components/ui/card';
-import { Cliam } from '@/types';
+import { Claim } from '@/types';
+import { isValidClaim } from '@/utils';
 
 export default function CredentialDetailScreen() {
   const params = useLocalSearchParams<{ credential: string }>();
   const credential = params.credential;
-  const claims: Cliam | null = credential
-    ? CredentialDecoder.decodeSDJWT(credential).claims
+  const claims: Claim | null = credential
+    ? (() => {
+        const decoded = CredentialDecoder.decodeSDJWT(credential).claims;
+        return isValidClaim<Claim>(decoded, ['iss', 'vct', 'name', 'birthdate'])
+          ? decoded
+          : null;
+      })()
     : null;
 
   if (!claims) return <Text>No claims</Text>;

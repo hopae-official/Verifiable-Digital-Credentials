@@ -1,33 +1,33 @@
 import { router, Stack } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet, Text } from 'react-native';
+import LottieView from 'lottie-react-native';
 import { ThemedView } from '@/components/ThemedView';
 import { useEffect } from 'react';
-
-//@Todo: Remove mock credential
-const mockCredential =
-  'eyJ0eXAiOiJkYytzZC1qd3QiLCJhbGciOiJFUzI1NiJ9.eyJ2Y3QiOiJodHRwczovL2lzc3Vlci5kZXYuaG9wYWUuY29tL2NyZWRlbnRpYWxzL3R5cGVzL3VuaXZlcnNpdHkiLCJpc3MiOiJodHRwczovL2lzc3Vlci5kZXYuaG9wYWUuY29tIiwiX3NkIjpbIllwbm15VzdZemJ0ejFOODZVZjJadGNBNldoM0NVR1cyT0c1SjNFcVozYm8iLCJ0NXdmZE5CMWJuS1Nlcjkybm9QZXZaSW5fMm1MV0F0Q1lDTG1ac0dFR0xNIl0sIl9zZF9hbGciOiJzaGEtMjU2In0.k--1y8ivPJrjX0gD3CA9mZLIkIHs8zJPdohNFYzJ5jdf1736HDkGHgy3pT1hnNXF-vm0GKrwBSmueX3y8pIbtA~WyI5YjQwZjc1ODFiNzY4OGY5IiwibmFtZSIsIkpvaG4gRG9lIl0~WyJjOGZiNDNjNGFjMGMwMDVmIiwiYmlydGhkYXRlIiwiMTk5MC0wMS0wMSJd~';
-const mockResponseUri = 'https://verifier.dev.hopae.com/request'; // mock endpoint to present VP
 
 export default function VerifyResultScreen() {
   useEffect(() => {
     setTimeout(() => {
-      router.replace({
-        pathname: '/',
-      });
-    }, 4000);
+      router.dismissAll();
+      router.push({ pathname: '/' });
+    }, 5000);
   }, []);
 
   return (
     <>
-      <Stack.Screen options={{ title: 'Verify Result' }} />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+      />
       <ThemedView style={styles.container}>
         <Text style={styles.title}>Verify Success!</Text>
-
-        <View style={styles.credentialWrapper}>
-          <Text style={styles.boldText}>University Credential</Text>
-          <Text style={styles.text}>{mockCredential}</Text>
-        </View>
+        <LottieView
+          speed={0.8}
+          style={{ width: 64, height: 64 }}
+          autoPlay={true}
+          loop={false}
+          source={require('@/assets/lotties/check.json')}
+        />
       </ThemedView>
     </>
   );
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: 'lightgray',
   },
   title: {
     fontSize: 20,
