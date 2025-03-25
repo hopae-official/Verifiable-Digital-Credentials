@@ -12,8 +12,6 @@ export default function CredentialOfferScreen() {
     credentialOfferUri: params.credentialOfferUri,
   });
 
-  console.log('data', data);
-
   const preAuthorizedCode =
     data?.grants['urn:ietf:params:oauth:grant-type:pre-authorized_code'][
       'pre-authorized_code'
@@ -30,33 +28,18 @@ export default function CredentialOfferScreen() {
       });
     }, 1000);
   }, [preAuthorizedCode]);
+
+  //@Todo: Remove useless screen
+
   return (
     <>
       <Stack.Screen options={{ title: 'Credential Offer Step' }} />
       <ThemedView style={styles.container}>
-        {isLoading && (
-          <>
-            <Text>Credential Offer Step</Text>
-            <ActivityIndicator
-              style={styles.loadingSpinner}
-              color={'black'}
-              size="large"
-            />
-          </>
-        )}
-        {data && (
-          <>
-            <Text style={styles.title}>Credential Offer Res</Text>
-            <View style={styles.descWrapper}>
-              <Text style={styles.descText}>
-                pre-authorized_code: {preAuthorizedCode}
-              </Text>
-              <Text style={styles.descText}>
-                Credential Issuer: {credentialIssuer}
-              </Text>
-            </View>
-          </>
-        )}
+        <ActivityIndicator
+          style={styles.loadingSpinner}
+          color={'black'}
+          size="large"
+        />
       </ThemedView>
     </>
   );

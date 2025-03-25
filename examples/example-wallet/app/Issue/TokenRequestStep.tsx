@@ -24,29 +24,17 @@ export default function TokenRequestStepScreen() {
     tokenRequestMutate();
   }, []);
 
+  //@Todo: Remove useless screen
+
   return (
     <>
       <Stack.Screen options={{ title: 'Token Request Step' }} />
       <ThemedView style={styles.container}>
-        {isPending && (
-          <>
-            <Text>Fetching Token...</Text>
-            <ActivityIndicator
-              style={styles.loadingSpinner}
-              color={'black'}
-              size="large"
-            />
-          </>
-        )}
-        {accessToken && (
-          <>
-            <Text style={styles.title}>Token Request Success</Text>
-            <View style={styles.descWrapper}>
-              <Text style={styles.boldText}>accessToken</Text>
-              <Text style={styles.text}>{accessToken}</Text>
-            </View>
-          </>
-        )}
+        <ActivityIndicator
+          style={styles.loadingSpinner}
+          color={'black'}
+          size="large"
+        />
       </ThemedView>
     </>
   );
