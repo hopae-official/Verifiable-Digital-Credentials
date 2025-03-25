@@ -10,7 +10,6 @@ import {
 import { ThemedView } from '@/components/ThemedView';
 import { useCredentialRequestMutation } from '@/queries';
 import { useEffect, useState } from 'react';
-import { CredentialDecoder } from '@/utils/decoder';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Card } from '@/components/ui/card';
 import { Colors } from '@/constants/Colors';

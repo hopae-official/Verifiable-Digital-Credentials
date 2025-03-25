@@ -12,3 +12,10 @@ export type CredentialOffer = {
     };
   };
 };
+
+export type Claim = {
+  iss: string;
+  vct: string;
+  name: string;
+  birthdate: string;
+};

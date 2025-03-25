@@ -7,16 +7,11 @@ import {
   ImageBackground,
 } from 'react-native';
 
-import { CredentialDecoder } from '@/utils/decoder';
+import { CredentialDecoder } from '@vdcs/wallet';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Card } from '@/components/ui/card';
+import { Cliam } from '@/types';
 
-type Cliam = {
-  iss: string;
-  vct: string;
-  name: string;
-  birthdate: string;
-};
 export default function CredentialDetailScreen() {
   const params = useLocalSearchParams<{ credential: string }>();
   const credential = params.credential;
@@ -79,7 +74,7 @@ export default function CredentialDetailScreen() {
                 <Text style={styles.infoText}>{claims.name}</Text>
               </View>
               <View>
-                <Text style={styles.infoText}>Birthdate</Text>
+                <Text style={styles.infoLabelText}>Birthdate</Text>
                 <Text style={styles.infoText}>{claims.birthdate}</Text>
               </View>
             </Card>
