@@ -34,8 +34,10 @@ export class AppService {
       credential_configurations_supported: {}, // TODO: implement
       display: [
         {
-          name: 'Example Issuer',
+          name: 'Hopae Demo Issuer',
           locale: 'en',
+          logo: 'https://static.hopae.com/images/wallets/hopae.png',
+          background_color: '#000000',
         },
       ],
     };
