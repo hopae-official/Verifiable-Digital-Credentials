@@ -25,8 +25,16 @@ export class AppService {
       response_type: 'vp_token',
       response_mode: 'direct_post',
       nonce: 'n-0S6_WzA2Mj',
-      dcql_query: '', // TODO: add query
+      dcql_query: JSON.stringify({
+        required: ['name', 'university_name'],
+        optional: ['major'],
+      }),
     };
+
+    const dcql_query2 = JSON.stringify({
+      required: ['name', 'birthdate'],
+      optional: ['address'],
+    });
 
     return result;
   }
