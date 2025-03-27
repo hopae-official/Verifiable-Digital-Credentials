@@ -31,13 +31,42 @@ export class AppService {
       credential_issuer: this.credentialIssuer,
       credential_endpoint: `${this.credentialIssuer}/credential`,
       nonce_endpoint: `${this.credentialIssuer}/nonce`,
-      credential_configurations_supported: {}, // TODO: implement
+      credential_configurations_supported: {
+        UniversityDegreeCredential: {
+          format: 'dc+sd-jwt',
+          display: [
+            {
+              name: 'Hopae University Degree',
+              locale: 'en',
+            },
+          ],
+        },
+        VaccinationCredential: {
+          format: 'dc+sd-jwt',
+          display: [
+            {
+              name: 'Vaccination Certificate',
+              locale: 'en',
+            },
+          ],
+        },
+        DriverLicenseCredential: {
+          format: 'mso_mdoc',
+          display: [
+            {
+              name: 'Driver License',
+              locale: 'en',
+            },
+          ],
+        },
+      },
       display: [
         {
           name: 'Hopae Demo Issuer',
           locale: 'en',
-          logo: 'https://static.hopae.com/images/wallets/hopae.png',
-          background_color: '#000000',
+          logo: {
+            uri: 'https://static.hopae.com/images/wallets/hopae.png',
+          },
         },
       ],
     };
