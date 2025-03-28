@@ -10,7 +10,7 @@ export type Oid4vpClientMeta = {
     response_type: string;
     response_mode: string;
     nonce: string;
-    dcql_query: string;
+    dcql_query: { required: string[]; optional: string[] };
   };
 };
 
@@ -48,7 +48,10 @@ export class Oid4vpClient {
       meta: {
         verifier,
       },
-      request: requestData,
+      request: {
+        ...requestData,
+        dcql_query: JSON.parse(requestData.dcql_query),
+      },
     });
   }
 
