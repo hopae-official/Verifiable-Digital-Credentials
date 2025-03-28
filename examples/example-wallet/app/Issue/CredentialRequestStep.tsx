@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     width: '95%',
     alignItems: 'center',
     padding: 15,
-    backgroundColor: Colors.light.lightBlue,
+    backgroundColor: Colors.light.lightYellow,
   },
   decsText: {
     color: 'green',
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   acceptButton: {
-    backgroundColor: 'darkblue',
+    backgroundColor: Colors.light.orange
   },
   acceptButtonText: {
     color: 'white',
