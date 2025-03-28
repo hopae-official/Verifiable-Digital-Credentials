@@ -65,6 +65,36 @@ export class Oid4vciClient {
     return this._access_token;
   }
 
+  static async fromIssuer(issuer: string) {
+    const { data: credentialMeta } = await axios.get<CredentialMeta>(
+      `${issuer}/.well-known/openid-credential-issuer`,
+    );
+
+    const {
+      credential_endpoint,
+      credential_configurations_supported,
+      display,
+    } = credentialMeta;
+
+    const { data: authMeta } = await axios.get<AuthorizationServerMeta>(
+      `${issuer}/.well-known/oauth-authorization-server`,
+    );
+
+    const { token_endpoint } = authMeta;
+
+    return new Oid4vciClient({
+      meta: {
+        credential_issuer: issuer,
+        credential_configurations_supported,
+        display,
+      },
+      endpoints: {
+        credential: credential_endpoint,
+        token: token_endpoint,
+      },
+    });
+  }
+
   static async fromOffer(offer: string) {
     const { protocol, searchParams } = new URL(offer);
     if (protocol !== 'openid-credential-offer:') {
@@ -82,35 +112,7 @@ export class Oid4vciClient {
       await axios.get<CredentialOffer>(credentialOfferUri);
 
     const { credential_issuer } = credentialOffer;
-
-    const { data: credentialMeta } = await axios.get<CredentialMeta>(
-      `${credential_issuer}/.well-known/openid-credential-issuer`,
-    );
-
-    const {
-      credential_endpoint,
-      credential_configurations_supported,
-      display,
-    } = credentialMeta;
-
-    const { data: authMeta } = await axios.get<AuthorizationServerMeta>(
-      `${credential_issuer}/.well-known/oauth-authorization-server`,
-    );
-
-    const { token_endpoint } = authMeta;
-
-    return new Oid4vciClient({
-      meta: {
-        credential_issuer,
-        credential_configurations_supported,
-        display,
-      },
-      endpoints: {
-        credential: credential_endpoint,
-        token: token_endpoint,
-      },
-      credentialOffer,
-    });
+    return Oid4vciClient.fromIssuer(credential_issuer);
   }
 
   async credential(tx_code: string, credential_identifier?: string) {
