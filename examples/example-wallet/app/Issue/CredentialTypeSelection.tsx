@@ -1,11 +1,12 @@
 import { router, Stack, useLocalSearchParams } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { ThemedView } from '@/components/ThemedView';
 
 import { Card } from '@/components/ui/card';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Colors } from '@/constants/Colors';
+import { Separator } from '@/components/ui/separator';
 
 export default function CredentialTypeSelectionScreen() {
   return (
@@ -23,43 +24,54 @@ export default function CredentialTypeSelectionScreen() {
         }}
       />
       <ThemedView style={styles.container}>
-        <Text style={styles.descText}>
-          Select the type of credential to be issued.
-        </Text>
-        <Card
-          style={{
-            width: 350,
-            marginTop: 20,
-            gap: 10,
-            padding: 10,
-            backgroundColor: Colors.light.lightBlue,
+        <Text style={styles.descText}>Select credential</Text>
+
+        <TouchableOpacity
+          onPress={() => {
+            router.navigate('/Issue/QR');
           }}
         >
-          <TouchableOpacity
-            onPress={() => {
-              router.navigate('/Issue/QR');
-            }}
-          >
-            <Card style={styles.credentialLabel}>
-              <Text style={styles.credentialLabelText}>University Deploma</Text>
-              <Ionicons name="add" size={20} color="black" />
-            </Card>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Card style={styles.credentialLabel}>
-              <Text style={styles.credentialLabelText}>Driver's Lisense</Text>
-              <Ionicons name="add" size={20} color="black" />
-            </Card>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Card style={styles.credentialLabel}>
-              <Text style={styles.credentialLabelText}>
-                Resident Registration Card
-              </Text>
-              <Ionicons name="add" size={20} color="black" />
-            </Card>
-          </TouchableOpacity>
-        </Card>
+          <Card style={styles.credentialTypeCard} className="shadow-sm">
+            <Text style={styles.credentialTypeText}>University Diploma</Text>
+            <Separator className="my-2" />
+            <View style={styles.techSpecTextWrapper}>
+              <Text style={styles.credentialSpecText}>OpenID</Text>
+              <Text style={styles.credentialSpecText}>SD-JWT</Text>
+            </View>
+          </Card>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {
+            router.navigate('/Issue/QR');
+          }}
+        >
+          <Card style={styles.credentialTypeCard} className="shadow-sm">
+            <Text style={styles.credentialTypeText}>Driver's Lisence</Text>
+            <Separator className="my-3" />
+            <View style={styles.techSpecTextWrapper}>
+              <Text style={styles.credentialSpecText}>mDL</Text>
+              <Text style={styles.credentialSpecText}>SD-JWT</Text>
+            </View>
+          </Card>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {
+            router.navigate('/Issue/QR');
+          }}
+        >
+          <Card style={styles.credentialTypeCard} className="shadow-sm">
+            <Text style={styles.credentialTypeText}>
+              Vaccination Certificate
+            </Text>
+            <Separator className="my-3" />
+            <View style={styles.techSpecTextWrapper}>
+              <Text style={styles.credentialSpecText}>OpenID</Text>
+              <Text style={styles.credentialSpecText}>SD-JWT</Text>
+            </View>
+          </Card>
+        </TouchableOpacity>
       </ThemedView>
     </>
   );
@@ -88,5 +100,21 @@ const styles = StyleSheet.create({
   },
   credentialLabelText: {
     fontSize: 15,
+  },
+  credentialTypeCard: {
+    padding: 12,
+    marginTop: 15,
+  },
+  credentialTypeText: {
+    fontSize: 16,
+    paddingVertical: 5,
+  },
+  credentialSpecText: {
+    fontSize: 12,
+    color: 'gray',
+  },
+  techSpecTextWrapper: {
+    flexDirection: 'row',
+    gap: 5,
   },
 });
