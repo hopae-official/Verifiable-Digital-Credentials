@@ -8,33 +8,38 @@ export class AppService {
     this.verifierUri = this.configService.get<string>('VERIFIER_URI');
   }
 
-  start() {
+  start(inputType: string) {
+    const type =
+      inputType === 'job-application' ? 'job-application' : 'telecom-register';
     const query = new URLSearchParams({
       client_id: encodeURI(`redirect_uri:${this.verifierUri}`),
-      request_uri: encodeURI(`${this.verifierUri}/request`),
+      request_uri: encodeURI(`${this.verifierUri}/request/${type}`),
       request_uri_method: 'post',
     });
 
     return { link: `openid4vp://?${query.toString()}` };
   }
 
-  request() {
+  request(type: string) {
+    const dcql_query =
+      type === 'job-application'
+        ? JSON.stringify({
+            required: ['name', 'university_name'],
+            optional: ['major'],
+          })
+        : JSON.stringify({
+            required: ['name', 'birthdate'],
+            optional: ['address'],
+          });
+
     const result = {
       client_id: `redirect_uri:${this.verifierUri}`,
       response_uri: `${this.verifierUri}/response`,
       response_type: 'vp_token',
       response_mode: 'direct_post',
       nonce: 'n-0S6_WzA2Mj',
-      dcql_query: JSON.stringify({
-        required: ['name', 'university_name'],
-        optional: ['major'],
-      }),
+      dcql_query,
     };
-
-    const dcql_query2 = JSON.stringify({
-      required: ['name', 'birthdate'],
-      optional: ['address'],
-    });
 
     return result;
   }
