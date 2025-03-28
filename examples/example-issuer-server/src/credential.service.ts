@@ -34,7 +34,11 @@ export class CredentialService {
   getOffer() {
     return {
       credential_issuer: this.credentialIssuer,
-      credential_configuration_ids: ['UniversityDegreeCredential'],
+      credential_configuration_ids: [
+        'UniversityDegreeCredential',
+        'DriverLicenseCredential',
+        'VaccinationCredential',
+      ],
       grants: {
         'urn:ietf:params:oauth:grant-type:pre-authorized_code': {
           'pre-authorized_code': '8swr2odf8sd2ndokdg',
