@@ -2,50 +2,85 @@ import {
   ImageBackground,
   StyleSheet,
   Text,
-  Touchable,
   TouchableOpacity,
   View,
+  ViewStyle,
 } from 'react-native';
 
-import { router, useLocalSearchParams } from 'expo-router';
+import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+
+import * as React from 'react';
+import { Colors } from '@/constants/Colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Button } from '@/components/ui/button';
+
+const mockCredential =
+  'eyJ0eXAiOiJkYytzZC1qd3QiLCJhbGciOiJFUzI1NiJ9.eyJ2Y3QiOiJodHRwczovL2lzc3Vlci5kZXYuaG9wYWUuY29tL2NyZWRlbnRpYWxzL3R5cGVzL3VuaXZlcnNpdHkiLCJpc3MiOiJodHRwczovL2lzc3Vlci5kZXYuaG9wYWUuY29tIiwiX3NkIjpbIllwbm15VzdZemJ0ejFOODZVZjJadGNBNldoM0NVR1cyT0c1SjNFcVozYm8iLCJ0NXdmZE5CMWJuS1Nlcjkybm9QZXZaSW5fMm1MV0F0Q1lDTG1ac0dFR0xNIl0sIl9zZF9hbGciOiJzaGEtMjU2In0.k--1y8ivPJrjX0gD3CA9mZLIkIHs8zJPdohNFYzJ5jdf1736HDkGHgy3pT1hnNXF-vm0GKrwBSmueX3y8pIbtA~WyI5YjQwZjc1ODFiNzY4OGY5IiwibmFtZSIsIkpvaG4gRG9lIl0~WyJjOGZiNDNjNGFjMGMwMDVmIiwiYmlydGhkYXRlIiwiMTk5MC0wMS0wMSJd~';
+
+type IconName = 'school' | 'car' | 'hospital-box' | 'wallet';
+
+type Card = {
+  id: number;
+  title: string;
+  icon: IconName;
+};
 
 export default function HomeScreen() {
-  const params = useLocalSearchParams<{ credential: string }>();
-  const credential = params.credential;
+  const sampleCards: Card[] = React.useMemo(
+    () => [
+      { id: 1, title: 'University Diploma', icon: 'school' },
+      { id: 2, title: 'Driver License', icon: 'car' },
+      { id: 3, title: 'Health Insurance', icon: 'hospital-box' },
+    ],
+    [],
+  );
 
-  const handlePressCredential = () => {
+  const handlePressCredential = (cardId: number) => {
     router.navigate({
       pathname: '/Issue/CredentialDetail',
-      params: { credential },
+      params: { credential: mockCredential },
     });
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.listContainer}>
-        {credential ? (
-          <TouchableOpacity onPress={handlePressCredential}>
-            <Card style={styles.credentialCard}>
-              <ImageBackground
-                source={require('@/assets/images/card_bg.jpg')}
-                style={styles.contentContainer}
+        {sampleCards.length > 0 ? (
+          <View style={styles.stackContainer}>
+            {sampleCards.map((card, index) => (
+              <TouchableOpacity
+                key={card.id}
+                style={[
+                  styles.cardWrapper,
+                  {
+                    top: -index * CARD_OFFSET,
+                    //transform: [{ scale: 1 - index * 0.05 }],
+                    zIndex: sampleCards.length - index,
+                  },
+                ]}
+                onPress={() => handlePressCredential(card.id)}
               >
-                <View style={styles.cardContent}>
-                  <View style={styles.circleImage}>
-                    <Ionicons name="school-outline" size={24} color={'gray'} />
-                  </View>
-                  <Text style={styles.cardText}>University Deploma</Text>
-                </View>
-              </ImageBackground>
-            </Card>
-          </TouchableOpacity>
+                <Card style={styles.credentialCard}>
+                  <ImageBackground
+                    source={require('@/assets/images/card_bg.jpg')}
+                    style={styles.contentContainer}
+                  >
+                    <View style={styles.cardContent}>
+                      <View style={styles.circleImage}>
+                        <Ionicons size={28} name="wallet-outline" />
+                      </View>
+                      <Text style={styles.cardText}>{card.title}</Text>
+                    </View>
+                  </ImageBackground>
+                </Card>
+              </TouchableOpacity>
+            ))}
+          </View>
         ) : (
           <>
-            <Ionicons name="wallet-outline" size={100} color="black" />
+            <Ionicons size={28} name="wallet-outline" />
             <Text
               style={{
                 fontSize: 20,
@@ -67,7 +102,7 @@ export default function HomeScreen() {
           <Button
             variant="default"
             className="w-full shadow shadow-foreground/5"
-            style={{ width: '100%', backgroundColor: 'darkblue' }}
+            style={{ width: '100%', backgroundColor: Colors.light.orange }}
             onPress={() => router.navigate('/Issue/CredentialTypeSelection')}
           >
             <Text style={{ color: 'white' }}>Add a credential</Text>
@@ -78,11 +113,50 @@ export default function HomeScreen() {
   );
 }
 
+const CARD_OFFSET = 40;
+
 const styles = StyleSheet.create({
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  button: {
+    backgroundColor: Colors.light.lightBlue,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+    marginHorizontal: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
   container: {
     flex: 1,
-    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
     justifyContent: 'center',
+  },
+  stackContainer: {
+    width: '100%',
+    height: 280,
+    position: 'relative',
+    paddingHorizontal: 20,
+    alignItems: 'center',
+  },
+  cardWrapper: {
+    position: 'absolute',
+    width: '100%',
+    transform: [{ scale: 0.98 }],
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   qrButton: {
     alignSelf: 'flex-end',
@@ -143,9 +217,9 @@ const styles = StyleSheet.create({
   },
   cardText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 15,
     position: 'absolute',
-    bottom: 10,
+    top: 10,
     right: 10,
   },
   circleImage: {
