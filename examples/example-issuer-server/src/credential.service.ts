@@ -21,7 +21,7 @@ export class CredentialService {
   }
 
   async create(dto: CredentialDto) {
-    const vc = await this.issuerService.createVc();
+    const vc = await this.issuerService.createVc(dto.credential_identifier);
     return {
       credentials: [
         {
