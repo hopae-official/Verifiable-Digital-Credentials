@@ -15,13 +15,21 @@ export class AppController {
     return this.appService.start(type);
   }
 
-  @Post('request/:type')
-  request(@Param('type') type: string) {
-    return this.appService.request(type);
+  @Post('request/:type/:id')
+  request(@Param('type') type: string, @Param('id') id: string) {
+    return this.appService.request(type, id);
   }
 
-  @Post('response')
-  response(@Body('vp_token') vp_token: Record<string, unknown>) {
-    return this.appService.response(vp_token);
+  @Post('response/:id')
+  response(
+    @Param('id') id: string,
+    @Body('vp_token') vp_token: Record<string, unknown>,
+  ) {
+    return this.appService.response(id, vp_token);
+  }
+
+  @Get('status/:id')
+  status(@Param('id') id: string) {
+    return this.appService.status(id);
   }
 }
