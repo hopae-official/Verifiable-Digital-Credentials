@@ -1,52 +1,27 @@
 'use client';
-
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import QRCode from 'react-qr-code';
+import React from 'react';
+import Link from 'next/link';
 
 export default function Home() {
-  const [qrCodeUrl, setQrCodeUrl] = useState('');
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? '';
-
-        const response = await axios.get(apiUrl);
-
-        const link = response.data.link;
-        console.log(link);
-
-        setQrCodeUrl(link);
-        setLoading(false);
-      } catch (err) {
-        console.error('Error fetching data:', err);
-        setError('Error occurred while fetching data');
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
-
   return (
-    <div style={{ textAlign: 'center', margin: '20px' }}>
-      {qrCodeUrl && (
-        <div style={{ maxWidth: '250px', width: '100%', margin: '0 auto' }}>
-          <QRCode
-            size={256}
-            style={{ height: 'auto', maxWidth: '100%', width: '100%' }}
-            value={qrCodeUrl}
-            viewBox={`0 0 256 256`}
-          />
-        </div>
-      )}
+    <div className="flex flex-col items-center justify-center min-h-screen p-4">
+      <h1 className="text-3xl font-bold mb-8">
+        Digital Credentials Verification Demo
+      </h1>
+
+      <div className="flex gap-6">
+        <Link href="/job-application">
+          <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer">
+            Job Application
+          </button>
+        </Link>
+
+        <Link href="/phone-register">
+          <button className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors cursor-pointer">
+            Phone Register
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }
