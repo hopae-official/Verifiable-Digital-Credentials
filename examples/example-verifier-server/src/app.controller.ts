@@ -21,10 +21,7 @@ export class AppController {
   }
 
   @Post('response/:id')
-  response(
-    @Param('id') id: string,
-    @Body('vp_token') vp_token: Record<string, unknown>,
-  ) {
+  response(@Param('id') id: string, @Body('vp_token') vp_token: string) {
     return this.appService.response(id, vp_token);
   }
 

@@ -60,7 +60,7 @@ export default function Home() {
 
             // Navigate to result page with the returned data
             router.push(
-              `/result?data=${encodeURIComponent(JSON.stringify(response.data))}`,
+              `/result?data=${encodeURIComponent(JSON.stringify({ id, resultType: 'phone-register' }))}`,
             );
           }
         } catch (err) {

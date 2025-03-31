@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { randomUUID } from 'crypto';
+import { CredentialDecoder } from './decoder';
 
 @Injectable()
 export class AppService {
@@ -27,10 +28,12 @@ export class AppService {
     const dcql_query =
       type === 'job-application'
         ? JSON.stringify({
+            id: 'jobApplication',
             required: ['name', 'university_name'],
             optional: ['major'],
           })
         : JSON.stringify({
+            id: 'telecomRegister',
             required: ['name', 'birthdate'],
             optional: ['address'],
           });
@@ -47,17 +50,17 @@ export class AppService {
     return result;
   }
 
-  response(id: string, vp_token: Record<string, unknown>) {
+  response(id: string, vp_token: string) {
     console.log('vp_token', vp_token);
-    // TODO: fix the data
-    this.statusMap.set(id, vp_token);
+    const decoded = CredentialDecoder.decodeSDJWT(vp_token);
+    this.statusMap.set(id, decoded.claims as Record<string, unknown>);
     return true;
   }
 
   status(id: string) {
     const data = this.statusMap.get(id);
     if (data) {
-      return { status: 'success', ...data };
+      return { status: 'success', claims: data };
     }
     return { status: 'pending' };
   }

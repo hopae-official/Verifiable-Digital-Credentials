@@ -4,11 +4,8 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
 interface ResultData {
-  status: string;
   id: string;
-  resultType: string;
-  data: any;
-  // 필요한 다른 필드들 추가
+  resultType: 'job-application' | 'phone-register';
 }
 
 export default function ResultPage() {
@@ -54,28 +51,18 @@ export default function ResultPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-2xl font-bold mb-6">Result</h1>
+      <h1 className="text-2xl font-bold mb-6">Verification Success</h1>
 
-      <div className="bg-gray-100 p-6 rounded-lg mb-6 w-full max-w-lg">
-        <h2 className="text-xl font-semibold mb-2">Response Data:</h2>
-        <div className="bg-white p-3 rounded overflow-auto max-h-[400px]">
-          <pre className="text-sm">{JSON.stringify(resultData, null, 2)}</pre>
-        </div>
-      </div>
 
-      {resultData.resultType === 'type1' && (
+      {resultData.resultType === 'job-application' && (
         <div className="mb-6">
-          {/* Type 1에 특화된 UI 렌더링 */}
-          <p>Type 1 Result Visualization</p>
-          {/* 여기에 Type 1 데이터에 맞는 컴포넌트 추가 */}
+          <p>Thank you for applying to our job posting. We will contact you soon.</p>
         </div>
       )}
 
-      {resultData.resultType === 'type2' && (
+      {resultData.resultType === 'phone-register' && (
         <div className="mb-6">
-          {/* Type 2에 특화된 UI 렌더링 */}
-          <p>Type 2 Result Visualization</p>
-          {/* 여기에 Type 2 데이터에 맞는 컴포넌트 추가 */}
+          <p>Thank you for requesting a phone number. We will send you the USIM card soon.</p>
         </div>
       )}
 
