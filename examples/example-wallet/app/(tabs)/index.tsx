@@ -13,7 +13,7 @@ import { Card } from '@/components/ui/card';
 
 import * as React from 'react';
 import { Colors } from '@/constants/Colors';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { Ionicons } from '@expo/vector-icons';
 import { Button } from '@/components/ui/button';
 
 const mockCredential =

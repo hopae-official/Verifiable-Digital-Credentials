@@ -1,6 +1,6 @@
 import '@/global.css';
 
-import { Tabs } from 'expo-router';
+import { router, Tabs } from 'expo-router';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 
@@ -115,8 +115,7 @@ function CustomTabBar({ state, descriptors, navigation }) {
             marginBottom: 5,
           }}
           onPress={() => {
-            // Handle the center button press (e.g., open a modal or navigate)
-            console.log('Center button pressed');
+            router.navigate('/verify');
           }}
         >
           <Ionicons name="qr-code-outline" size={24} color="white" />

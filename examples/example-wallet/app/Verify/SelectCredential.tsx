@@ -8,9 +8,9 @@ import {
   View,
 } from 'react-native';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { CredentialDecoder } from '@vdcs/wallet';
 import { Claim } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -70,6 +70,23 @@ export default function SelectCredentialScreen() {
 
   if (!claims) return <Text>No claims</Text>;
 
+  const requiredClaims = ['iss', 'vct', 'name'];
+  const [selectedOptions, setSelectedOptions] = useState({
+    iss: true, // required
+    vct: true, // required
+    name: true, // required
+    birthdate: false, // optional
+  });
+
+  const toggleOption = (option: keyof typeof selectedOptions) => {
+    if (requiredClaims.includes(option)) return;
+
+    setSelectedOptions((prev) => ({
+      ...prev,
+      [option]: !prev[option],
+    }));
+  };
+
   return (
     <>
       <Stack.Screen
@@ -86,15 +103,8 @@ export default function SelectCredentialScreen() {
         style={{ flex: 1 }}
         contentContainerStyle={styles.scrollViewContent}
       >
-        {/* <ThemedView style={styles.container}> */}
         <Text style={styles.title}>
           An organisation is asking for information
-        </Text>
-        <Text style={{ fontSize: 16 }}>
-          Select credential to be presented to
-        </Text>
-        <Text style={{ fontSize: 16, color: 'darkblue' }}>
-          {mockResponseUri}
         </Text>
 
         <View style={{ width: '100%' }}>
@@ -144,18 +154,16 @@ export default function SelectCredentialScreen() {
         </View>
         <Card style={styles.providerCard}>
           <View style={styles.circleImage}>
-            <Ionicons name="newspaper" size={24} color={'gray'} />
+            <Ionicons name="newspaper" size={15} color={'gray'} />
           </View>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.boldText}>ABC Bank</Text>
-            <View style={styles.verifiedDescWapper}>
-              <Ionicons
-                name="checkmark-circle-outline"
-                size={20}
-                color={'green'}
-              />
-              <Text style={styles.decsText}>Contact is verified</Text>
-            </View>
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={styles.boldText}>Hopae Inc.</Text>
+            <Ionicons
+              name="checkmark-circle-outline"
+              size={20}
+              color={'green'}
+              opacity={0.5}
+            />
           </View>
           <Ionicons name="chevron-down" size={24} />
         </Card>
@@ -172,21 +180,40 @@ export default function SelectCredentialScreen() {
             </View>
 
             <Card style={styles.infoWrapper}>
-              <View>
-                <Text style={styles.infoLabelText}>ISS</Text>
-                <Text style={styles.infoText}>{claims.iss}</Text>
+              <View style={styles.optionWrapper}>
+                <Ionicons name="checkbox-outline" size={20} color={'green'} />
+                <View>
+                  <Text style={styles.infoLabelText}>ISS (required)</Text>
+                  <Text style={styles.infoText}>{claims.iss}</Text>
+                </View>
               </View>
-              <View>
-                <Text style={styles.infoLabelText}>VCT</Text>
-                <Text style={styles.infoText}>{claims.vct}</Text>
+              <View style={styles.optionWrapper}>
+                <Ionicons name="checkbox-outline" size={20} color={'green'} />
+                <View>
+                  <Text style={styles.infoLabelText}>VCT (required)</Text>
+                  <Text style={styles.infoText}>{claims.vct}</Text>
+                </View>
               </View>
-              <View>
-                <Text style={styles.infoLabelText}>Name</Text>
-                <Text style={styles.infoText}>{claims.name}</Text>
+              <View style={styles.optionWrapper}>
+                <Ionicons name="checkbox-outline" size={20} color={'green'} />
+                <View>
+                  <Text style={styles.infoLabelText}>Name (required)</Text>
+                  <Text style={styles.infoText}>{claims.name}</Text>
+                </View>
               </View>
-              <View>
-                <Text style={styles.infoLabelText}>Birthdate</Text>
-                <Text style={styles.infoText}>{claims.birthdate}</Text>
+
+              <View style={styles.optionWrapper}>
+                <TouchableOpacity onPress={() => toggleOption('birthdate')}>
+                  <Ionicons
+                    name="checkbox-outline"
+                    size={20}
+                    color={selectedOptions.birthdate ? 'green' : 'lightgray'}
+                  />
+                </TouchableOpacity>
+                <View>
+                  <Text style={styles.infoLabelText}>Birthdate (optional)</Text>
+                  <Text style={styles.infoText}>{claims.birthdate}</Text>
+                </View>
               </View>
             </Card>
           </Card>
@@ -298,9 +325,9 @@ const styles = StyleSheet.create({
     right: 10,
   },
   circleImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 50 / 2,
+    width: 35,
+    height: 35,
+    borderRadius: 35 / 2,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
@@ -312,7 +339,7 @@ const styles = StyleSheet.create({
     width: '90%',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 15,
+    padding: 10,
     marginTop: 20,
   },
   verifiedDescWapper: {
@@ -381,5 +408,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'gray',
     backgroundColor: 'white',
+  },
+  optionWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
   },
 });
