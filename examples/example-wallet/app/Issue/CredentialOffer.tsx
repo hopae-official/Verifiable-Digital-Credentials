@@ -5,11 +5,14 @@ import { ThemedView } from '@/components/ThemedView';
 import { useCredentialOfferQuery } from '@/queries';
 import { useEffect } from 'react';
 
+// Todo: Remove this mock URI
+const mockCredentialOfferUri = 'https://issuer.dev.hopae.com/credential-offer';
+
 export default function CredentialOfferScreen() {
   const params = useLocalSearchParams<{ credentialOfferUri: string }>();
 
   const { data, isLoading } = useCredentialOfferQuery({
-    credentialOfferUri: params.credentialOfferUri,
+    credentialOfferUri: mockCredentialOfferUri,
   });
 
   const preAuthorizedCode =

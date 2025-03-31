@@ -7,7 +7,7 @@ import {
   ViewStyle,
 } from 'react-native';
 
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from '@/components/ui/card';
 
@@ -27,15 +27,14 @@ type Card = {
   icon: IconName;
 };
 
+const sampleCards: Card[] = [
+  { id: 1, title: 'University Diploma', icon: 'school' },
+  { id: 2, title: 'Driver License', icon: 'car' },
+  { id: 3, title: 'Health Insurance', icon: 'hospital-box' },
+];
 export default function HomeScreen() {
-  const sampleCards: Card[] = React.useMemo(
-    () => [
-      { id: 1, title: 'University Diploma', icon: 'school' },
-      { id: 2, title: 'Driver License', icon: 'car' },
-      { id: 3, title: 'Health Insurance', icon: 'hospital-box' },
-    ],
-    [],
-  );
+  const params = useLocalSearchParams<{ credential: string }>();
+  const credential = params.credential;
 
   const handlePressCredential = (cardId: number) => {
     router.navigate({
@@ -44,12 +43,17 @@ export default function HomeScreen() {
     });
   };
 
+  const credentials: Card[] = credential ? sampleCards : [];
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.listContainer}>
-        {sampleCards.length > 0 ? (
+      {credentials.length > 0 ? (
+        <View style={styles.listContainer}>
+          <View style={{ position: 'absolute', top: 10, right: 10 }}>
+            <Ionicons size={20} name="add" />
+          </View>
           <View style={styles.stackContainer}>
-            {sampleCards.map((card, index) => (
+            {credentials.map((card, index) => (
               <TouchableOpacity
                 key={card.id}
                 style={[
@@ -78,37 +82,34 @@ export default function HomeScreen() {
               </TouchableOpacity>
             ))}
           </View>
-        ) : (
-          <>
-            <Ionicons size={28} name="wallet-outline" />
-            <Text
-              style={{
-                fontSize: 20,
-                fontWeight: 'bold',
-                marginTop: 20,
-                padding: 20,
-              }}
-            >
-              Welcome
-            </Text>
-            <Text style={{ fontSize: 13, color: 'gray', textAlign: 'center' }}>
-              You don't have any credentials yet. To add your first credential,
-              tap the button
-            </Text>
-          </>
-        )}
-
-        <Card style={{ width: 300, marginTop: 20 }}>
+        </View>
+      ) : (
+        <View style={styles.placeholderContainer}>
+          <Ionicons size={80} name="wallet-outline" />
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              marginTop: 20,
+              padding: 20,
+            }}
+          >
+            Welcome
+          </Text>
+          <Text style={{ fontSize: 13, color: 'gray', textAlign: 'center' }}>
+            You don't have any credentials yet. To add your first credential,
+            tap the button
+          </Text>
           <Button
             variant="default"
-            className="w-full shadow shadow-foreground/5"
+            className="w-full shadow shadow-foreground/5 mt-5"
             style={{ width: '100%', backgroundColor: Colors.light.orange }}
             onPress={() => router.navigate('/Issue/CredentialTypeSelection')}
           >
             <Text style={{ color: 'white' }}>Add a credential</Text>
           </Button>
-        </Card>
-      </View>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
@@ -188,6 +189,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   listContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  placeholderContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

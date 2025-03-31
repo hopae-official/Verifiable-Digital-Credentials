@@ -1,12 +1,14 @@
-import { router, Stack, useLocalSearchParams } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { ThemedView } from '@/components/ThemedView';
 
 import { Card } from '@/components/ui/card';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Colors } from '@/constants/Colors';
+
 import { Separator } from '@/components/ui/separator';
+
+const mockCredentialOfferUri = 'https://issuer.dev.hopae.com/credential-offer';
 
 export default function CredentialTypeSelectionScreen() {
   return (
@@ -14,8 +16,6 @@ export default function CredentialTypeSelectionScreen() {
       <Stack.Screen
         options={{
           title: '',
-          //headerBackTitle: 'Back',
-          //headerTitle: () => null,
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
               <Ionicons name="chevron-back" size={24} />
@@ -28,7 +28,10 @@ export default function CredentialTypeSelectionScreen() {
 
         <TouchableOpacity
           onPress={() => {
-            router.navigate('/Issue/QR');
+            router.replace({
+              pathname: '/Issue/CredentialOffer',
+              params: { credentialOfferUri: mockCredentialOfferUri },
+            });
           }}
         >
           <Card style={styles.credentialTypeCard} className="shadow-sm">
@@ -85,21 +88,6 @@ const styles = StyleSheet.create({
   descText: {
     fontSize: 17,
     fontWeight: 'bold',
-  },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
-  },
-  loadingSpinner: {
-    marginTop: 20,
-  },
-  credentialLabel: {
-    padding: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  credentialLabelText: {
-    fontSize: 15,
   },
   credentialTypeCard: {
     padding: 12,
