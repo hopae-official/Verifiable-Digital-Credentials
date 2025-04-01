@@ -12,6 +12,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Card } from '@/components/ui/card';
 import { Claim } from '@/types';
 import { isValidClaim } from '@/utils';
+import { Colors } from '@/constants/Colors';
 
 export default function CredentialDetailScreen() {
   const params = useLocalSearchParams<{ credential: string }>();
@@ -34,7 +35,7 @@ export default function CredentialDetailScreen() {
           title: '',
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
-              <Ionicons name="chevron-back" size={24} />
+              <Ionicons name="chevron-back" size={27} />
             </TouchableOpacity>
           ),
         }}
@@ -95,6 +96,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: Colors.light.background,
   },
   credentialCard: {
     marginTop: 20,
@@ -158,7 +160,8 @@ const styles = StyleSheet.create({
     width: '95%',
     alignItems: 'center',
     padding: 15,
-    backgroundColor: 'white',
+    backgroundColor: Colors.light.lightYellow,
+    borderColor: 'transparent'
   },
   decsText: {
     color: 'green',
@@ -173,6 +176,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: '100%',
     gap: 15,
+    backgroundColor: Colors.light.background,
+    borderColor: 'transparent'
   },
   boldText: {
     fontSize: 16,

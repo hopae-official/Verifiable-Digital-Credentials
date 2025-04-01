@@ -17,7 +17,7 @@ export default function CredentialTypeSelectionScreen() {
           title: '',
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
-              <Ionicons name="chevron-back" size={24} />
+              <Ionicons name="chevron-back" size={27} />
             </TouchableOpacity>
           ),
         }}
@@ -35,7 +35,7 @@ export default function CredentialTypeSelectionScreen() {
         >
           <Card style={styles.credentialTypeCard} className="shadow-sm">
             <Text style={styles.credentialTypeText}>University Diploma</Text>
-            <Separator className="my-2" />
+            <Separator className="my-2 bg-gray-300" />
             <View style={styles.techSpecTextWrapper}>
               <Text style={styles.credentialSpecText}>OpenID</Text>
               <Text style={styles.credentialSpecText}>SD-JWT</Text>
@@ -50,7 +50,7 @@ export default function CredentialTypeSelectionScreen() {
         >
           <Card style={styles.credentialTypeCard} className="shadow-sm">
             <Text style={styles.credentialTypeText}>Driver's Lisence</Text>
-            <Separator className="my-3" />
+            <Separator className="my-3 bg-gray-300" />
             <View style={styles.techSpecTextWrapper}>
               <Text style={styles.credentialSpecText}>mDL</Text>
               <Text style={styles.credentialSpecText}>SD-JWT</Text>
@@ -67,7 +67,7 @@ export default function CredentialTypeSelectionScreen() {
             <Text style={styles.credentialTypeText}>
               Vaccination Certificate
             </Text>
-            <Separator className="my-3" />
+            <Separator className="my-3 bg-gray-300" />
             <View style={styles.techSpecTextWrapper}>
               <Text style={styles.credentialSpecText}>OpenID</Text>
               <Text style={styles.credentialSpecText}>SD-JWT</Text>

@@ -92,9 +92,10 @@ export default function SelectCredentialScreen() {
     <>
       <Stack.Screen
         options={{
+          title: '',
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
-              <Ionicons name="chevron-back" size={24} color="#000" />
+              <Ionicons name="chevron-back" size={27} color="#000" />
             </TouchableOpacity>
           ),
         }}
@@ -102,6 +103,7 @@ export default function SelectCredentialScreen() {
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={styles.scrollViewContent}
+        bounces={false}
       >
         <Text style={styles.title}>
           An organisation is asking for information
@@ -346,6 +348,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     marginTop: 20,
+    backgroundColor: Colors.light.background,
+    borderColor: Colors.light.border,
   },
   verifiedDescWapper: {
     flexDirection: 'row',
@@ -366,7 +370,9 @@ const styles = StyleSheet.create({
     width: '90%',
     alignItems: 'center',
     padding: 15,
-    backgroundColor: 'white',
+    backgroundColor: Colors.light.lightYellow,
+    //borderColor: Colors.light.border,
+    borderColor: 'transparent'
   },
   cardHeader: {
     flexDirection: 'row',
@@ -378,6 +384,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: '100%',
     gap: 15,
+    backgroundColor: Colors.light.background,
+    borderColor: 'transparent'
   },
   infoLabelText: {
     fontSize: 15,

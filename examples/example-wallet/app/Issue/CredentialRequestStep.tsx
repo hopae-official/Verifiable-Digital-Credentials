@@ -50,7 +50,7 @@ export default function CredentialRequestStepScreen() {
           title: '',
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
-              <Ionicons name="chevron-back" size={24} />
+              <Ionicons name="chevron-back" size={27} />
             </TouchableOpacity>
           ),
           headerShown: !isPending,
@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 5,
     paddingTop: 40,
+    backgroundColor: Colors.light.background,
   },
   title: {
     fontSize: 20,
@@ -148,6 +149,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 15,
+    backgroundColor: Colors.light.background,
+    borderColor: Colors.light.border,
   },
   circleImage: {
     width: 50,
@@ -177,6 +180,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 15,
     backgroundColor: Colors.light.lightYellow,
+    borderColor: Colors.light.border,
   },
   decsText: {
     color: 'green',
@@ -188,9 +192,11 @@ const styles = StyleSheet.create({
   },
   infoWrapper: {
     padding: 10,
+    borderColor: 'transparent',
     borderRadius: 5,
     width: '95%',
     gap: 7,
+    backgroundColor: Colors.light.background,
   },
   boldText: {
     fontSize: 16,

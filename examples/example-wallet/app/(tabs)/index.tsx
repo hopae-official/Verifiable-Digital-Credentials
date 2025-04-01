@@ -4,7 +4,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ViewStyle,
 } from 'react-native';
 
 import { router, useLocalSearchParams } from 'expo-router';
@@ -13,7 +12,7 @@ import { Card } from '@/components/ui/card';
 
 import * as React from 'react';
 import { Colors } from '@/constants/Colors';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Button } from '@/components/ui/button';
 
 const mockCredential =
@@ -50,7 +49,7 @@ export default function HomeScreen() {
       {credentials.length > 0 ? (
         <View style={styles.listContainer}>
           <View style={styles.addCredentialButton}>
-            <Ionicons size={25} name="add" color={'white'}/>
+            <Ionicons size={25} name="add" color={'white'} />
           </View>
 
           <View style={styles.stackContainer}>

@@ -1,8 +1,8 @@
 import { router, Stack } from 'expo-router';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import LottieView from 'lottie-react-native';
-import { ThemedView } from '@/components/ThemedView';
 import { useEffect } from 'react';
+import { Colors } from '@/constants/Colors';
 
 export default function VerifyResultScreen() {
   useEffect(() => {
@@ -19,16 +19,19 @@ export default function VerifyResultScreen() {
           headerShown: false,
         }}
       />
-      <ThemedView style={styles.container}>
+      <View style={styles.container}>
         <Text style={styles.title}>Verify Success!</Text>
         <LottieView
           speed={0.8}
-          style={{ width: 64, height: 64 }}
+          style={{
+            width: 64,
+            height: 64,
+          }}
           autoPlay={true}
           loop={false}
           source={require('@/assets/lotties/check.json')}
         />
-      </ThemedView>
+      </View>
     </>
   );
 }
@@ -38,7 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    backgroundColor: Colors.light.background,
   },
   title: {
     fontSize: 20,
