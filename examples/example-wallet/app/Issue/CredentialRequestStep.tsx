@@ -1,4 +1,4 @@
-import { router, Stack } from 'expo-router';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -13,10 +13,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Card } from '@/components/ui/card';
 import { Colors } from '@/constants/Colors';
 import { Button } from '@/components/ui/button';
-import { CREDENTIALS_STORAGE_KEY } from '@/types';
+import { CREDENTIALS_STORAGE_KEY, CredentialType } from '@/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CredentialRequestStepScreen() {
+  const params = useLocalSearchParams<{ credentialType: CredentialType }>();
+  const credentialType = params.credentialType;
+
   const [credential, setCredential] = useState<string | null>(null);
 
   const { mutate: credentialRequestMutate, isPending } =
@@ -33,8 +36,8 @@ export default function CredentialRequestStepScreen() {
   useEffect(() => {
     // @Description: Request credential
     // @Reference: https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html#name-pre-authorized-code-flow (Step 5)
-    credentialRequestMutate({ credentialType: 'UniversityDegreeCredential' });
-  }, []);
+    credentialRequestMutate({ credentialType });
+  }, [credentialType]);
 
   const handlePressAccept = async () => {
     // Get existing credentials from storage
@@ -46,7 +49,7 @@ export default function CredentialRequestStepScreen() {
       : [];
 
     // Add new credential to array
-    credentials.push(credential);
+    credentials.push({ credentialType, credential });
 
     // Save updated credentials array
     await AsyncStorage.setItem(
@@ -54,11 +57,11 @@ export default function CredentialRequestStepScreen() {
       JSON.stringify(credentials),
     );
 
-    router.replace({ pathname: '/', params: { credential } });
+    router.replace({ pathname: '/' });
   };
 
   const handlePressDeny = () => {
-    router.replace({ pathname: '/', params: { credential } });
+    router.replace({ pathname: '/' });
   };
 
   return (

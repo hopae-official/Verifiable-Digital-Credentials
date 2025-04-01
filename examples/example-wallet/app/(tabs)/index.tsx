@@ -15,7 +15,11 @@ import { Colors } from '@/constants/Colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Button } from '@/components/ui/button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CREDENTIALS_STORAGE_KEY } from '@/types';
+import {
+  CREDENTIALS_STORAGE_KEY,
+  Credential,
+  CredentialInfoMap,
+} from '@/types';
 
 const mockCredential =
   'eyJ0eXAiOiJkYytzZC1qd3QiLCJhbGciOiJFUzI1NiJ9.eyJ2Y3QiOiJodHRwczovL2lzc3Vlci5kZXYuaG9wYWUuY29tL2NyZWRlbnRpYWxzL3R5cGVzL3VuaXZlcnNpdHkiLCJpc3MiOiJodHRwczovL2lzc3Vlci5kZXYuaG9wYWUuY29tIiwiX3NkIjpbIllwbm15VzdZemJ0ejFOODZVZjJadGNBNldoM0NVR1cyT0c1SjNFcVozYm8iLCJ0NXdmZE5CMWJuS1Nlcjkybm9QZXZaSW5fMm1MV0F0Q1lDTG1ac0dFR0xNIl0sIl9zZF9hbGciOiJzaGEtMjU2In0.k--1y8ivPJrjX0gD3CA9mZLIkIHs8zJPdohNFYzJ5jdf1736HDkGHgy3pT1hnNXF-vm0GKrwBSmueX3y8pIbtA~WyI5YjQwZjc1ODFiNzY4OGY5IiwibmFtZSIsIkpvaG4gRG9lIl0~WyJjOGZiNDNjNGFjMGMwMDVmIiwiYmlydGhkYXRlIiwiMTk5MC0wMS0wMSJd~';
@@ -35,7 +39,7 @@ const sampleCards: Card[] = [
 ];
 
 export default function HomeScreen() {
-  const [credentials, setCredentials] = useState<string[]>([]);
+  const [credentials, setCredentials] = useState<Credential[]>([]);
 
   useFocusEffect(
     useCallback(() => {
@@ -79,7 +83,7 @@ export default function HomeScreen() {
           </TouchableOpacity>
 
           <View style={styles.stackContainer}>
-            {credentials.map((_card, index) => (
+            {credentials.map((credential, index) => (
               <TouchableOpacity
                 key={index}
                 style={[
@@ -100,7 +104,9 @@ export default function HomeScreen() {
                       <View style={styles.circleImage}>
                         <Ionicons size={28} name="wallet-outline" />
                       </View>
-                      <Text style={styles.cardText}>{card.title}</Text>
+                      <Text style={styles.cardText}>
+                        {CredentialInfoMap[credential.credentialType].label}
+                      </Text>
                     </View>
                   </ImageBackground>
                 </Card>

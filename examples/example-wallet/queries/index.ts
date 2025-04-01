@@ -51,7 +51,11 @@ type CredentialMutationRes = {
 };
 
 export const useCredentialRequestMutation = (
-  options?: UseMutationOptions<CredentialMutationRes, unknown, { credentialType: string }>,
+  options?: UseMutationOptions<
+    CredentialMutationRes,
+    unknown,
+    { credentialType: string }
+  >,
 ) => {
   return useMutation({
     mutationFn: async ({ credentialType }: { credentialType: string }) => {
@@ -64,7 +68,7 @@ export const useCredentialRequestMutation = (
       });
 
       const token = tokenRes.data.access_token;
-      console.log('credentialType', credentialType);
+
       const res = await axios.post(
         'https://issuer.dev.hopae.com/credential',
         {
