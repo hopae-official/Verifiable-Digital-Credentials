@@ -1,5 +1,5 @@
 import { Link, router, Stack } from 'expo-router';
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet, View, Text } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -22,15 +22,22 @@ export default function VerifyQRScanScreen() {
 
   useEffect(() => {
     if (!verifyRequestUri) return;
-
+    console.log('verifyRequestUri', verifyRequestUri);
     verifyMetadataMutate(undefined, {
       onSuccess: (data) => {
-        console.log('vefiry metadata', data);
+        console.log('verify metadata', data);
 
         router.navigate({
           pathname: '/Verify/SelectCredential',
         });
       },
+      onError: (error) => {
+        console.error('Error fetching verify metadata:', error);
+      },
+    });
+
+    router.navigate({
+      pathname: '/Verify/SelectCredential',
     });
   }, [verifyRequestUri, verifyMetadataMutate]);
 
@@ -61,7 +68,6 @@ export default function VerifyQRScanScreen() {
   return (
     <>
       <ThemedView style={styles.container}>
-        <ActivityIndicator color={'black'} size="large" />
         <CameraView
           facing="back"
           barcodeScannerSettings={{
@@ -69,6 +75,23 @@ export default function VerifyQRScanScreen() {
           }}
           onBarcodeScanned={handleBarcodeScanned}
           style={StyleSheet.absoluteFillObject}
+        />
+        <View style={styles.overlay}>
+          <View style={styles.overlaySection} />
+          <View style={styles.centerRow}>
+            <View style={styles.overlaySection} />
+            <View style={styles.scanArea} />
+            <View style={styles.overlaySection} />
+          </View>
+          <View style={styles.overlayTextSection}>
+            <Text style={styles.overlayText}>Scan a QR code</Text>
+          </View>
+          <View style={styles.overlaySection} />
+        </View>
+        <ActivityIndicator
+          color={'white'}
+          size="large"
+          style={{ position: 'absolute', top: 20 }}
         />
       </ThemedView>
     </>
@@ -80,7 +103,40 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  overlaySection: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+  },
+  overlayTextSection: {
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 20,
+    color: 'white',
+  },
+  overlayText: {
+    color: 'white',
+  },
+  scanArea: {
+    width: 250,
+    height: 250,
+    borderWidth: 2,
+    borderColor: '#fff',
+  },
+  centerRow: {
+    flexDirection: 'row',
+    height: 250,
+  },
+  centerSection: {
+    width: 250,
   },
   link: {
     marginTop: 15,

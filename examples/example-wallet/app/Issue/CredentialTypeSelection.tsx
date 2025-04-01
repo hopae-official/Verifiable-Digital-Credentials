@@ -1,12 +1,11 @@
 import { router, Stack } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { ThemedView } from '@/components/ThemedView';
-
 import { Card } from '@/components/ui/card';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { Separator } from '@/components/ui/separator';
+import { Colors } from '@/constants/Colors';
 
 const mockCredentialOfferUri = 'https://issuer.dev.hopae.com/credential-offer';
 
@@ -23,7 +22,7 @@ export default function CredentialTypeSelectionScreen() {
           ),
         }}
       />
-      <ThemedView style={styles.container}>
+      <View style={styles.container}>
         <Text style={styles.descText}>Select credential</Text>
 
         <TouchableOpacity
@@ -75,7 +74,7 @@ export default function CredentialTypeSelectionScreen() {
             </View>
           </Card>
         </TouchableOpacity>
-      </ThemedView>
+      </View>
     </>
   );
 }
@@ -84,6 +83,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: Colors.light.background,
   },
   descText: {
     fontSize: 17,
@@ -92,6 +92,8 @@ const styles = StyleSheet.create({
   credentialTypeCard: {
     padding: 12,
     marginTop: 15,
+    backgroundColor: Colors.light.background,
+    borderColor: Colors.light.border,
   },
   credentialTypeText: {
     fontSize: 16,

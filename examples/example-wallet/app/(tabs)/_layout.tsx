@@ -33,11 +33,11 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="verify"
+        name="settings"
         options={{
-          title: 'Verify',
+          title: 'Settings',
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+            <Ionicons size={28} name="settings-outline" color={color} />
           ),
         }}
       />
@@ -115,7 +115,7 @@ function CustomTabBar({ state, descriptors, navigation }) {
             marginBottom: 5,
           }}
           onPress={() => {
-            router.navigate('/verify');
+            router.push('/QR');
           }}
         >
           <Ionicons name="qr-code-outline" size={24} color="white" />

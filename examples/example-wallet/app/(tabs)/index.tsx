@@ -49,9 +49,10 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.container}>
       {credentials.length > 0 ? (
         <View style={styles.listContainer}>
-          <View style={{ position: 'absolute', top: 10, right: 10 }}>
-            <Ionicons size={20} name="add" />
+          <View style={styles.addCredentialButton}>
+            <Ionicons size={25} name="add" color={'white'}/>
           </View>
+
           <View style={styles.stackContainer}>
             {credentials.map((card, index) => (
               <TouchableOpacity
@@ -59,9 +60,8 @@ export default function HomeScreen() {
                 style={[
                   styles.cardWrapper,
                   {
-                    top: -index * CARD_OFFSET,
-                    //transform: [{ scale: 1 - index * 0.05 }],
-                    zIndex: sampleCards.length - index,
+                    top: index * CARD_OFFSET,
+                    zIndex: sampleCards.length + index,
                   },
                 ]}
                 onPress={() => handlePressCredential(card.id)}
@@ -115,8 +115,21 @@ export default function HomeScreen() {
 }
 
 const CARD_OFFSET = 40;
+const CARD_WIDTH = 350;
+const CARD_HEIGHT = CARD_WIDTH / 1.58;
 
 const styles = StyleSheet.create({
+  addCredentialButton: {
+    position: 'absolute',
+    top: 30,
+    right: 30,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: Colors.light.orange,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -140,16 +153,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   stackContainer: {
-    width: '100%',
-    height: 280,
+    width: CARD_WIDTH,
     position: 'relative',
-    paddingHorizontal: 20,
-    alignItems: 'center',
+    marginTop: 100,
   },
   cardWrapper: {
     position: 'absolute',
     width: '100%',
-    transform: [{ scale: 0.98 }],
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -157,7 +167,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
   },
   qrButton: {
     alignSelf: 'flex-end',
@@ -168,9 +177,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.55,
   },
   credentialWrapper: {
     backgroundColor: 'white',
@@ -190,9 +196,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
   },
   placeholderContainer: {
     flex: 1,
@@ -201,9 +205,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   credentialCard: {
-    width: 300,
-    height: 200,
-    backgroundColor: 'white',
+    width: CARD_WIDTH,
+    height: CARD_HEIGHT,
+    backgroundColor: 'gray',
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -213,7 +217,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   contentContainer: {
-    backgroundColor: 'transparent',
     flexDirection: 'row',
     flex: 1,
     width: '100%',
@@ -238,6 +241,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'lightgray',
     backgroundColor: 'white',
-    margin: 3,
   },
 });

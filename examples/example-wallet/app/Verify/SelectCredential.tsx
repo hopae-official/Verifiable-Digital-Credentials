@@ -20,6 +20,7 @@ import Carousel, {
 } from 'react-native-reanimated-carousel';
 import { isValidClaim } from '@/utils';
 import { useSharedValue } from 'react-native-reanimated';
+import { Colors } from '@/constants/Colors';
 
 //@Todo: Remove mock credential
 const mockCredential =
@@ -91,10 +92,9 @@ export default function SelectCredentialScreen() {
     <>
       <Stack.Screen
         options={{
-          title: '',
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
-              <Ionicons name="chevron-back" size={24} />
+              <Ionicons name="chevron-back" size={24} color="#000" />
             </TouchableOpacity>
           ),
         }}
@@ -107,7 +107,9 @@ export default function SelectCredentialScreen() {
           An organisation is asking for information
         </Text>
 
-        <View style={{ width: '100%' }}>
+        <View
+          style={{ width: '100%', backgroundColor: Colors.light.background }}
+        >
           <Carousel
             ref={ref}
             style={{
@@ -181,21 +183,21 @@ export default function SelectCredentialScreen() {
 
             <Card style={styles.infoWrapper}>
               <View style={styles.optionWrapper}>
-                <Ionicons name="checkbox-outline" size={20} color={'green'} />
+                <Ionicons name="checkbox-outline" size={20} color={'black'} />
                 <View>
                   <Text style={styles.infoLabelText}>ISS (required)</Text>
                   <Text style={styles.infoText}>{claims.iss}</Text>
                 </View>
               </View>
               <View style={styles.optionWrapper}>
-                <Ionicons name="checkbox-outline" size={20} color={'green'} />
+                <Ionicons name="checkbox-outline" size={20} color={'black'} />
                 <View>
                   <Text style={styles.infoLabelText}>VCT (required)</Text>
                   <Text style={styles.infoText}>{claims.vct}</Text>
                 </View>
               </View>
               <View style={styles.optionWrapper}>
-                <Ionicons name="checkbox-outline" size={20} color={'green'} />
+                <Ionicons name="checkbox-outline" size={20} color={'black'} />
                 <View>
                   <Text style={styles.infoLabelText}>Name (required)</Text>
                   <Text style={styles.infoText}>{claims.name}</Text>
@@ -252,6 +254,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: '#000',
   },
   descWrapper: {
     gap: 8,
@@ -266,9 +269,11 @@ const styles = StyleSheet.create({
   boldText: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#000',
   },
   text: {
     fontSize: 16,
+    color: '#000',
   },
   link: {
     marginTop: 15,
@@ -377,10 +382,12 @@ const styles = StyleSheet.create({
   infoLabelText: {
     fontSize: 15,
     opacity: 0.5,
+    color: '#000',
   },
   infoText: {
     fontSize: 15,
     opacity: 0.7,
+    color: '#000',
   },
   infoCircleImage: {
     width: 35,
@@ -399,7 +406,7 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   acceptButton: {
-    backgroundColor: 'darkblue',
+    backgroundColor: Colors.light.orange,
   },
   acceptButtonText: {
     color: 'white',

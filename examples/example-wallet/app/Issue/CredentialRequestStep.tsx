@@ -76,16 +76,15 @@ export default function CredentialRequestStepScreen() {
               <View style={styles.circleImage}>
                 <Ionicons name="newspaper" size={24} color={'gray'} />
               </View>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.boldText}>Pid Provider</Text>
-                <View style={styles.verifiedDescWapper}>
-                  <Ionicons
-                    name="checkmark-circle-outline"
-                    size={20}
-                    color={'green'}
-                  />
-                  <Text style={styles.decsText}>Contact is verified</Text>
-                </View>
+              <View
+                style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
+              >
+                <Text style={styles.boldText}>Hopae Inc.</Text>
+                <Ionicons
+                  name="checkmark-circle-outline"
+                  size={20}
+                  color={'green'}
+                />
               </View>
               <Ionicons name="chevron-down" size={24} />
             </Card>
@@ -211,7 +210,7 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   acceptButton: {
-    backgroundColor: Colors.light.orange
+    backgroundColor: Colors.light.orange,
   },
   acceptButtonText: {
     color: 'white',
