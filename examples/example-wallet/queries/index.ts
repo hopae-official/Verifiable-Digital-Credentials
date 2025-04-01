@@ -51,10 +51,10 @@ type CredentialMutationRes = {
 };
 
 export const useCredentialRequestMutation = (
-  options?: UseMutationOptions<CredentialMutationRes>,
+  options?: UseMutationOptions<CredentialMutationRes, unknown, { credentialType: string }>,
 ) => {
   return useMutation({
-    mutationFn: async () => {
+    mutationFn: async ({ credentialType }: { credentialType: string }) => {
       // Todo: Enhance token management
       const tokenRes = await axios.post('https://issuer.dev.hopae.com/token', {
         // @Todo: Replace with actual data
@@ -64,12 +64,12 @@ export const useCredentialRequestMutation = (
       });
 
       const token = tokenRes.data.access_token;
-
+      console.log('credentialType', credentialType);
       const res = await axios.post(
         'https://issuer.dev.hopae.com/credential',
         {
           // @Todo: Replace with actual data
-          credential_identifier: 'UniversityDegreeCredential',
+          credential_identifier: credentialType,
         },
         { headers: { Authorization: `Bearer ${token}` } },
       );

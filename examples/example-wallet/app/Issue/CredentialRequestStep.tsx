@@ -7,20 +7,21 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { ThemedView } from '@/components/ThemedView';
 import { useCredentialRequestMutation } from '@/queries';
 import { useEffect, useState } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Card } from '@/components/ui/card';
 import { Colors } from '@/constants/Colors';
 import { Button } from '@/components/ui/button';
+import { CREDENTIALS_STORAGE_KEY } from '@/types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CredentialRequestStepScreen() {
   const [credential, setCredential] = useState<string | null>(null);
 
   const { mutate: credentialRequestMutate, isPending } =
     useCredentialRequestMutation({
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         const credential = data.credentials[0].credential;
 
         if (!credential) return;
@@ -32,10 +33,27 @@ export default function CredentialRequestStepScreen() {
   useEffect(() => {
     // @Description: Request credential
     // @Reference: https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html#name-pre-authorized-code-flow (Step 5)
-    credentialRequestMutate();
+    credentialRequestMutate({ credentialType: 'UniversityDegreeCredential' });
   }, []);
 
-  const handlePressAccept = () => {
+  const handlePressAccept = async () => {
+    // Get existing credentials from storage
+    const existingCredentials = await AsyncStorage.getItem(
+      CREDENTIALS_STORAGE_KEY,
+    );
+    const credentials = existingCredentials
+      ? JSON.parse(existingCredentials)
+      : [];
+
+    // Add new credential to array
+    credentials.push(credential);
+
+    // Save updated credentials array
+    await AsyncStorage.setItem(
+      CREDENTIALS_STORAGE_KEY,
+      JSON.stringify(credentials),
+    );
+
     router.replace({ pathname: '/', params: { credential } });
   };
 
@@ -56,19 +74,19 @@ export default function CredentialRequestStepScreen() {
           headerShown: !isPending,
         }}
       />
-      <>
+      <View style={styles.container}>
         {isPending && (
-          <>
+          <View style={{ flex: 1, justifyContent: 'center' }}>
             <Text>Fetching Credential...</Text>
             <ActivityIndicator
               style={styles.loadingSpinner}
               color={'black'}
               size="large"
             />
-          </>
+          </View>
         )}
         {credential && (
-          <ThemedView style={styles.container}>
+          <>
             <Text style={styles.title}>
               Would you like to accept the credentials?
             </Text>
@@ -77,7 +95,11 @@ export default function CredentialRequestStepScreen() {
                 <Ionicons name="newspaper" size={24} color={'gray'} />
               </View>
               <View
-                style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
               >
                 <Text style={styles.boldText}>Hopae Inc.</Text>
                 <Ionicons
@@ -124,9 +146,9 @@ export default function CredentialRequestStepScreen() {
                 <Text>Deny</Text>
               </Button>
             </View>
-          </ThemedView>
+          </>
         )}
-      </>
+      </View>
     </>
   );
 }
@@ -136,13 +158,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     padding: 5,
-    paddingTop: 40,
+    paddingTop: 30,
     backgroundColor: Colors.light.background,
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 20,
+    alignSelf: 'flex-start',
+    marginStart: 10,
   },
   providerCard: {
     width: '95%',

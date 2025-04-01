@@ -6,14 +6,16 @@ import {
   View,
 } from 'react-native';
 
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from '@/components/ui/card';
 
-import * as React from 'react';
+import { useState, useCallback } from 'react';
 import { Colors } from '@/constants/Colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Button } from '@/components/ui/button';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CREDENTIALS_STORAGE_KEY } from '@/types';
 
 const mockCredential =
   'eyJ0eXAiOiJkYytzZC1qd3QiLCJhbGciOiJFUzI1NiJ9.eyJ2Y3QiOiJodHRwczovL2lzc3Vlci5kZXYuaG9wYWUuY29tL2NyZWRlbnRpYWxzL3R5cGVzL3VuaXZlcnNpdHkiLCJpc3MiOiJodHRwczovL2lzc3Vlci5kZXYuaG9wYWUuY29tIiwiX3NkIjpbIllwbm15VzdZemJ0ejFOODZVZjJadGNBNldoM0NVR1cyT0c1SjNFcVozYm8iLCJ0NXdmZE5CMWJuS1Nlcjkybm9QZXZaSW5fMm1MV0F0Q1lDTG1ac0dFR0xNIl0sIl9zZF9hbGciOiJzaGEtMjU2In0.k--1y8ivPJrjX0gD3CA9mZLIkIHs8zJPdohNFYzJ5jdf1736HDkGHgy3pT1hnNXF-vm0GKrwBSmueX3y8pIbtA~WyI5YjQwZjc1ODFiNzY4OGY5IiwibmFtZSIsIkpvaG4gRG9lIl0~WyJjOGZiNDNjNGFjMGMwMDVmIiwiYmlydGhkYXRlIiwiMTk5MC0wMS0wMSJd~';
@@ -31,9 +33,23 @@ const sampleCards: Card[] = [
   { id: 2, title: 'Driver License', icon: 'car' },
   { id: 3, title: 'Health Insurance', icon: 'hospital-box' },
 ];
+
 export default function HomeScreen() {
-  const params = useLocalSearchParams<{ credential: string }>();
-  const credential = params.credential;
+  const [credentials, setCredentials] = useState<string[]>([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      const loadCredentials = async () => {
+        const storedCredentials = await AsyncStorage.getItem(
+          CREDENTIALS_STORAGE_KEY,
+        );
+        console.log('stored credentials:', storedCredentials);
+        setCredentials(storedCredentials ? JSON.parse(storedCredentials) : []);
+      };
+
+      loadCredentials();
+    }, []),
+  );
 
   const handlePressCredential = (cardId: number) => {
     router.navigate({
@@ -42,20 +58,30 @@ export default function HomeScreen() {
     });
   };
 
-  const credentials: Card[] = credential ? sampleCards : [];
+  const handlePressAddCredential = () => {
+    router.navigate({
+      pathname: '/Issue/CredentialTypeSelection',
+    });
+  };
 
+  //const credentials: Card[] = credential ? sampleCards : [];
+
+  const card = sampleCards[0];
   return (
     <SafeAreaView style={styles.container}>
       {credentials.length > 0 ? (
         <View style={styles.listContainer}>
-          <View style={styles.addCredentialButton}>
+          <TouchableOpacity
+            style={styles.addCredentialButton}
+            onPress={handlePressAddCredential}
+          >
             <Ionicons size={25} name="add" color={'white'} />
-          </View>
+          </TouchableOpacity>
 
           <View style={styles.stackContainer}>
-            {credentials.map((card, index) => (
+            {credentials.map((_card, index) => (
               <TouchableOpacity
-                key={card.id}
+                key={index}
                 style={[
                   styles.cardWrapper,
                   {

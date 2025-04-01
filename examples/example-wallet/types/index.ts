@@ -19,3 +19,7 @@ export type Claim = {
   name: string;
   birthdate: string;
 };
+
+export type CredentialType = 'UniversityDegreeCredential' | 'DriverLicenseCredential' | 'VaccinationCredential';
+
+export const CREDENTIALS_STORAGE_KEY = '@credentials';

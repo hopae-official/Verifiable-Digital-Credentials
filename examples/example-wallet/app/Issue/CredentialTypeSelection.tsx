@@ -6,10 +6,18 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { Separator } from '@/components/ui/separator';
 import { Colors } from '@/constants/Colors';
+import { CredentialType } from '@/types';
 
 const mockCredentialOfferUri = 'https://issuer.dev.hopae.com/credential-offer';
 
 export default function CredentialTypeSelectionScreen() {
+  const handlePressCredential = (credentialType: CredentialType) => {
+    router.replace({
+      pathname: '/Issue/CredentialRequestStep',
+      params: { credentialType },
+    });
+  };
+
   return (
     <>
       <Stack.Screen
@@ -20,6 +28,7 @@ export default function CredentialTypeSelectionScreen() {
               <Ionicons name="chevron-back" size={27} />
             </TouchableOpacity>
           ),
+          animation: 'none',
         }}
       />
       <View style={styles.container}>
@@ -27,10 +36,7 @@ export default function CredentialTypeSelectionScreen() {
 
         <TouchableOpacity
           onPress={() => {
-            router.replace({
-              pathname: '/Issue/CredentialOffer',
-              params: { credentialOfferUri: mockCredentialOfferUri },
-            });
+            handlePressCredential('UniversityDegreeCredential');
           }}
         >
           <Card style={styles.credentialTypeCard} className="shadow-sm">
@@ -45,7 +51,7 @@ export default function CredentialTypeSelectionScreen() {
 
         <TouchableOpacity
           onPress={() => {
-            router.navigate('/Issue/QR');
+            handlePressCredential('DriverLicenseCredential');
           }}
         >
           <Card style={styles.credentialTypeCard} className="shadow-sm">
@@ -60,7 +66,7 @@ export default function CredentialTypeSelectionScreen() {
 
         <TouchableOpacity
           onPress={() => {
-            router.navigate('/Issue/QR');
+            handlePressCredential('VaccinationCredential');
           }}
         >
           <Card style={styles.credentialTypeCard} className="shadow-sm">
