@@ -94,3 +94,19 @@ export const useVerifyMetadataMutation = (options?: UseMutationOptions) => {
     ...options,
   });
 };
+
+export const useVerifyCredentialMutation = (
+  options?: UseMutationOptions & { verifyRequestUri: string },
+) => {
+  const requestUri = options?.verifyRequestUri;
+  return useMutation({
+    mutationFn: async () => {
+      if (!requestUri) return;
+
+      const res = await axios.post(requestUri);
+
+      return res.data;
+    },
+    ...options,
+  });
+};

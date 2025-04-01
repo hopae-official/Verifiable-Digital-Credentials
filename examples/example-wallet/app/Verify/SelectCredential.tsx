@@ -1,4 +1,9 @@
-import { router, Stack } from 'expo-router';
+import {
+  router,
+  Stack,
+  useFocusEffect,
+  useLocalSearchParams,
+} from 'expo-router';
 import {
   ImageBackground,
   ScrollView,
@@ -8,11 +13,16 @@ import {
   View,
 } from 'react-native';
 
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { CredentialDecoder } from '@vdcs/wallet';
-import { Claim } from '@/types';
+import {
+  Claim,
+  CREDENTIALS_STORAGE_KEY,
+  Credential,
+  CredentialInfoMap,
+} from '@/types';
 import { Button } from '@/components/ui/button';
 import Carousel, {
   ICarouselInstance,
@@ -21,14 +31,24 @@ import Carousel, {
 import { isValidClaim } from '@/utils';
 import { useSharedValue } from 'react-native-reanimated';
 import { Colors } from '@/constants/Colors';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //@Todo: Remove mock credential
 const mockCredential =
   'eyJ0eXAiOiJkYytzZC1qd3QiLCJhbGciOiJFUzI1NiJ9.eyJ2Y3QiOiJodHRwczovL2lzc3Vlci5kZXYuaG9wYWUuY29tL2NyZWRlbnRpYWxzL3R5cGVzL3VuaXZlcnNpdHkiLCJpc3MiOiJodHRwczovL2lzc3Vlci5kZXYuaG9wYWUuY29tIiwiX3NkIjpbIllwbm15VzdZemJ0ejFOODZVZjJadGNBNldoM0NVR1cyT0c1SjNFcVozYm8iLCJ0NXdmZE5CMWJuS1Nlcjkybm9QZXZaSW5fMm1MV0F0Q1lDTG1ac0dFR0xNIl0sIl9zZF9hbGciOiJzaGEtMjU2In0.k--1y8ivPJrjX0gD3CA9mZLIkIHs8zJPdohNFYzJ5jdf1736HDkGHgy3pT1hnNXF-vm0GKrwBSmueX3y8pIbtA~WyI5YjQwZjc1ODFiNzY4OGY5IiwibmFtZSIsIkpvaG4gRG9lIl0~WyJjOGZiNDNjNGFjMGMwMDVmIiwiYmlydGhkYXRlIiwiMTk5MC0wMS0wMSJd~';
 const mockResponseUri = 'https://verifier.dev.hopae.com/request'; // mock endpoint to present VP
+const requiredClaims = ['iss', 'vct', 'name'];
 
 export default function SelectCredentialScreen() {
-  const credential = mockCredential;
+  const [credentials, setCredentials] = useState<Credential[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const credential = credentials[0]?.credential;
+  const selectedCredential = credentials[currentIndex]?.credential;
+
+  const params = useLocalSearchParams<{ verifyRequestUri: string }>();
+  const verifyRequestUri = params.verifyRequestUri;
 
   const claims: Claim | null = credential
     ? (() => {
@@ -38,8 +58,6 @@ export default function SelectCredentialScreen() {
           : null;
       })()
     : null;
-
-  const mockList = ['University Deploma', 'Driving License', 'Passport'];
 
   const handlePressAccept = () => {
     router.replace({
@@ -54,8 +72,6 @@ export default function SelectCredentialScreen() {
   };
 
   const ref = useRef<ICarouselInstance>(null);
-  const width = 300;
-  const data = mockList;
   const progress = useSharedValue<number>(0);
 
   const onPressPagination = (index: number) => {
@@ -69,9 +85,6 @@ export default function SelectCredentialScreen() {
     });
   };
 
-  if (!claims) return <Text>No claims</Text>;
-
-  const requiredClaims = ['iss', 'vct', 'name'];
   const [selectedOptions, setSelectedOptions] = useState({
     iss: true, // required
     vct: true, // required
@@ -87,6 +100,48 @@ export default function SelectCredentialScreen() {
       [option]: !prev[option],
     }));
   };
+
+  useEffect(
+    function fetchVerifyRequest() {
+      (async () => {
+        if (!verifyRequestUri) return;
+
+        try {
+          const res = await axios.post(verifyRequestUri);
+
+          const responseUri = res.data.response_uri;
+          console.log('responseUri: ', responseUri, res.data);
+
+          const verifyRes = await axios.post(responseUri, {
+            vp_token: {
+              [selectedCredential]: 'credential',
+            },
+          });
+
+          console.log('verifyRes: ', verifyRes);
+        } catch (e) {
+          console.error(e);
+        }
+      })();
+    },
+    [verifyRequestUri],
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      const loadCredentials = async () => {
+        const storedCredentials = await AsyncStorage.getItem(
+          CREDENTIALS_STORAGE_KEY,
+        );
+        console.log('stored credentials:', storedCredentials);
+        setCredentials(storedCredentials ? JSON.parse(storedCredentials) : []);
+      };
+
+      loadCredentials();
+    }, []),
+  );
+
+  if (!claims) return <Text>No claims</Text>;
 
   return (
     <>
@@ -121,9 +176,13 @@ export default function SelectCredentialScreen() {
             }}
             width={310}
             height={300}
-            data={data}
+            data={credentials}
             loop={false}
             onProgressChange={progress}
+            onScrollEnd={(_index) => {
+              setCurrentIndex(_index);
+              console.log('scroll end index:', _index);
+            }}
             snapEnabled={true}
             renderItem={({ index, item }) => (
               <View style={styles.credentialCardWrapper}>
@@ -140,7 +199,9 @@ export default function SelectCredentialScreen() {
                           color={'gray'}
                         />
                       </View>
-                      <Text style={styles.cardText}>{item}</Text>
+                      <Text style={styles.cardText}>
+                        {CredentialInfoMap[item.credentialType].label}
+                      </Text>
                     </View>
                   </ImageBackground>
                 </Card>
@@ -150,7 +211,7 @@ export default function SelectCredentialScreen() {
 
           <Pagination.Basic
             progress={progress}
-            data={data}
+            data={credentials}
             dotStyle={{ backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: 50 }}
             containerStyle={{ gap: 5, marginTop: 10 }}
             onPress={onPressPagination}
@@ -253,10 +314,12 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   title: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: 'bold',
     marginBottom: 20,
     color: '#000',
+    alignSelf: 'flex-start',
+    marginStart: 20,
   },
   descWrapper: {
     gap: 8,
@@ -372,7 +435,7 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: Colors.light.lightYellow,
     //borderColor: Colors.light.border,
-    borderColor: 'transparent'
+    borderColor: 'transparent',
   },
   cardHeader: {
     flexDirection: 'row',
@@ -385,7 +448,7 @@ const styles = StyleSheet.create({
     width: '100%',
     gap: 15,
     backgroundColor: Colors.light.background,
-    borderColor: 'transparent'
+    borderColor: 'transparent',
   },
   infoLabelText: {
     fontSize: 15,

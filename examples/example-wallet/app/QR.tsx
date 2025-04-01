@@ -21,8 +21,6 @@ export default function VerifyQRScanScreen() {
   const [scanned, setScanned] = useState(false);
   const [verifyRequestUri, setVerifyRequestUri] = useState('');
 
-  const { mutate: verifyMetadataMutate } = useVerifyMetadataMutation();
-
   useFocusEffect(
     useCallback(() => {
       setScanned(false);
@@ -38,24 +36,13 @@ export default function VerifyQRScanScreen() {
 
   useEffect(() => {
     if (!verifyRequestUri) return;
-    console.log('verifyRequestUri', verifyRequestUri);
-    verifyMetadataMutate(undefined, {
-      onSuccess: (data) => {
-        console.log('verify metadata', data);
 
-        router.navigate({
-          pathname: '/Verify/SelectCredential',
-        });
-      },
-      onError: (error) => {
-        console.error('Error fetching verify metadata:', error);
-      },
-    });
-
+    // @Description: After parsing verifyRequestUri, navigate to SelectCredential screen and then fetch verifyRequestUri
     router.navigate({
       pathname: '/Verify/SelectCredential',
+      params: { verifyRequestUri },
     });
-  }, [verifyRequestUri, verifyMetadataMutate]);
+  }, [verifyRequestUri]);
 
   const handleBarcodeScanned = useCallback(
     async (event: {
@@ -89,6 +76,8 @@ export default function VerifyQRScanScreen() {
       setScanned(true);
 
       const uri = event.data;
+
+      console.log('Scanned URI:', uri);
       const regex = /request_uri=([^&]*)/;
       const match = uri.match(regex);
 
