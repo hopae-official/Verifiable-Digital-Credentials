@@ -1,4 +1,4 @@
-import { router, Stack } from 'expo-router';
+import { router, Stack, useFocusEffect } from 'expo-router';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -22,6 +22,13 @@ export default function VerifyQRScanScreen() {
   const [verifyRequestUri, setVerifyRequestUri] = useState('');
 
   const { mutate: verifyMetadataMutate } = useVerifyMetadataMutation();
+
+  useFocusEffect(
+    useCallback(() => {
+      setScanned(false);
+      setVerifyRequestUri('');
+    }, []),
+  );
 
   useEffect(() => {
     if (permission && !permission.granted) {
