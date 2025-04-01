@@ -51,10 +51,14 @@ type CredentialMutationRes = {
 };
 
 export const useCredentialRequestMutation = (
-  options?: UseMutationOptions<CredentialMutationRes>,
+  options?: UseMutationOptions<
+    CredentialMutationRes,
+    unknown,
+    { credentialType: string }
+  >,
 ) => {
   return useMutation({
-    mutationFn: async () => {
+    mutationFn: async ({ credentialType }: { credentialType: string }) => {
       // Todo: Enhance token management
       const tokenRes = await axios.post('https://issuer.dev.hopae.com/token', {
         // @Todo: Replace with actual data
@@ -69,7 +73,7 @@ export const useCredentialRequestMutation = (
         'https://issuer.dev.hopae.com/credential',
         {
           // @Todo: Replace with actual data
-          credential_identifier: 'UniversityDegreeCredential',
+          credential_identifier: credentialType,
         },
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -84,6 +88,22 @@ export const useVerifyMetadataMutation = (options?: UseMutationOptions) => {
   return useMutation({
     mutationFn: async () => {
       const res = await axios.post('https://verifier.dev.hopae.com/request');
+
+      return res.data;
+    },
+    ...options,
+  });
+};
+
+export const useVerifyCredentialMutation = (
+  options?: UseMutationOptions & { verifyRequestUri: string },
+) => {
+  const requestUri = options?.verifyRequestUri;
+  return useMutation({
+    mutationFn: async () => {
+      if (!requestUri) return;
+
+      const res = await axios.post(requestUri);
 
       return res.data;
     },
