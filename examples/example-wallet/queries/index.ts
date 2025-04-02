@@ -96,16 +96,35 @@ export const useVerifyMetadataMutation = (options?: UseMutationOptions) => {
 };
 
 export const useVerifyCredentialMutation = (
-  options?: UseMutationOptions & { verifyRequestUri: string },
+  options?: UseMutationOptions<
+    string,
+    unknown,
+    { selectedCredential: string }
+  > & {
+    verifyRequestUri: string;
+  },
 ) => {
-  const requestUri = options?.verifyRequestUri;
+  const verifyRequestUri = options?.verifyRequestUri;
   return useMutation({
-    mutationFn: async () => {
-      if (!requestUri) return;
+    mutationFn: async ({
+      selectedCredential,
+    }: {
+      selectedCredential: string;
+    }) => {
+      if (!verifyRequestUri) return;
 
-      const res = await axios.post(requestUri);
+      const res = await axios.post(verifyRequestUri);
 
-      return res.data;
+      const responseUri = res.data.response_uri;
+      console.log('responseUri: ', responseUri);
+
+      const verifyRes = await axios.post(responseUri, {
+        vp_token: selectedCredential,
+      });
+
+      console.log('verifyRes: ', verifyRes.data);
+
+      return verifyRes.data;
     },
     ...options,
   });
