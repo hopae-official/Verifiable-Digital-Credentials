@@ -28,7 +28,7 @@ export type CredentialType =
 export const CREDENTIALS_STORAGE_KEY = '@credentials';
 
 export type Credential = {
-  credentialType: CredentialType;
+  type: CredentialType;
   credential: string;
 };
 

@@ -10,13 +10,18 @@ import {
 import { CredentialDecoder } from '@vdcs/wallet';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Card } from '@/components/ui/card';
-import { Claim } from '@/types';
+import { Claim, CredentialInfoMap, CredentialType } from '@/types';
 import { isValidClaim } from '@/utils';
 import { Colors } from '@/constants/Colors';
 
 export default function CredentialDetailScreen() {
-  const params = useLocalSearchParams<{ credential: string }>();
+  const params = useLocalSearchParams<{
+    credential: string;
+    type: CredentialType;
+  }>();
   const credential = params.credential;
+  const credentialType = params.type;
+
   const claims: Claim | null = credential
     ? (() => {
         const decoded = CredentialDecoder.decodeSDJWT(credential).claims;
@@ -51,7 +56,9 @@ export default function CredentialDetailScreen() {
               <View style={styles.circleImage}>
                 <Ionicons name="school-outline" size={24} color={'gray'} />
               </View>
-              <Text style={styles.cardText}>University Deploma</Text>
+              <Text style={styles.cardText}>
+                {CredentialInfoMap[credentialType]?.label}
+              </Text>
             </View>
           </ImageBackground>
         </Card>
@@ -68,22 +75,14 @@ export default function CredentialDetailScreen() {
             </View>
 
             <Card style={styles.infoWrapper}>
-              <View>
-                <Text style={styles.infoLabelText}>ISS</Text>
-                <Text style={styles.infoText}>{claims.iss}</Text>
-              </View>
-              <View>
-                <Text style={styles.infoLabelText}>VCT</Text>
-                <Text style={styles.infoText}>{claims.vct}</Text>
-              </View>
-              <View>
-                <Text style={styles.infoLabelText}>Name</Text>
-                <Text style={styles.infoText}>{claims.name}</Text>
-              </View>
-              <View>
-                <Text style={styles.infoLabelText}>Birthdate</Text>
-                <Text style={styles.infoText}>{claims.birthdate}</Text>
-              </View>
+              {Object.entries(claims).map(([key, value]) => (
+                <View key={key}>
+                  <Text style={styles.infoLabelText}>
+                    {key.replace(/_/g, ' ').toUpperCase()}
+                  </Text>
+                  <Text style={styles.infoText}>{value}</Text>
+                </View>
+              ))}
             </Card>
           </Card>
         </View>
@@ -161,7 +160,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 15,
     backgroundColor: Colors.light.lightYellow,
-    borderColor: 'transparent'
+    borderColor: 'transparent',
   },
   decsText: {
     color: 'green',
@@ -177,7 +176,7 @@ const styles = StyleSheet.create({
     width: '100%',
     gap: 15,
     backgroundColor: Colors.light.background,
-    borderColor: 'transparent'
+    borderColor: 'transparent',
   },
   boldText: {
     fontSize: 16,

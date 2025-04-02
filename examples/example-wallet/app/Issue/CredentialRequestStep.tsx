@@ -49,7 +49,7 @@ export default function CredentialRequestStepScreen() {
       : [];
 
     // Add new credential to array
-    credentials.push({ credentialType, credential });
+    credentials.push({ type: credentialType, credential });
 
     // Save updated credentials array
     await AsyncStorage.setItem(

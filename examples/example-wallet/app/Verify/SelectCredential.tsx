@@ -208,7 +208,7 @@ export default function SelectCredentialScreen() {
                         />
                       </View>
                       <Text style={styles.cardText}>
-                        {CredentialInfoMap[item.credentialType].label}
+                        {CredentialInfoMap[item.type]?.label}
                       </Text>
                     </View>
                   </ImageBackground>

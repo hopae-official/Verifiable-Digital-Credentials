@@ -2,6 +2,7 @@ import {
   ImageBackground,
   StyleSheet,
   Text,
+  TouchableHighlight,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -40,7 +41,7 @@ const sampleCards: Card[] = [
 
 export default function HomeScreen() {
   const [credentials, setCredentials] = useState<Credential[]>([]);
-
+  console.log('credentials', credentials);
   useFocusEffect(
     useCallback(() => {
       const loadCredentials = async () => {
@@ -55,10 +56,10 @@ export default function HomeScreen() {
     }, []),
   );
 
-  const handlePressCredential = (cardId: number) => {
+  const handlePressCredential = (credential: Credential) => {
     router.navigate({
       pathname: '/Issue/CredentialDetail',
-      params: { credential: mockCredential },
+      params: { credential: credential.credential, type: credential.type },
     });
   };
 
@@ -84,8 +85,9 @@ export default function HomeScreen() {
 
           <View style={styles.stackContainer}>
             {credentials.map((credential, index) => (
-              <TouchableOpacity
+              <TouchableHighlight
                 key={index}
+                underlayColor={'transparent'}
                 style={[
                   styles.cardWrapper,
                   {
@@ -93,7 +95,7 @@ export default function HomeScreen() {
                     zIndex: sampleCards.length + index,
                   },
                 ]}
-                onPress={() => handlePressCredential(card.id)}
+                onPress={() => handlePressCredential(credential)}
               >
                 <Card style={styles.credentialCard}>
                   <ImageBackground
@@ -105,12 +107,12 @@ export default function HomeScreen() {
                         <Ionicons size={28} name="wallet-outline" />
                       </View>
                       <Text style={styles.cardText}>
-                        {CredentialInfoMap[credential.credentialType].label}
+                        {CredentialInfoMap[credential.type]?.label}
                       </Text>
                     </View>
                   </ImageBackground>
                 </Card>
-              </TouchableOpacity>
+              </TouchableHighlight>
             ))}
           </View>
         </View>
