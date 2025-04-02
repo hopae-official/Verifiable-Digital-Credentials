@@ -16,7 +16,7 @@ export default function Home() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? '';
+        const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/start`;
 
         const response = await axios.get(apiUrl);
 
