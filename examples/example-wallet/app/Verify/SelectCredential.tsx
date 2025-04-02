@@ -33,6 +33,7 @@ import { useSharedValue } from 'react-native-reanimated';
 import { Colors } from '@/constants/Colors';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useVerifyCredentialMutation } from '@/queries';
 
 //@Todo: Remove mock credential
 const mockCredential =
@@ -50,6 +51,24 @@ export default function SelectCredentialScreen() {
   const params = useLocalSearchParams<{ verifyRequestUri: string }>();
   const verifyRequestUri = params.verifyRequestUri;
 
+  const { mutate: verifyCredentialMutate } = useVerifyCredentialMutation({
+    verifyRequestUri,
+    onSuccess: async (data) => {
+      console.log('Verify success:', data);
+      router.replace({
+        pathname: '/Verify/VerifyResult',
+        params: { result: data },
+      });
+    },
+    onError: (error) => {
+      console.error('Error verifying credential:', error);
+      router.replace({
+        pathname: '/Verify/VerifyResult',
+        params: { result: null },
+      });
+    },
+  });
+
   const claims: Claim | null = credential
     ? (() => {
         const decoded = CredentialDecoder.decodeSDJWT(credential).claims;
@@ -60,10 +79,25 @@ export default function SelectCredentialScreen() {
     : null;
 
   const handlePressAccept = () => {
-    router.replace({
-      pathname: '/Verify/VerifyResult',
-      params: { credential },
-    });
+    verifyCredentialMutate(
+      { selectedCredential },
+      {
+        onSuccess: async (data) => {
+          console.log('result22', data);
+          router.replace({
+            pathname: '/Verify/VerifyResult',
+            params: { result: data },
+          });
+        },
+        onError: (error) => {
+          console.error('Error verifying credential:', error);
+          router.replace({
+            pathname: '/Verify/VerifyResult',
+            params: { result: null },
+          });
+        },
+      },
+    );
   };
 
   const handlePressDeny = () => {
@@ -101,39 +135,13 @@ export default function SelectCredentialScreen() {
     }));
   };
 
-  useEffect(
-    function fetchVerifyRequest() {
-      (async () => {
-        if (!verifyRequestUri) return;
-
-        try {
-          const res = await axios.post(verifyRequestUri);
-
-          const responseUri = res.data.response_uri;
-          console.log('responseUri: ', responseUri, res.data);
-
-          const verifyRes = await axios.post(responseUri, {
-            vp_token: {
-              [selectedCredential]: 'credential',
-            },
-          });
-
-          console.log('verifyRes: ', verifyRes);
-        } catch (e) {
-          console.error(e);
-        }
-      })();
-    },
-    [verifyRequestUri],
-  );
-
   useFocusEffect(
     useCallback(() => {
       const loadCredentials = async () => {
         const storedCredentials = await AsyncStorage.getItem(
           CREDENTIALS_STORAGE_KEY,
         );
-        console.log('stored credentials:', storedCredentials);
+
         setCredentials(storedCredentials ? JSON.parse(storedCredentials) : []);
       };
 
