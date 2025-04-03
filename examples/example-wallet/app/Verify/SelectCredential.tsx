@@ -298,14 +298,14 @@ export default function SelectCredentialScreen() {
             style={styles.acceptButton}
             onPress={handlePressAccept}
           >
-            <Text style={styles.acceptButtonText}>Accept</Text>
+            <Text style={styles.acceptButtonText}>Submit</Text>
           </Button>
           <Button
             variant={'default'}
             style={styles.denyButton}
             onPress={handlePressDeny}
           >
-            <Text>Deny</Text>
+            <Text>Cancel</Text>
           </Button>
         </View>
       </ScrollView>

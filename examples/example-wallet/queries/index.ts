@@ -72,7 +72,6 @@ export const useCredentialRequestMutation = (
       const res = await axios.post(
         'https://issuer.dev.hopae.com/credential',
         {
-          // @Todo: Replace with actual data
           credential_identifier: credentialType,
         },
         { headers: { Authorization: `Bearer ${token}` } },
