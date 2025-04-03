@@ -330,6 +330,9 @@ importers:
       '@expo/vector-icons':
         specifier: ^14.0.2
         version: 14.0.4
+      '@m-doc/decode':
+        specifier: ^0.1.0
+        version: 0.1.0
       '@react-native-async-storage/async-storage':
         specifier: 1.23.1
         version: 1.23.1(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(encoding@0.1.13)(react@18.3.1))
@@ -1798,6 +1801,12 @@ packages:
     peerDependencies:
       postcss: ^8.4
 
+  '@deno/shim-deno-test@0.4.0':
+    resolution: {integrity: sha512-oYWcD7CpERZy/TXMTM9Tgh1HD/POHlbY9WpzmAk+5H8DohcxG415Qws8yLGlim3EaKBT2v3lJv01x4G0BosnaQ==}
+
+  '@deno/shim-deno@0.16.1':
+    resolution: {integrity: sha512-s9v0kzF5bm/o9TgdwvsraHx6QNllYrXXmKzgOG2lh4LFXnVMr2gpjK/c/ve6EflQn1MqImcWmVD8HAv5ahuuZQ==}
+
   '@discoveryjs/json-ext@0.5.7':
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
     engines: {node: '>=10.0.0'}
@@ -2817,6 +2826,18 @@ packages:
   '@lukeed/csprng@1.1.0':
     resolution: {integrity: sha512-Z7C/xXCiGWsg0KuKsHTKJxbWhpI3Vs5GwLfOean7MGyVFGqdRgBbAjOCh6u4bbjPc/8MJ2pZmK/0DLdCbivLDA==}
     engines: {node: '>=8'}
+
+  '@m-doc/cbor@0.1.0':
+    resolution: {integrity: sha512-MlcM7RBf4sTSo5sukxEeFeXLJzNdj1Nf5joDnjYpwDA3fiWe2+Rll58lUvs3VNVH7qcat96RQYRrchS2H0ZC/w==}
+    engines: {node: '>=16'}
+
+  '@m-doc/decode@0.1.0':
+    resolution: {integrity: sha512-/hUhh3uSsWhZy9RWi8+gl79GzlVBNietOey9WulYQV4ZhhZ8ICBE4vXNITvQJ/vgceQbWopgWbW1TiRLhXXEpQ==}
+    engines: {node: '>=16'}
+
+  '@m-doc/types@0.1.0':
+    resolution: {integrity: sha512-XNw3dQWDJo1UxrhVYgltWe2DiJ80SqH0xahzGX7DJs0NREz+fAR7kwzB06YAB8/IrmXC3/+ICnWCEDy+ccXYVQ==}
+    engines: {node: '>=16'}
 
   '@mdx-js/mdx@3.1.0':
     resolution: {integrity: sha512-/QxEhPAvGwbQmy1Px8F899L5Uc2KZ6JtXwlCgJmjSTBedwOZkByYcBG4GceIGPXRDsmfxhHazuS+hlOShRLeDw==}
@@ -5043,6 +5064,9 @@ packages:
 
   caniuse-lite@1.0.30001706:
     resolution: {integrity: sha512-3ZczoTApMAZwPKYWmwVbQMFpXBDds3/0VciVoUwPUbldlYyVLmRVuRs/PcUZtHpbLRpzzDvrvnFuREsGt6lUug==}
+
+  cbor-redux@1.0.0:
+    resolution: {integrity: sha512-nqCD/Yu2FON0XgZYdUNsMx1Tc08MOY3noh9bO2MvkjlyLZyqIVWjuz6A0mDrPJncdOfacokFUtF7zlzzP5oK5A==}
 
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -13673,6 +13697,13 @@ snapshots:
     dependencies:
       postcss: 8.5.1
 
+  '@deno/shim-deno-test@0.4.0': {}
+
+  '@deno/shim-deno@0.16.1':
+    dependencies:
+      '@deno/shim-deno-test': 0.4.0
+      which: 2.0.2
+
   '@discoveryjs/json-ext@0.5.7': {}
 
   '@docsearch/css@3.8.3': {}
@@ -15456,6 +15487,17 @@ snapshots:
       call-bind: 1.0.8
 
   '@lukeed/csprng@1.1.0': {}
+
+  '@m-doc/cbor@0.1.0':
+    dependencies:
+      cbor-redux: 1.0.0
+
+  '@m-doc/decode@0.1.0':
+    dependencies:
+      '@m-doc/cbor': 0.1.0
+      '@m-doc/types': 0.1.0
+
+  '@m-doc/types@0.1.0': {}
 
   '@mdx-js/mdx@3.1.0(acorn@8.14.0)':
     dependencies:
@@ -18015,6 +18057,10 @@ snapshots:
       lodash.uniq: 4.5.0
 
   caniuse-lite@1.0.30001706: {}
+
+  cbor-redux@1.0.0:
+    dependencies:
+      '@deno/shim-deno': 0.16.1
 
   ccount@2.0.1: {}
 

@@ -5,13 +5,12 @@ import {
   View,
   TouchableOpacity,
   ImageBackground,
+  ScrollView,
 } from 'react-native';
-
-import { CredentialDecoder } from '@vdcs/wallet';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Card } from '@/components/ui/card';
-import { Claim, CredentialInfoMap, CredentialType } from '@/types';
-import { isValidClaim } from '@/utils';
+import { CredentialInfoMap, CredentialType } from '@/types';
+import { getCredentialClaims } from '@/utils';
 import { Colors } from '@/constants/Colors';
 
 export default function CredentialDetailScreen() {
@@ -22,14 +21,7 @@ export default function CredentialDetailScreen() {
   const credential = params.credential;
   const credentialType = params.type;
 
-  const claims: Claim | null = credential
-    ? (() => {
-        const decoded = CredentialDecoder.decodeSDJWT(credential).claims;
-        return isValidClaim<Claim>(decoded, ['iss', 'vct', 'name', 'birthdate'])
-          ? decoded
-          : null;
-      })()
-    : null;
+  const claims = getCredentialClaims({ credential, type: credentialType });
 
   if (!claims) return <Text>No claims</Text>;
 
@@ -46,7 +38,7 @@ export default function CredentialDetailScreen() {
         }}
       />
 
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container} bounces={false}>
         <Card style={styles.credentialCard}>
           <ImageBackground
             source={require('@/assets/images/card_bg.jpg')}
@@ -86,21 +78,23 @@ export default function CredentialDetailScreen() {
             </Card>
           </Card>
         </View>
-      </View>
+      </ScrollView>
     </>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.light.background,
+    paddingTop: 20,
+    paddingBottom: 40,
   },
   credentialCard: {
-    marginTop: 20,
-    width: '95%',
-    height: 200,
+    //marginTop: 20,
+    width: '90%',
+    aspectRatio: 1.5,
     backgroundColor: 'white',
     borderRadius: 20,
     justifyContent: 'center',
@@ -155,10 +149,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   dataInfoCard: {
-    marginTop: 10,
-    width: '95%',
+    marginTop: 15,
+    width: '90%',
     alignItems: 'center',
-    padding: 15,
+    padding: 10,
     backgroundColor: Colors.light.lightYellow,
     borderColor: 'transparent',
   },
