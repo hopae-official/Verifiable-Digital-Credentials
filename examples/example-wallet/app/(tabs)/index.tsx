@@ -147,7 +147,7 @@ export default function HomeScreen() {
   );
 }
 
-const CARD_OFFSET = 40;
+const CARD_OFFSET = 53;
 const CARD_WIDTH = 350;
 const CARD_HEIGHT = CARD_WIDTH / 1.58;
 
@@ -162,6 +162,14 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.light.orange,
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+    elevation: 3,
   },
   buttonContainer: {
     flexDirection: 'row',

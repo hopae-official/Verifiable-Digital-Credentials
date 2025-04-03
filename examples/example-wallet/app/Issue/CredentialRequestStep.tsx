@@ -74,7 +74,6 @@ export default function CredentialRequestStepScreen() {
               <Ionicons name="chevron-back" size={27} />
             </TouchableOpacity>
           ),
-          headerShown: !isPending,
         }}
       />
       <View style={styles.container}>

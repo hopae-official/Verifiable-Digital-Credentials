@@ -47,7 +47,6 @@ export default function RootLayout() {
               backgroundColor: Colors.light.background,
             },
             headerShadowVisible: false,
-            animation: 'none',
           }}
         >
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

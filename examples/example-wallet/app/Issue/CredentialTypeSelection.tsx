@@ -1,4 +1,4 @@
-import { router, Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Card } from '@/components/ui/card';
@@ -11,8 +11,10 @@ import { CredentialType } from '@/types';
 const mockCredentialOfferUri = 'https://issuer.dev.hopae.com/credential-offer';
 
 export default function CredentialTypeSelectionScreen() {
+  const router = useRouter();
+
   const handlePressCredential = (credentialType: CredentialType) => {
-    router.replace({
+    router.navigate({
       pathname: '/Issue/CredentialRequestStep',
       params: { credentialType },
     });
@@ -28,7 +30,6 @@ export default function CredentialTypeSelectionScreen() {
               <Ionicons name="chevron-back" size={27} />
             </TouchableOpacity>
           ),
-          animation: 'none',
         }}
       />
       <View style={styles.container}>
@@ -43,8 +44,8 @@ export default function CredentialTypeSelectionScreen() {
             <Text style={styles.credentialTypeText}>University Diploma</Text>
             <Separator className="my-2 bg-gray-300" />
             <View style={styles.techSpecTextWrapper}>
-              <Text style={styles.credentialSpecText}>OpenID</Text>
-              <Text style={styles.credentialSpecText}>SD-JWT</Text>
+              <Text style={styles.credentialSpecText}>OpenID4VC</Text>
+              <Text style={styles.credentialSpecText}>SD-JWT VC</Text>
             </View>
           </Card>
         </TouchableOpacity>
@@ -58,8 +59,7 @@ export default function CredentialTypeSelectionScreen() {
             <Text style={styles.credentialTypeText}>Driver's Lisence</Text>
             <Separator className="my-3 bg-gray-300" />
             <View style={styles.techSpecTextWrapper}>
-              <Text style={styles.credentialSpecText}>mDL</Text>
-              <Text style={styles.credentialSpecText}>SD-JWT</Text>
+              <Text style={styles.credentialSpecText}>mDL(ISO-18013-5)</Text>
             </View>
           </Card>
         </TouchableOpacity>
@@ -75,8 +75,8 @@ export default function CredentialTypeSelectionScreen() {
             </Text>
             <Separator className="my-3 bg-gray-300" />
             <View style={styles.techSpecTextWrapper}>
-              <Text style={styles.credentialSpecText}>OpenID</Text>
-              <Text style={styles.credentialSpecText}>SD-JWT</Text>
+              <Text style={styles.credentialSpecText}>OpenID4VC</Text>
+              <Text style={styles.credentialSpecText}>SD-JWT VC</Text>
             </View>
           </Card>
         </TouchableOpacity>
@@ -111,6 +111,6 @@ const styles = StyleSheet.create({
   },
   techSpecTextWrapper: {
     flexDirection: 'row',
-    gap: 5,
+    gap: 7,
   },
 });
