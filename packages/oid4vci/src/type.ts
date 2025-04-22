@@ -33,7 +33,7 @@ export type Oid4VciConfig = {
     offerId: string,
   ) => OrPromise<CredentialOfferByValue>;
 
-  token_handler?: (dto: TokenDto) => OrPromise<any>;
+  token_handler?: (dto: TokenDto) => OrPromise<TokenResponseDto>;
 
   // TODO: implement
   credential_response_encryption?: never;
