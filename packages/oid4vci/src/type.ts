@@ -37,6 +37,8 @@ export type Oid4VciConfig = {
 
   token_handler?: (dto: TokenDto) => OrPromise<TokenResponseDto>;
 
+  generatePreAuthorizedCode?: () => string;
+
   // TODO: implement
   credential_response_encryption?: never;
 

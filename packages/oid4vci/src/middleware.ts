@@ -13,6 +13,10 @@ import {
 import express, { Router, Request, Response } from 'express';
 import { URL } from 'url';
 import jwt, { Jwt } from 'jsonwebtoken';
+import {
+  generatePreAuthorizedCode as defaultGeneratePreAuthorizedCode,
+  generateCredentialOfferUri,
+} from './services/credentialOfferService';
 
 export class Oid4VciMiddleware {
   private router: Router;
@@ -174,12 +178,43 @@ export class Oid4VciMiddleware {
 
     if (config.credential_offer_handler) {
       const handler = config.credential_offer_handler;
+      const generatePreAuthorizedCode =
+        config.generatePreAuthorizedCode ?? defaultGeneratePreAuthorizedCode;
+
       this.router.get(
         `/${DEFAULT_PATH.CREDENTIAL_OFFER}/:offerId`,
         async (req: Request, res: Response) => {
           const offerId = req.params.offerId;
+
+          const {
+            credential_type,
+            delivery = 'uri',
+            user_pin_required,
+          } = req.query;
+
+          const preAuthCode = generatePreAuthorizedCode();
+
+          const offerPayload = {
+            credential_issuer: config.credential_issuer,
+            credentials: credential_type,
+            grants: {
+              'urn:ietf:params:oauth:grant-type:pre-authorized_code': {
+                'pre-authorized_code': preAuthCode,
+                user_pin_required,
+              },
+            },
+          };
+
           try {
-            const ret = await handler(offerId);
+            // const ret = await handler(offerId);
+            let ret;
+            if (delivery === 'object') {
+              res.json({ credential_offer: offerPayload });
+              ret = { credential_offer: offerPayload };
+            } else {
+              const offerUri = generateCredentialOfferUri(offerPayload, config);
+              ret = { credential_offer_uri: offerUri };
+            }
             res.set('Cache-Control', 'no-store').status(200).json(ret);
           } catch (err) {
             res.status(500).json(err);
