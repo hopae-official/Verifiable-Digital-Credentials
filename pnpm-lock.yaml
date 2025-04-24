@@ -485,25 +485,6 @@ importers:
         specifier: ^5.3.3
         version: 5.7.3
 
-  examples/oid4vc-server-express:
-    dependencies:
-      '@vdcs/oid4vci':
-        specifier: workspace:*
-        version: link:../../packages/oid4vci
-      express:
-        specifier: ^4.21.2
-        version: 4.21.2
-    devDependencies:
-      tsx:
-        specifier: ^4.19.2
-        version: 4.19.2
-
-  examples/oid4vc-server-nestjs:
-    devDependencies:
-      tsx:
-        specifier: ^4.19.2
-        version: 4.19.2
-
   packages/dcql: {}
 
   packages/digital-credentials: {}
@@ -526,43 +507,6 @@ importers:
 
   packages/oid4vci-client: {}
 
-  packages/oid4vci-nestjs:
-    dependencies:
-      '@vdcs/oid4vci':
-        specifier: workspace:*
-        version: link:../oid4vci
-      jsonwebtoken:
-        specifier: ^9.0.2
-        version: 9.0.2
-    devDependencies:
-      '@nestjs/common':
-        specifier: ^11.0.7
-        version: 11.0.16(file-type@20.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@nestjs/core':
-        specifier: ^11.0.7
-        version: 11.0.10(@nestjs/common@11.0.16(file-type@20.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@nestjs/testing':
-        specifier: ^11.0.7
-        version: 11.0.10(@nestjs/common@11.0.16(file-type@20.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.10(@nestjs/common@11.0.16(file-type@20.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1))
-      '@swc/core':
-        specifier: ^1.10.12
-        version: 1.10.17(@swc/helpers@0.5.15)
-      '@types/jest':
-        specifier: ^29.5.14
-        version: 29.5.14
-      '@types/jsonwebtoken':
-        specifier: ^9.0.9
-        version: 9.0.9
-      '@types/node':
-        specifier: ^20.10.2
-        version: 20.12.12
-      reflect-metadata:
-        specifier: ^0.2.2
-        version: 0.2.2
-      rxjs:
-        specifier: ^7.8.1
-        version: 7.8.1
-
   packages/oid4vp:
     dependencies:
       express:
@@ -574,37 +518,6 @@ importers:
         version: 5.0.0
 
   packages/oid4vp-client: {}
-
-  packages/oid4vp-nestjs:
-    dependencies:
-      '@vdcs/oid4vp':
-        specifier: workspace:*
-        version: link:../oid4vp
-    devDependencies:
-      '@nestjs/common':
-        specifier: ^11.0.7
-        version: 11.0.16(file-type@20.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@nestjs/core':
-        specifier: ^11.0.7
-        version: 11.0.10(@nestjs/common@11.0.16(file-type@20.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@nestjs/testing':
-        specifier: ^11.0.7
-        version: 11.0.10(@nestjs/common@11.0.16(file-type@20.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.10(@nestjs/common@11.0.16(file-type@20.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1))
-      '@swc/core':
-        specifier: ^1.10.12
-        version: 1.10.17(@swc/helpers@0.5.15)
-      '@types/jest':
-        specifier: ^29.5.14
-        version: 29.5.14
-      '@types/node':
-        specifier: ^20.10.2
-        version: 20.12.12
-      reflect-metadata:
-        specifier: ^0.2.2
-        version: 0.2.2
-      rxjs:
-        specifier: ^7.8.1
-        version: 7.8.1
 
   packages/vc-api: {}
 
@@ -2484,7 +2397,7 @@ packages:
 
   '@expo/bunyan@4.0.1':
     resolution: {integrity: sha512-+Lla7nYSiHZirgK+U/uYzsLv/X+HaJienbD5AKX1UQZHYfWaP+9uuQluRB4GrEVWF0GZ7vEVp/jzaOT9k/SQlg==}
-    engines: {node: '>=0.10.0'}
+    engines: {'0': node >=0.10.0}
 
   '@expo/cli@0.22.19':
     resolution: {integrity: sha512-vgAM3gUsAUQWgDm10RIYSrWQ5q235Ir/lMUdx5Yd/gObYaDlaBIdsq5H72eJ44QB+4ndvhm2wbqntTI19kBIRw==}
@@ -2886,20 +2799,6 @@ packages:
       class-validator:
         optional: true
 
-  '@nestjs/common@11.0.16':
-    resolution: {integrity: sha512-agvuQ8su4aZ+PVxAmY89odG1eR97HEQvxPmTMdDqyvDWzNerl7WQhUEd+j4/UyNWcF1or1UVcrtPj52x+eUSsA==}
-    peerDependencies:
-      class-transformer: '*'
-      class-validator: '*'
-      file-type: ^20.4.1
-      reflect-metadata: ^0.1.12 || ^0.2.0
-      rxjs: ^7.1.0
-    peerDependenciesMeta:
-      class-transformer:
-        optional: true
-      class-validator:
-        optional: true
-
   '@nestjs/config@4.0.1':
     resolution: {integrity: sha512-0hr6lKS//Wf8A6VcV69ts8uD0fke6jtmmmXSxzvwAzOM/HEXEKYEp21nRU+cpYxlYqm7Khb0oTOoVuDGk+AWUw==}
     peerDependencies:
@@ -2913,24 +2812,6 @@ packages:
       '@nestjs/microservices': ^10.0.0
       '@nestjs/platform-express': ^10.0.0
       '@nestjs/websockets': ^10.0.0
-      reflect-metadata: ^0.1.12 || ^0.2.0
-      rxjs: ^7.1.0
-    peerDependenciesMeta:
-      '@nestjs/microservices':
-        optional: true
-      '@nestjs/platform-express':
-        optional: true
-      '@nestjs/websockets':
-        optional: true
-
-  '@nestjs/core@11.0.10':
-    resolution: {integrity: sha512-f0qB8ztNWZeAD4E4fUdHConmNYCa/A78U7WJu5mX9OLYfOAs3ESYCDfsH9MRUvkA4Ft4Y1uMmyJo5L4fg4+beg==}
-    engines: {node: '>= 20'}
-    peerDependencies:
-      '@nestjs/common': ^11.0.0
-      '@nestjs/microservices': ^11.0.0
-      '@nestjs/platform-express': ^11.0.0
-      '@nestjs/websockets': ^11.0.0
       reflect-metadata: ^0.1.12 || ^0.2.0
       rxjs: ^7.1.0
     peerDependenciesMeta:
@@ -2959,19 +2840,6 @@ packages:
       '@nestjs/core': ^10.0.0
       '@nestjs/microservices': ^10.0.0
       '@nestjs/platform-express': ^10.0.0
-    peerDependenciesMeta:
-      '@nestjs/microservices':
-        optional: true
-      '@nestjs/platform-express':
-        optional: true
-
-  '@nestjs/testing@11.0.10':
-    resolution: {integrity: sha512-uZcdnvmHXWnvozYOAwZi1elpRRfqIfYqHglCavjhjcj3cH1MVZkwoTqntW3XOPQlT4lf96InjP1exGaW4B9wUg==}
-    peerDependencies:
-      '@nestjs/common': ^11.0.0
-      '@nestjs/core': ^11.0.0
-      '@nestjs/microservices': ^11.0.0
-      '@nestjs/platform-express': ^11.0.0
     peerDependenciesMeta:
       '@nestjs/microservices':
         optional: true
@@ -3089,11 +2957,6 @@ packages:
 
   '@nrwl/tao@19.1.0':
     resolution: {integrity: sha512-Mayqkuh2EXkac5prri5fQFd19RBRxBQRjVwTcezk7yTKWI7V+bJzbgZANybtcKGsPCH34cpqrlV4inVwtyaVzw==}
-    hasBin: true
-
-  '@nuxt/opencollective@0.4.1':
-    resolution: {integrity: sha512-GXD3wy50qYbxCJ652bDrDzgMr3NFEkIS374+IgFQKkCvk9yiYcLvX2XDYr7UyQxf4wK0e+yqDYRubZ0DtOxnmQ==}
-    engines: {node: ^14.18.0 || >=16.10.0, npm: '>=5.10.0'}
     hasBin: true
 
   '@nuxtjs/opencollective@0.3.2':
@@ -9463,10 +9326,6 @@ packages:
   path-to-regexp@3.3.0:
     resolution: {integrity: sha512-qyCH421YQPS2WFDxDjftfc1ZR5WKQzVzqsp4n9M2kQhVOo/ByahFoUNJfl58kOcEGfQ//7weFTDhm+ss8Ecxgw==}
 
-  path-to-regexp@8.2.0:
-    resolution: {integrity: sha512-TdrF7fW9Rphjq4RjrW0Kp2AW0Ahwu9sRGTkS6bvDi0SCwZlEZYmcfDbEsTz8RVk0EHIS/Vd1bv3JhG+1xZuAyQ==}
-    engines: {node: '>=16'}
-
   path-type@3.0.0:
     resolution: {integrity: sha512-T2ZUsdZFHgA3u4e5PfPbjd7HDDpxPnQb5jN0SrDsjNSuVXHJqtwTnWqG0B1jZrgmJ/7lj1EmVIByWt1gxGkWvg==}
     engines: {node: '>=4'}
@@ -15607,7 +15466,7 @@ snapshots:
       webpack: 5.97.1(@swc/core@1.10.17)(esbuild@0.19.12)
       webpack-node-externals: 3.0.0
     optionalDependencies:
-      '@swc/core': 1.10.17(@swc/helpers@0.5.15)
+      '@swc/core': 1.10.17
     transitivePeerDependencies:
       - esbuild
       - uglify-js
@@ -15623,15 +15482,6 @@ snapshots:
       uid: 2.0.2
     transitivePeerDependencies:
       - supports-color
-
-  '@nestjs/common@11.0.16(file-type@20.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)':
-    dependencies:
-      file-type: 20.4.1
-      iterare: 1.2.1
-      reflect-metadata: 0.2.2
-      rxjs: 7.8.1
-      tslib: 2.8.1
-      uid: 2.0.2
 
   '@nestjs/config@4.0.1(@nestjs/common@10.4.17(reflect-metadata@0.2.2)(rxjs@7.8.1))(rxjs@7.8.1)':
     dependencies:
@@ -15656,18 +15506,6 @@ snapshots:
       '@nestjs/platform-express': 10.4.15(@nestjs/common@10.4.17(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.15)
     transitivePeerDependencies:
       - encoding
-
-  '@nestjs/core@11.0.10(@nestjs/common@11.0.16(file-type@20.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1)':
-    dependencies:
-      '@nestjs/common': 11.0.16(file-type@20.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@nuxt/opencollective': 0.4.1
-      fast-safe-stringify: 2.1.1
-      iterare: 1.2.1
-      path-to-regexp: 8.2.0
-      reflect-metadata: 0.2.2
-      rxjs: 7.8.1
-      tslib: 2.8.1
-      uid: 2.0.2
 
   '@nestjs/platform-express@10.4.15(@nestjs/common@10.4.17(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.15)':
     dependencies:
@@ -15710,12 +15548,6 @@ snapshots:
       tslib: 2.8.1
     optionalDependencies:
       '@nestjs/platform-express': 10.4.15(@nestjs/common@10.4.17(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.15)
-
-  '@nestjs/testing@11.0.10(@nestjs/common@11.0.16(file-type@20.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.10(@nestjs/common@11.0.16(file-type@20.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1))':
-    dependencies:
-      '@nestjs/common': 11.0.16(file-type@20.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@nestjs/core': 11.0.10(@nestjs/common@11.0.16(file-type@20.4.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      tslib: 2.8.1
 
   '@next/env@15.2.3': {}
 
@@ -15827,10 +15659,6 @@ snapshots:
       - '@swc-node/register'
       - '@swc/core'
       - debug
-
-  '@nuxt/opencollective@0.4.1':
-    dependencies:
-      consola: 3.4.0
 
   '@nuxtjs/opencollective@0.3.2(encoding@0.1.13)':
     dependencies:
@@ -16637,7 +16465,7 @@ snapshots:
   '@swc/core-win32-x64-msvc@1.10.17':
     optional: true
 
-  '@swc/core@1.10.17(@swc/helpers@0.5.15)':
+  '@swc/core@1.10.17':
     dependencies:
       '@swc/counter': 0.1.3
       '@swc/types': 0.1.17
@@ -16652,7 +16480,7 @@ snapshots:
       '@swc/core-win32-arm64-msvc': 1.10.17
       '@swc/core-win32-ia32-msvc': 1.10.17
       '@swc/core-win32-x64-msvc': 1.10.17
-      '@swc/helpers': 0.5.15
+    optional: true
 
   '@swc/counter@0.1.3': {}
 
@@ -16663,6 +16491,7 @@ snapshots:
   '@swc/types@0.1.17':
     dependencies:
       '@swc/counter': 0.1.3
+    optional: true
 
   '@szmarczak/http-timer@5.0.1':
     dependencies:
@@ -23611,7 +23440,7 @@ snapshots:
       '@nx/nx-linux-x64-musl': 19.1.0
       '@nx/nx-win32-arm64-msvc': 19.1.0
       '@nx/nx-win32-x64-msvc': 19.1.0
-      '@swc/core': 1.10.17(@swc/helpers@0.5.15)
+      '@swc/core': 1.10.17
     transitivePeerDependencies:
       - debug
 
@@ -23959,8 +23788,6 @@ snapshots:
       isarray: 0.0.1
 
   path-to-regexp@3.3.0: {}
-
-  path-to-regexp@8.2.0: {}
 
   path-type@3.0.0:
     dependencies:
@@ -26215,7 +26042,7 @@ snapshots:
       terser: 5.39.0
       webpack: 5.97.1(@swc/core@1.10.17)(esbuild@0.19.12)
     optionalDependencies:
-      '@swc/core': 1.10.17(@swc/helpers@0.5.15)
+      '@swc/core': 1.10.17
       esbuild: 0.19.12
 
   terser-webpack-plugin@5.3.11(@swc/core@1.10.17)(esbuild@0.19.12)(webpack@5.98.0(@swc/core@1.10.17)(esbuild@0.19.12)):
@@ -26227,7 +26054,7 @@ snapshots:
       terser: 5.39.0
       webpack: 5.98.0(@swc/core@1.10.17)(esbuild@0.19.12)
     optionalDependencies:
-      '@swc/core': 1.10.17(@swc/helpers@0.5.15)
+      '@swc/core': 1.10.17
       esbuild: 0.19.12
 
   terser@5.39.0:
@@ -26401,7 +26228,7 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     optionalDependencies:
-      '@swc/core': 1.10.17(@swc/helpers@0.5.15)
+      '@swc/core': 1.10.17
 
   tsconfig-paths-webpack-plugin@4.2.0:
     dependencies:
@@ -26444,7 +26271,7 @@ snapshots:
       sucrase: 3.35.0
       tree-kill: 1.2.2
     optionalDependencies:
-      '@swc/core': 1.10.17(@swc/helpers@0.5.15)
+      '@swc/core': 1.10.17
       postcss: 8.5.3
       typescript: 5.7.3
     transitivePeerDependencies:
