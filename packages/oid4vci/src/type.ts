@@ -6,7 +6,7 @@ export type Oid4VciModuleOptions = {
   options: Oid4VciOptions;
 };
 
-export interface Oid4VciModuleAsyncOptions {
+export type Oid4VciModuleAsyncOptions = {
   imports?: any[];
   useExisting?: Type<Oid4VciOptionsFactory>;
   useClass?: Type<Oid4VciOptionsFactory>;
@@ -14,12 +14,12 @@ export interface Oid4VciModuleAsyncOptions {
     ...args: any[]
   ) => Promise<Oid4VciModuleOptions> | Oid4VciModuleOptions;
   inject?: any[];
-}
-
-export interface Oid4VciOptionsFactory {
-  createOid4VciOptions(): Promise<Oid4VciModuleOptions> | Oid4VciModuleOptions;
-}
-
-export type Oid4VciOptions = {
-  credential_issuer: string;
 };
+
+export type Oid4VciOptionsFactory = {
+  createOid4VciOptions(): Promise<Oid4VciModuleOptions> | Oid4VciModuleOptions;
+};
+
+export class Oid4VciOptions {
+  credential_issuer: string;
+}
