@@ -2,12 +2,15 @@ import { Module, DynamicModule } from '@nestjs/common';
 import { Oid4VciOptions } from './type';
 import { OID4VCI_OPTIONS, OID4VCI_SERVICE } from './constant';
 import { Oid4VciService } from './oid4vci.service';
+import { Oid4VciController } from './oid4vci.controller';
 
 @Module({})
 export class Oid4VciModule {
   static register(options: Oid4VciOptions): DynamicModule {
     return {
       module: Oid4VciModule,
+      imports: [],
+      controllers: [Oid4VciController],
       providers: [
         {
           provide: OID4VCI_OPTIONS,
@@ -27,6 +30,7 @@ export class Oid4VciModule {
     return {
       module: Oid4VciModule,
       imports: asyncOptions.imports || [],
+      controllers: [Oid4VciController],
       providers: [
         {
           provide: OID4VCI_OPTIONS,
