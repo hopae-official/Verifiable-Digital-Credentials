@@ -1,7 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { OID4VCI_OPTIONS } from './constant';
 import { Oid4VciOptions } from './type';
 
 @Injectable()
 export class Oid4VciService {
-  constructor(private readonly options: Oid4VciOptions) {}
+  constructor(
+    @Inject(OID4VCI_OPTIONS)
+    private readonly options: Oid4VciOptions,
+  ) {}
 }
