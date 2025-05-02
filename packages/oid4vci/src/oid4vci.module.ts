@@ -1,6 +1,6 @@
 import { Module, DynamicModule } from '@nestjs/common';
 import { Oid4VciOptions } from './type';
-import { OID4VCI_OPTIONS, OID4VCI_SERVICE } from './constant';
+import { OID4VCI_OPTIONS } from './constant';
 import { Oid4VciService } from './oid4vci.service';
 import { Oid4VciController } from './oid4vci.controller';
 
@@ -18,7 +18,6 @@ export class Oid4VciModule {
         },
         Oid4VciService,
       ],
-      exports: [OID4VCI_SERVICE],
     };
   }
 
@@ -42,7 +41,6 @@ export class Oid4VciModule {
         },
         Oid4VciService,
       ],
-      exports: [OID4VCI_SERVICE],
     };
   }
 }
