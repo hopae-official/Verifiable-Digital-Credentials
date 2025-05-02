@@ -1,5 +1,5 @@
 {
-  "name": "@vdcs/vc-api",
+  "name": "@vdcs/dc-api",
   "version": "0.1.2",
   "description": "Digital Credentials API and Passkey in typescript",
   "main": "dist/index.js",
