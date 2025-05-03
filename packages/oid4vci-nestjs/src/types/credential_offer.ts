@@ -7,15 +7,22 @@ export type CredentialOfferOptionBase = {
   useRef?: boolean; // default is false
 };
 
+/**
+ * Transaction code
+ *
+ * @param input_mode - Input mode (numeric or text) default is numeric
+ * @param length - Length of transaction code (if used for creating credential offer then default is 4)
+ * @param description - Description of transaction code
+ */
 export type TxCode = {
-  input_mode?: 'numeric' | 'text'; // default is numberic
+  input_mode?: 'numeric' | 'text';
   length?: number;
   description?: string;
 };
 
 export type CredentialOfferPreAuthOption = CredentialOfferOptionBase & {
   type: 'pre-authorized_code';
-  tx_code?: TxCode; // default is 4
+  tx_code?: TxCode;
 };
 
 export type CredentialOfferAuthorizationCodeOption =
@@ -45,35 +52,34 @@ export type PreAuthorizedCodeGrant = {
 
 export type Grant = AuthorizationCodeGrant | PreAuthorizedCodeGrant;
 
+/**
+ * Credential offer
+ *
+ * @param credential_issuer - Credential issuer
+ * @param credential_configuration_ids - Credential configuration IDs
+ * @param grants - Grants (contains authorization_code or pre-authorized_code)
+ */
 export type CredentialOffer = {
   credential_issuer: string;
   credential_configuration_ids: string[];
   grants: Grant;
 };
 
-// TODO: fix
 /**
  * Response of credential offer
  *
- * @example
- * ```ts
- *
- * ```
- *
- * @param credential_offer - Credential offer
- * @param credential_offer_uri - Credential offer URI
- * @param pre_authorized_code - Pre-authorized code
- * @param tx_code - Transaction code
+ * @param raw - Credential Offer Object
+ * @param credential_offer - URL encoded credential offer
+ * @param credential_offer_uri - URL encoded credential offer URI (when useRef is true)
+ * @param credential_offer_uri_key - Key of credential offer URI (when useRef is true)
+ * @param pre_authorized_code - Pre-authorized code (when type is pre-authorized_code)
+ * @param tx_code - Transaction code (when type is pre-authorized_code)
  */
 export type CredentialOfferResponse = {
   raw: CredentialOffer;
   credential_offer: string;
-  // if useRef is true, credential_offer_uri is returned
   credential_offer_uri?: string;
   credential_offer_uri_key?: string;
-
-  // if pre-authorized_code is used
   pre_authorized_code?: string;
-  // if tx_code is used
   tx_code?: string;
 };
