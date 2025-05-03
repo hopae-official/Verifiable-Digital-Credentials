@@ -1,4 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  NotImplementedException,
+} from '@nestjs/common';
 import { OID4VCI_OPTIONS } from './constant';
 import { Oid4VciOptions } from './types/module';
 import {
@@ -10,6 +15,7 @@ import {
 import { randomUUID } from 'node:crypto';
 import { generateRandom } from './utils';
 import { customAlphabet } from 'nanoid';
+import { CredentialProvider } from './iservice';
 
 class CredentialOfferGenerator {
   private readonly numbericCodeGen = customAlphabet('1234567890', 4);
@@ -85,10 +91,25 @@ export class Oid4VciService {
   constructor(
     @Inject(OID4VCI_OPTIONS)
     private readonly options: Oid4VciOptions,
+    @Inject(CredentialProvider)
+    private readonly credentialProvider: CredentialProvider,
   ) {
     this.credentialOfferUri = new CredentialOfferGenerator(
       options.meta.credential_issuer,
     );
+  }
+
+  async findCredentialOffer(key: string): Promise<CredentialOffer> {
+    if (!this.credentialProvider.findCredentialOffer) {
+      throw new NotImplementedException('Credential provider not found');
+    }
+
+    const credentialOffer =
+      await this.credentialProvider.findCredentialOffer(key);
+    if (!credentialOffer) {
+      throw new NotFoundException('Credential offer not found');
+    }
+    return credentialOffer;
   }
 
   createCredentialOffer(
@@ -122,6 +143,10 @@ export class Oid4VciService {
         if (useRef) {
           const uuid = randomUUID();
           const credential_offer_uri = this.credentialOfferUri.byRef(uuid);
+          this.credentialProvider.registerCredentialOffer?.(
+            uuid,
+            rawCredentialOffer,
+          );
           return {
             raw: rawCredentialOffer,
             credential_offer: credentialOffer,
@@ -162,6 +187,10 @@ export class Oid4VciService {
         if (useRef) {
           const uuid = randomUUID();
           const credential_offer_uri = this.credentialOfferUri.byRef(uuid);
+          this.credentialProvider.registerCredentialOffer?.(
+            uuid,
+            rawCredentialOffer,
+          );
           return {
             raw: rawCredentialOffer,
             credential_offer: credentialOffer,

@@ -1,9 +1,11 @@
 import { Type } from '@nestjs/common';
+import { CredentialProvider } from '../iservice';
 
 export class Oid4VciOptions {
   meta: {
     credential_issuer: string;
   };
+  credential_provider?: Type<CredentialProvider>;
 }
 
 export type Oid4VciModuleAsyncOptions = {
