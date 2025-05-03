@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CredentialProvider } from './iservice';
 import { CredentialOffer } from './types/credential_offer';
+import { SignOptions } from 'jsonwebtoken';
 
 @Injectable()
 export class CredentialService implements CredentialProvider {
@@ -28,7 +29,10 @@ export class CredentialService implements CredentialProvider {
     return credentialOffer;
   }
 
-  async registerNonce(nonce: string): Promise<void> {
+  async registerNonce(
+    nonce: string,
+    ttl: SignOptions['expiresIn'],
+  ): Promise<void> {
     this.nonceSet.add(nonce);
   }
 

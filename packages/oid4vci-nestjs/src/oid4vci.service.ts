@@ -108,7 +108,7 @@ export class Oid4VciService {
     const { secret, expiresIn } = this.options.nonce;
     const uuid = randomUUID();
     return jwt.sign({ jti: uuid }, secret, {
-      expiresIn: expiresIn ?? '1h',
+      expiresIn: expiresIn ?? '5m',
       issuer: this.options.meta.credential_issuer,
     });
   }
@@ -119,7 +119,10 @@ export class Oid4VciService {
     }
 
     const nonce = this.generateNonceJwt();
-    await this.credentialProvider.registerNonce(nonce);
+    await this.credentialProvider.registerNonce(
+      nonce,
+      this.options.nonce.expiresIn ?? '5m',
+    );
     return nonce;
   }
 

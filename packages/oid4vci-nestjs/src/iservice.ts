@@ -1,3 +1,4 @@
+import { SignOptions } from 'jsonwebtoken';
 import { CredentialOffer } from './types/credential_offer';
 
 export abstract class CredentialProvider {
@@ -31,8 +32,12 @@ export abstract class CredentialProvider {
    * This method is needed when you use nonce to get credential offer value.
    *
    * @param nonce - Nonce
+   * @param ttl - Time to live
    */
-  abstract registerNonce?(nonce: string): Promise<void>;
+  abstract registerNonce?(
+    nonce: string,
+    ttl: SignOptions['expiresIn'],
+  ): Promise<void>;
 
   /**
    * Find nonce.
