@@ -1,7 +1,9 @@
 import { Type } from '@nestjs/common';
 
 export class Oid4VciOptions {
-  credential_issuer: string;
+  meta: {
+    credential_issuer: string;
+  };
 }
 
 export type Oid4VciModuleAsyncOptions = {
