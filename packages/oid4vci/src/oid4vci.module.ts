@@ -2,7 +2,11 @@ import { Module, DynamicModule } from '@nestjs/common';
 import { Oid4VciOptions } from './type';
 import { OID4VCI_OPTIONS } from './constant';
 import { Oid4VciService } from './oid4vci.service';
-import { Oid4VciController } from './oid4vci.controller';
+import { Oid4VciController } from './controllers/oid4vci.controller';
+import { NonceController } from './controllers/nonce.controller';
+import { TokenController } from './controllers/token.controller';
+import { NotificationController } from './controllers/notification.controller';
+import { DeferredCredentialController } from './controllers/deferred_credential.controller';
 
 @Module({})
 export class Oid4VciModule {
@@ -10,7 +14,13 @@ export class Oid4VciModule {
     return {
       module: Oid4VciModule,
       imports: [],
-      controllers: [Oid4VciController],
+      controllers: [
+        Oid4VciController, // TODO: optionally include
+        NonceController,
+        TokenController,
+        NotificationController,
+        DeferredCredentialController,
+      ],
       providers: [
         {
           provide: OID4VCI_OPTIONS,
@@ -29,7 +39,13 @@ export class Oid4VciModule {
     return {
       module: Oid4VciModule,
       imports: asyncOptions.imports || [],
-      controllers: [Oid4VciController],
+      controllers: [
+        Oid4VciController, // TODO: optionally include
+        NonceController,
+        TokenController,
+        NotificationController,
+        DeferredCredentialController,
+      ],
       providers: [
         {
           provide: OID4VCI_OPTIONS,
