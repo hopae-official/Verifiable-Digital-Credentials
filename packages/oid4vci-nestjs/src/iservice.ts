@@ -25,4 +25,21 @@ export abstract class CredentialProvider {
   abstract findCredentialOffer?(
     key: string,
   ): Promise<CredentialOffer | null | undefined>;
+
+  /**
+   * Register nonce.
+   * This method is needed when you use nonce to get credential offer value.
+   *
+   * @param nonce - Nonce
+   */
+  abstract registerNonce?(nonce: string): Promise<void>;
+
+  /**
+   * Find nonce.
+   * This method is needed when you use nonce to get credential offer value.
+   *
+   * @param nonce - Nonce
+   * @returns true if nonce exists, false otherwise
+   */
+  abstract findNonce?(nonce: string): Promise<boolean>;
 }

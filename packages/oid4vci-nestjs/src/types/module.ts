@@ -1,11 +1,16 @@
 import { Type } from '@nestjs/common';
 import { CredentialProvider } from '../iservice';
+import { SignOptions } from 'jsonwebtoken';
 
 export class Oid4VciOptions {
   meta: {
     credential_issuer: string;
   };
   credential_provider?: Type<CredentialProvider>;
+  nonce?: {
+    secret: string;
+    expiresIn?: SignOptions['expiresIn'];
+  };
 }
 
 export type Oid4VciModuleAsyncOptions = {

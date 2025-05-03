@@ -1,6 +1,7 @@
 import {
   Inject,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
   NotImplementedException,
 } from '@nestjs/common';
@@ -16,6 +17,7 @@ import { randomUUID } from 'node:crypto';
 import { generateRandom } from './utils';
 import { customAlphabet } from 'nanoid';
 import { CredentialProvider } from './iservice';
+import jwt from 'jsonwebtoken';
 
 class CredentialOfferGenerator {
   private readonly numbericCodeGen = customAlphabet('1234567890', 4);
@@ -97,6 +99,36 @@ export class Oid4VciService {
     this.credentialOfferUri = new CredentialOfferGenerator(
       options.meta.credential_issuer,
     );
+  }
+
+  private generateNonceJwt() {
+    if (!this.options.nonce?.secret) {
+      throw new InternalServerErrorException('Nonce secret not found');
+    }
+    const { secret, expiresIn } = this.options.nonce;
+    const uuid = randomUUID();
+    return jwt.sign({ jti: uuid }, secret, {
+      expiresIn: expiresIn ?? '1h',
+      issuer: this.options.meta.credential_issuer,
+    });
+  }
+
+  async createNonce() {
+    if (!this.options.nonce || !this.credentialProvider.registerNonce) {
+      throw new NotImplementedException('registerNonce not found');
+    }
+
+    const nonce = this.generateNonceJwt();
+    await this.credentialProvider.registerNonce(nonce);
+    return nonce;
+  }
+
+  async checkNonce(nonce: string) {
+    if (!this.options.nonce || !this.credentialProvider.findNonce) {
+      throw new NotImplementedException('findNonce not found');
+    }
+
+    return this.credentialProvider.findNonce(nonce);
   }
 
   async findCredentialOffer(key: string): Promise<CredentialOffer> {

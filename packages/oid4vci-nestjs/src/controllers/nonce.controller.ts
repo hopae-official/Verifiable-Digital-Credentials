@@ -7,5 +7,10 @@ export class NonceController {
 
   @Header('Cache-Control', 'no-store')
   @Post('nonce')
-  async nonce() {}
+  async nonce() {
+    const c_nonce = await this.oid4vciService.createNonce();
+    return {
+      c_nonce,
+    };
+  }
 }

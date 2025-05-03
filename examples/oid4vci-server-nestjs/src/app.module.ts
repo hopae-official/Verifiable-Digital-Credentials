@@ -9,6 +9,9 @@ import { Oid4VciModule } from '@vdcs/oid4vci-nestjs';
       meta: {
         credential_issuer: 'http://localhost:3000',
       },
+      nonce: {
+        secret: 'secret',
+      },
     }),
   ],
   controllers: [AppController],
