@@ -1,1 +1,1 @@
-export * from './oid4vci.module';
+export * from './types/oid4vci.types';

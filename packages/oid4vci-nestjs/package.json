@@ -1,7 +1,7 @@
 {
-  "name": "@vdcs/oid4vci",
+  "name": "@vdcs/oid4vci-nestjs",
   "version": "0.1.0",
-  "description": "OpenID4VCI reference implementation in typescript",
+  "description": "OpenID4VCI implementation in typescript",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -27,6 +27,22 @@
     "test:browser": "vitest run ./src/test/*.spec.ts --environment jsdom",
     "test:cov": "vitest run --coverage"
   },
+  "keywords": [
+    "openid",
+    "openid4vci",
+    "vcdm",
+    "jwt",
+    "sd-jwt",
+    "mdl"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "author": "Lukas.J.Han <lukas.j.han@gmail.com>",
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "tsup": {
     "entry": [
       "./src/index.ts"
@@ -40,17 +56,18 @@
       "esm"
     ]
   },
-  "keywords": [
-    "openid",
-    "openid4vci",
-    "vcdm",
-    "jwt",
-    "sd-jwt",
-    "mdl"
-  ],
-  "engines": {
-    "node": ">=16"
+  "peerDependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/core": "^10.0.0",
+    "reflect-metadata": "^0.2.0",
+    "rxjs": "^7.8.1"
   },
-  "author": "Lukas.J.Han <lukas.j.han@gmail.com>",
-  "license": "Apache-2.0"
+  "devDependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/core": "^10.0.0",
+    "@types/node": "^22.14.1",
+    "reflect-metadata": "^0.2.0",
+    "rimraf": "^6.0.1",
+    "rxjs": "^7.8.1"
+  }
 }
