@@ -2,6 +2,7 @@
   "name": "digital-credentials",
   "description": "Digital Credentials API and Passkey in typescript",
   "scripts": {
+    "prepare": "pnpm run build",
     "build": "lerna run build --stream",
     "lint": "biome lint ./packages",
     "format": "biome format . --write",
