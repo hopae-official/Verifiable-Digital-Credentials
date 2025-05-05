@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CredentialProvider } from './iservice';
-import { CredentialOffer } from './types/credential_offer';
+import { CredentialProvider } from '../iservice';
+import { CredentialOffer } from '../types/credential_offer';
 import { SignOptions } from 'jsonwebtoken';
 
 @Injectable()

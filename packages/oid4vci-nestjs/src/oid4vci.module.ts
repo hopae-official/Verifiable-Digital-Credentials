@@ -8,7 +8,7 @@ import { TokenController } from './controllers/token.controller';
 import { NotificationController } from './controllers/notification.controller';
 import { DeferredCredentialController } from './controllers/deferred_credential.controller';
 import { CredentialProvider } from './iservice';
-import { CredentialService } from './credential.service';
+import { CredentialService } from './services/credential.service';
 import { CredentialOfferUriController } from './controllers/credential_offer_uri.controller';
 
 @Module({})
