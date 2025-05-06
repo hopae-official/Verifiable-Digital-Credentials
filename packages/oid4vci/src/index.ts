@@ -1,1 +1,3 @@
-export * from './types/oid4vci.types';
+export * from './types/credential';
+export * from './types/credential_offer';
+export * from './types/metadata';
