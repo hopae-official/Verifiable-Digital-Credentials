@@ -50,7 +50,13 @@ export type CredentialConfigurationSupported = {
     };
     text_color?: string;
   }>;
-};
+} & (
+  | JwtVcJsonMetadata
+  | LdpVcMetadata
+  | JwtVcJsonLdMetadata
+  | MsoMdocMetadata
+  | DcSdJwtMetadata
+);
 
 export type JwtVcJsonMetadata = {
   claims?: Array<Claim>;
