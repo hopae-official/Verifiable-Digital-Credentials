@@ -16,6 +16,7 @@ import { randomUUID } from 'node:crypto';
 import { CredentialProvider } from '../iservice';
 import jwt from 'jsonwebtoken';
 import { CredentialOfferGenerator } from './credentialOffer.service';
+import { NotificationDto } from '../dto/notification.dto';
 
 @Injectable()
 export class Oid4VciService {
@@ -171,5 +172,13 @@ export class Oid4VciService {
         };
       }
     }
+  }
+
+  async notification(notification: NotificationDto) {
+    if (!this.credentialProvider.notification) {
+      throw new NotImplementedException('notification handler not found');
+    }
+
+    await this.credentialProvider.notification(notification);
   }
 }

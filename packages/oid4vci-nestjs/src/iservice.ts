@@ -1,5 +1,6 @@
 import { SignOptions } from 'jsonwebtoken';
 import { CredentialOffer } from './types/credential_offer';
+import { NotificationDto } from './dto/notification.dto';
 
 export abstract class CredentialProvider {
   abstract issueCredential(): Promise<void>; // TODO: implement
@@ -47,4 +48,6 @@ export abstract class CredentialProvider {
    * @returns true if nonce exists, false otherwise
    */
   abstract findNonce?(nonce: string): Promise<boolean>;
+
+  abstract notification?(notification: NotificationDto): Promise<void>;
 }
