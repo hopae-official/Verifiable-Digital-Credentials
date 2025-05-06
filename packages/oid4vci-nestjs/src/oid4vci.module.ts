@@ -10,6 +10,7 @@ import { DeferredCredentialController } from './controllers/deferred_credential.
 import { CredentialProvider } from './iservice';
 import { CredentialService } from './services/credential.service';
 import { CredentialOfferUriController } from './controllers/credential_offer_uri.controller';
+import { JwtService } from './services/jwt.service';
 
 @Module({})
 export class Oid4VciModule {
@@ -36,6 +37,7 @@ export class Oid4VciModule {
           useValue: options,
         },
         Oid4VciService,
+        JwtService,
       ],
       exports: [Oid4VciService],
     };
@@ -67,6 +69,7 @@ export class Oid4VciModule {
           inject: asyncOptions.inject || [],
         },
         Oid4VciService,
+        JwtService,
         {
           provide: CredentialProvider,
           useFactory: async (...args: any[]) => {

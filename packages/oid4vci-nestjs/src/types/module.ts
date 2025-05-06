@@ -1,6 +1,7 @@
 import { Type } from '@nestjs/common';
 import { CredentialProvider } from '../iservice';
-import { SignOptions } from 'jsonwebtoken';
+import { Algorithm, SignOptions } from 'jsonwebtoken';
+import { JsonWebKey } from 'node:crypto';
 
 export class Oid4VciOptions {
   meta: {
@@ -10,6 +11,10 @@ export class Oid4VciOptions {
   nonce?: {
     secret: string;
     expiresIn?: SignOptions['expiresIn'];
+  };
+  jwks: {
+    keys: Array<JsonWebKey>;
+    algorithm: Algorithm;
   };
 }
 
