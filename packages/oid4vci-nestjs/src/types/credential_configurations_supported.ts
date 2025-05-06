@@ -6,8 +6,24 @@ export type AttackPotentialResistance =
 
 export type ProofType = 'jwt' | 'ldp_vp' | 'attestation';
 
+export type Format =
+  | 'jwt_vc_json'
+  | 'jwt_vc_json-ld'
+  | 'ldp_vc'
+  | 'mso_mdoc'
+  | 'dc+sd-jwt';
+
+export type Claim = {
+  path: string[];
+  mandatory?: boolean;
+  display?: {
+    name?: string;
+    locale?: string;
+  };
+};
+
 export type CredentialConfigurationSupported = {
-  format: string;
+  format: Format | string;
   scope?: string;
   cryptographic_binding_methods_supported?: Array<string>;
   credential_signing_alg_values_supported?: Array<string>;
@@ -34,4 +50,37 @@ export type CredentialConfigurationSupported = {
     };
     text_color?: string;
   }>;
+};
+
+export type JwtVcJsonMetadata = {
+  claims?: Array<Claim>;
+  credential_definition: {
+    type: string[];
+  };
+};
+
+export type LdpVcMetadata = {
+  claims?: Array<Claim>;
+  credential_definition: {
+    '@context': string[];
+    type: string[];
+  };
+};
+
+export type JwtVcJsonLdMetadata = {
+  claims?: Array<Claim>;
+  credential_definition: {
+    '@context': string[];
+    type: string[];
+  };
+};
+
+export type MsoMdocMetadata = {
+  claims?: Array<Claim>;
+  doctype: string;
+};
+
+export type DcSdJwtMetadata = {
+  claims?: Array<Claim>;
+  vct: string;
 };
