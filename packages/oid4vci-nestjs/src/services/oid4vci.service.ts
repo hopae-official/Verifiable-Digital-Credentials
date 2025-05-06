@@ -181,4 +181,12 @@ export class Oid4VciService {
 
     await this.credentialProvider.notification(notification);
   }
+
+  async deferredCredential(transaction_id: string) {
+    if (!this.credentialProvider.deferredCredential) {
+      throw new NotImplementedException('deferredCredential handler not found');
+    }
+    // TODO: error response
+    return this.credentialProvider.deferredCredential(transaction_id);
+  }
 }

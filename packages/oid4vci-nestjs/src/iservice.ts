@@ -1,6 +1,7 @@
 import { SignOptions } from 'jsonwebtoken';
 import { CredentialOffer } from './types/credential_offer';
 import { NotificationDto } from './dto/notification.dto';
+import { DeferredCredentialResponseDto } from './dto/deferredCredential.dto';
 
 export abstract class CredentialProvider {
   abstract issueCredential(): Promise<void>; // TODO: implement
@@ -50,4 +51,8 @@ export abstract class CredentialProvider {
   abstract findNonce?(nonce: string): Promise<boolean>;
 
   abstract notification?(notification: NotificationDto): Promise<void>;
+
+  abstract deferredCredential?(
+    transaction_id: string,
+  ): Promise<DeferredCredentialResponseDto>;
 }
