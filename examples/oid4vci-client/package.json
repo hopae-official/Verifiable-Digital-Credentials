@@ -1,0 +1,29 @@
+{
+  "name": "oid4vci-client",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -rf **/dist && tsup",
+    "start": "npm run build && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "tsup": {
+    "entry": [
+      "./src/index.ts"
+    ],
+    "sourceMap": true,
+    "splitting": false,
+    "clean": true,
+    "dts": true,
+    "format": [
+      "cjs",
+      "esm"
+    ]
+  },
+  "dependencies": {
+    "@vdcs/oid4vci-client": "workspace:*",
+    "@vdcs/oid4vci": "workspace:*"
+  },
+  "keywords": []
+}
