@@ -18,6 +18,8 @@ import jwt from 'jsonwebtoken';
 import { CredentialOfferGenerator } from './credentialOffer.service';
 import { NotificationDto } from '../dto/notification.dto';
 import { CredentialIssuerMetadata } from '../types/meta';
+import { CredentialDto } from '../dto/credential.dto';
+import { CredentialResponse } from '../types/credential';
 
 @Injectable()
 export class Oid4VciService {
@@ -44,6 +46,10 @@ export class Oid4VciService {
         this.options.meta.credential_configurations_supported,
       display: this.options.meta.display ?? [],
     };
+  }
+
+  async issueCredential(body: CredentialDto): Promise<CredentialResponse> {
+    return this.credentialProvider.issueCredential(body);
   }
 
   private generateNonceJwt() {
