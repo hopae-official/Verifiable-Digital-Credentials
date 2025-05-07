@@ -12,6 +12,7 @@ export type CredentialIssuerMetadata = {
  */
 export interface AuthorizationServerMetadata {
   issuer: string;
+  authorization_endpoint: string;
   token_endpoint: string;
   response_types_supported: string[];
   grant_types_supported?: string[];
