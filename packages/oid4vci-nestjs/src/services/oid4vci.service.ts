@@ -202,4 +202,8 @@ export class Oid4VciService {
     // TODO: error response
     return this.credentialProvider.deferredCredential(transaction_id);
   }
+
+  getAuthorizationServerMetadata() {
+    return this.options.meta.authorization_server;
+  }
 }

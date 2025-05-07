@@ -75,6 +75,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "jsonwebtoken": "^9.0.2",
-    "nanoid": "3"
+    "nanoid": "3",
+    "@vdcs/oid4vci": "workspace:*"
   }
 }

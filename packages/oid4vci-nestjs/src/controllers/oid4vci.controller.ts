@@ -10,6 +10,11 @@ export class Oid4VciController {
     return this.oid4vciService.getIssuerMetadata();
   }
 
+  @Get('.well-known/oauth-authorization-server')
+  getAuthorizationServerMetadata() {
+    return this.oid4vciService.getAuthorizationServerMetadata();
+  }
+
   @Header('Cache-Control', 'no-store')
   @Post('credential')
   async credential() {}

@@ -3,6 +3,7 @@ import { CredentialProvider } from '../iservice';
 import { Algorithm, SignOptions } from 'jsonwebtoken';
 import { JsonWebKey } from 'node:crypto';
 import { CredentialConfigurationSupported } from './credential_configurations_supported';
+import { AuthorizationServerMetadata } from '@vdcs/oid4vci';
 
 export class Oid4VciOptions {
   meta: {
@@ -18,6 +19,7 @@ export class Oid4VciOptions {
         alt_text?: string;
       };
     }>;
+    authorization_server?: Partial<AuthorizationServerMetadata>;
   };
   credential_provider?: Type<CredentialProvider>;
   nonce?: {
