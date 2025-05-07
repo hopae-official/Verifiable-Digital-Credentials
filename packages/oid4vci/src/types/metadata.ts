@@ -33,5 +33,5 @@ export interface AuthorizationServerMetadata {
   introspection_endpoint_auth_methods_supported?: string[];
   introspection_endpoint_auth_signing_alg_values_supported?: string[];
   code_challenge_methods_supported?: string[];
-  pre_authorized_grant_anonymous_access_supported?: boolean;
+  'pre-authorized_grant_anonymous_access_supported'?: boolean;
 }
