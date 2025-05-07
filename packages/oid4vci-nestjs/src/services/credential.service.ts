@@ -2,14 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { CredentialProvider } from '../iservice';
 import { CredentialOffer } from '../types/credential_offer';
 import { SignOptions } from 'jsonwebtoken';
+import { CredentialResponse } from '../types/credential';
+import { CredentialDto } from '../dto/credential.dto';
 
 @Injectable()
 export class CredentialService implements CredentialProvider {
   private readonly credentialOfferMap = new Map<string, CredentialOffer>();
   private readonly nonceSet = new Set<string>();
 
-  async issueCredential(): Promise<void> {
-    return; // TODO: implement
+  async issueCredential(dto: CredentialDto): Promise<CredentialResponse> {
+    return {
+      credentials: [{ credential: '' }], // TODO: implement
+    };
   }
 
   async registerCredentialOffer(

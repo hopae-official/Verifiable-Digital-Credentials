@@ -1,5 +1,6 @@
-import { Controller, Get, Header, Post } from '@nestjs/common';
+import { Body, Controller, Get, Header, Post } from '@nestjs/common';
 import { Oid4VciService } from '../services/oid4vci.service';
+import { CredentialDto } from '../dto/credential.dto';
 
 @Controller('oid4vci')
 export class Oid4VciController {
@@ -17,5 +18,8 @@ export class Oid4VciController {
 
   @Header('Cache-Control', 'no-store')
   @Post('credential')
-  async credential() {}
+  async credential(@Body() body: CredentialDto) {
+    // TODO: validate token and pass
+    return this.oid4vciService.issueCredential(body);
+  }
 }
