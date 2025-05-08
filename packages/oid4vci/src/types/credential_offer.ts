@@ -44,7 +44,7 @@ export type AuthorizationCodeGrant = {
 
 export type PreAuthorizedCodeGrant = {
   'urn:ietf:params:oauth:grant-type:pre-authorized_code': {
-    pre_authorized_code: string;
+    'pre-authorized_code': string;
     tx_code?: TxCode;
     authorization_server?: string;
   };
@@ -72,7 +72,7 @@ export type CredentialOffer = {
  * @param credential_offer - URL encoded credential offer
  * @param credential_offer_uri - URL encoded credential offer URI (when useRef is true)
  * @param credential_offer_uri_key - Key of credential offer URI (when useRef is true)
- * @param pre_authorized_code - Pre-authorized code (when type is pre-authorized_code)
+ * @param pre-authorized_code - Pre-authorized code (when type is pre-authorized_code)
  * @param tx_code - Transaction code (when type is pre-authorized_code)
  */
 export type CredentialOfferResponse = {
@@ -80,7 +80,6 @@ export type CredentialOfferResponse = {
   credential_offer: string;
   credential_offer_uri?: string;
   credential_offer_uri_key?: string;
-  pre_authorized_code?: string;
+  'pre-authorized_code'?: string;
   tx_code?: string;
 };
-

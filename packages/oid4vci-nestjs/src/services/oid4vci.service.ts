@@ -107,7 +107,7 @@ export class Oid4VciService {
             options.credential_configuration_ids ?? [],
           grants: {
             'urn:ietf:params:oauth:grant-type:pre-authorized_code': {
-              pre_authorized_code,
+              'pre-authorized_code': pre_authorized_code,
               tx_code,
               authorization_server,
             },
@@ -132,7 +132,7 @@ export class Oid4VciService {
             credential_offer: credentialOffer,
             credential_offer_uri,
             credential_offer_uri_key: uuid,
-            pre_authorized_code,
+            'pre-authorized_code': pre_authorized_code,
             tx_code: txCodeValue,
           };
         }
@@ -140,7 +140,7 @@ export class Oid4VciService {
         return {
           raw: rawCredentialOffer,
           credential_offer: credentialOffer,
-          pre_authorized_code,
+          'pre-authorized_code': pre_authorized_code,
           tx_code: txCodeValue,
         };
       }
