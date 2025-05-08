@@ -16,13 +16,6 @@ export class Oid4VciClient {
   constructor(private issuerUrl: string) {
     this.axios = axios.create();
   }
-  async fetchCredentialOffer(): Promise<CredentialOffer> {
-    const url = `${this.issuerUrl}/credential-offer`;
-    const response = await this.axios.get<CredentialOffer>(url);
-    this.currentOffer = response.data;
-
-    return this.currentOffer;
-  }
 
   async fetchCredentialIssuerMetadata(): Promise<CredentialIssuerMetadata> {
     const url = `${this.issuerUrl}/.well-known/openid-credential-issuer`;
