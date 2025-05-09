@@ -15,4 +15,5 @@ export interface AuthorizationRequest {
   issuer_state?: string;
   wallet_issuer?: string;
   user_hint?: string;
+  nonce?: string;
 }

@@ -195,6 +195,9 @@ export class Oid4VciService {
     redirect_uri: string;
     authorization_details?: any[];
     scope?: string;
+    code_challenge?: string;
+    code_challenge_method?: 'S256';
+    nonce?: string;
   }): URL {
     const {
       authEndpoint,
@@ -202,6 +205,9 @@ export class Oid4VciService {
       redirect_uri,
       authorization_details,
       scope,
+      code_challenge,
+      code_challenge_method,
+      nonce,
     } = params;
 
     const callbackUrl = new URL(
@@ -216,10 +222,16 @@ export class Oid4VciService {
         response_type: 'code',
         redirect_uri: callbackUrl.toString(),
         resource: this.options.meta.credential_issuer,
+        ...(code_challenge &&
+          code_challenge_method && {
+            code_challenge,
+            code_challenge_method,
+          }),
         ...(authorization_details && {
           authorization_details: JSON.stringify(authorization_details),
         }),
         ...(scope && { scope }),
+        ...(nonce && { nonce }),
       })}`,
     );
   }
@@ -241,8 +253,15 @@ export class Oid4VciService {
   }
 
   async authorize(authRequest: AuthorizationRequest) {
-    const { client_id, redirect_uri, authorization_details, scope } =
-      authRequest;
+    const {
+      client_id,
+      redirect_uri,
+      authorization_details,
+      scope,
+      code_challenge,
+      code_challenge_method,
+      nonce,
+    } = authRequest;
 
     if (authorization_details) {
       for (const detail of authorization_details) {
@@ -272,6 +291,9 @@ export class Oid4VciService {
       redirect_uri,
       authorization_details,
       scope,
+      nonce,
+      code_challenge,
+      code_challenge_method,
     });
 
     return {
