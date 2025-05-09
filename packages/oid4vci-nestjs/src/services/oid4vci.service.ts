@@ -4,6 +4,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
   NotImplementedException,
+  BadRequestException,
 } from '@nestjs/common';
 import { OID4VCI_OPTIONS } from '../constant';
 import { Oid4VciOptions } from '../types/module';
@@ -18,6 +19,7 @@ import jwt from 'jsonwebtoken';
 import { CredentialOfferGenerator } from './credentialOffer.service';
 import { NotificationDto } from '../dto/notification.dto';
 import { CredentialIssuerMetadata } from '../types/meta';
+import { AuthorizationRequest } from '@vdcs/oid4vci';
 
 @Injectable()
 export class Oid4VciService {
@@ -187,6 +189,53 @@ export class Oid4VciService {
     }
   }
 
+  private buildAuthorizationUrl(params: {
+    authEndpoint: string;
+    client_id: string;
+    redirect_uri: string;
+    authorization_details?: any[];
+    scope?: string;
+    code_challenge?: string;
+    code_challenge_method?: 'S256';
+    nonce?: string;
+  }): URL {
+    const {
+      authEndpoint,
+      client_id,
+      redirect_uri,
+      authorization_details,
+      scope,
+      code_challenge,
+      code_challenge_method,
+      nonce,
+    } = params;
+
+    const callbackUrl = new URL(
+      '/auth/callback',
+      this.options.meta.credential_issuer,
+    );
+    callbackUrl.searchParams.set('original_redirect_uri', redirect_uri);
+
+    return new URL(
+      `${authEndpoint}?${new URLSearchParams({
+        client_id,
+        response_type: 'code',
+        redirect_uri: callbackUrl.toString(),
+        resource: this.options.meta.credential_issuer,
+        ...(code_challenge &&
+          code_challenge_method && {
+            code_challenge,
+            code_challenge_method,
+          }),
+        ...(authorization_details && {
+          authorization_details: JSON.stringify(authorization_details),
+        }),
+        ...(scope && { scope }),
+        ...(nonce && { nonce }),
+      })}`,
+    );
+  }
+
   async notification(notification: NotificationDto) {
     if (!this.credentialProvider.notification) {
       throw new NotImplementedException('notification handler not found');
@@ -201,6 +250,72 @@ export class Oid4VciService {
     }
     // TODO: error response
     return this.credentialProvider.deferredCredential(transaction_id);
+  }
+
+  async authorize(authRequest: AuthorizationRequest) {
+    const {
+      client_id,
+      redirect_uri,
+      authorization_details,
+      scope,
+      code_challenge,
+      code_challenge_method,
+      nonce,
+    } = authRequest;
+
+    if (authorization_details) {
+      for (const detail of authorization_details) {
+        if (detail.type !== 'openid_credential') {
+          throw new BadRequestException('Invalid authorization_details type');
+        }
+
+        const configId = detail.credential_configuration_id;
+        if (
+          !this.options.meta.credential_configurations_supported?.[configId]
+        ) {
+          throw new BadRequestException(
+            `Unsupported credential_configuration_id: ${configId}`,
+          );
+        }
+      }
+    }
+
+    const authServer = this.options.meta.authorization_server;
+    if (!authServer?.authorization_endpoint) {
+      throw new BadRequestException('Authorization server not configured');
+    }
+
+    const authUrl = this.buildAuthorizationUrl({
+      authEndpoint: authServer.authorization_endpoint,
+      client_id,
+      redirect_uri,
+      authorization_details,
+      scope,
+      nonce,
+      code_challenge,
+      code_challenge_method,
+    });
+
+    return {
+      url: authUrl.toString(),
+      statusCode: 302,
+    };
+  }
+
+  async handleAuthCallback(params: {
+    code: string;
+    original_redirect_uri: string;
+  }) {
+    const { code, original_redirect_uri } = params;
+
+    // TODO: Exchange code for access token with Authorization Server\
+    const redirectUrl = new URL(original_redirect_uri);
+    redirectUrl.searchParams.set('code', code);
+
+    return {
+      url: redirectUrl.toString(),
+      statusCode: 302,
+    };
   }
 
   getAuthorizationServerMetadata() {

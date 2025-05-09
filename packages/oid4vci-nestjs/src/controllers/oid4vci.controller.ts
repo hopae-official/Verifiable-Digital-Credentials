@@ -1,5 +1,6 @@
-import { Controller, Get, Header, Post } from '@nestjs/common';
+import { Controller, Get, Post, Header, Query, Redirect } from '@nestjs/common';
 import { Oid4VciService } from '../services/oid4vci.service';
+import { AuthorizationRequest } from '@vdcs/oid4vci';
 
 @Controller('oid4vci')
 export class Oid4VciController {
@@ -13,6 +14,12 @@ export class Oid4VciController {
   @Get('.well-known/oauth-authorization-server')
   getAuthorizationServerMetadata() {
     return this.oid4vciService.getAuthorizationServerMetadata();
+  }
+
+  @Get('authorize')
+  @Redirect()
+  authorize(@Query() authRequest: AuthorizationRequest) {
+    return this.oid4vciService.authorize(authRequest);
   }
 
   @Header('Cache-Control', 'no-store')
