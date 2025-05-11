@@ -1,5 +1,5 @@
 {
-  "name": "@vdcs/oid4vp",
+  "name": "@vdcs/oid4vp-nestjs",
   "version": "0.1.0",
   "description": "OpenID4VP implementation in typescript",
   "main": "dist/index.js",
