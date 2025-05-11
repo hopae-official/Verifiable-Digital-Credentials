@@ -1,6 +1,8 @@
 import { Type } from '@nestjs/common';
 
-export class Oid4VpOptions {}
+export class Oid4VpOptions {
+  credential_verifier: string;
+}
 
 export interface Oid4VpOptionsFactory {
   createOid4VpOptions(): Promise<Oid4VpOptions> | Oid4VpOptions;
