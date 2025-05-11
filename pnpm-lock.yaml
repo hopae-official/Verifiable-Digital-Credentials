@@ -640,13 +640,37 @@ importers:
 
   packages/oid4vp-nestjs:
     dependencies:
-      express:
-        specifier: ^4.21.2
-        version: 4.21.2
+      class-transformer:
+        specifier: ^0.5.1
+        version: 0.5.1
+      class-validator:
+        specifier: ^0.14.2
+        version: 0.14.2
+      jsonwebtoken:
+        specifier: ^9.0.2
+        version: 9.0.2
     devDependencies:
-      '@types/express':
-        specifier: ^5.0.0
-        version: 5.0.0
+      '@nestjs/common':
+        specifier: ^10.0.0
+        version: 10.4.17(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/core':
+        specifier: ^10.0.0
+        version: 10.4.15(@nestjs/common@10.4.17(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.15)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@types/jsonwebtoken':
+        specifier: ^9.0.9
+        version: 9.0.9
+      '@types/node':
+        specifier: ^22.14.1
+        version: 22.14.1
+      reflect-metadata:
+        specifier: ^0.2.0
+        version: 0.2.2
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
+      rxjs:
+        specifier: ^7.8.1
+        version: 7.8.1
 
   packages/wallet:
     dependencies:
