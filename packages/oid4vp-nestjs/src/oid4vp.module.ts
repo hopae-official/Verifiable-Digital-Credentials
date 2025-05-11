@@ -3,6 +3,7 @@ import { OID4VP_OPTIONS } from './constant';
 import { Oid4VpOptions } from './types/module';
 import { Oid4VpService } from './services/oid4vp.service';
 import { Oid4VpController } from './controllers/oid4vp.controller';
+import { RequestController } from './controllers/request.controller';
 
 @Module({})
 export class Oid4VpModule {
@@ -10,7 +11,7 @@ export class Oid4VpModule {
     return {
       module: Oid4VpModule,
       imports: [],
-      controllers: [Oid4VpController],
+      controllers: [Oid4VpController, RequestController],
       providers: [
         {
           provide: OID4VP_OPTIONS,
@@ -30,7 +31,7 @@ export class Oid4VpModule {
     return {
       module: Oid4VpModule,
       imports: asyncOptions.imports || [],
-      controllers: [Oid4VpController],
+      controllers: [Oid4VpController, RequestController],
       providers: [
         {
           provide: OID4VP_OPTIONS,
