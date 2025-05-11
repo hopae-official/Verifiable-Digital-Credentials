@@ -3,6 +3,7 @@ import { OID4VP_OPTIONS } from '../constant';
 import { Oid4VpOptions } from '../types/module';
 import { AuthorizationRequest } from '../types/authorizationRequest';
 import { AuthorizationRequestService } from './authorizationRequest.service';
+import { VpToken } from '../types/vp_token';
 
 @Injectable()
 export class Oid4VpService {
@@ -22,6 +23,10 @@ export class Oid4VpService {
   }
 
   async getRequest(): Promise<AuthorizationRequest> {
+    throw new NotImplementedException();
+  }
+
+  async verifyVpToken(vp_token: VpToken) {
     throw new NotImplementedException();
   }
 }
