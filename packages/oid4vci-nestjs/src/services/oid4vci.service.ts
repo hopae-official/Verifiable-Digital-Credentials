@@ -12,12 +12,13 @@ import {
   CredentialOfferOption,
   CredentialOfferResponse,
 } from '../types/credential_offer';
-import { randomUUID } from 'node:crypto';
+import { createPrivateKey, randomUUID } from 'node:crypto';
 import { CredentialProvider } from '../iservice';
 import jwt from 'jsonwebtoken';
 import { CredentialOfferGenerator } from './credentialOffer.service';
 import { NotificationDto } from '../dto/notification.dto';
 import { CredentialIssuerMetadata } from '../types/meta';
+import { TokenDto } from '../dto/token.dto';
 
 @Injectable()
 export class Oid4VciService {
@@ -43,6 +44,41 @@ export class Oid4VciService {
       credential_configurations_supported:
         this.options.meta.credential_configurations_supported,
       display: this.options.meta.display ?? [],
+    };
+  }
+
+  async generateToken(dto: TokenDto) {
+    if (!this.credentialProvider.validatePreAuthorizedCode) {
+      throw new NotImplementedException('generateToken not found');
+    }
+
+    const { sub, authorization_details } =
+      await this.credentialProvider.validatePreAuthorizedCode(dto);
+
+    const payload = {
+      iss: this.options.meta.credential_issuer,
+      sub,
+    };
+
+    const key = this.options.jwks.keys[0];
+    const kid = key.kid as string | undefined;
+
+    const privateKey = createPrivateKey({
+      key,
+      format: 'jwk',
+    });
+
+    const access_token = jwt.sign(payload, privateKey, {
+      algorithm: 'ES256',
+      expiresIn: '1h',
+      keyid: kid,
+    });
+
+    return {
+      access_token,
+      token_type: 'Bearer',
+      expires_in: 3600,
+      authorization_details,
     };
   }
 
