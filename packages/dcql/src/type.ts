@@ -11,7 +11,7 @@ export type Credential = {
 
   /** optional, default is false */
   multiple?: boolean;
-  meta?: Record<string, unknown>;
+  meta?: { vct_value: string } | { doctype_value: string };
   trusted_authorities?: TrustedAuthority[];
 
   /** optional, default is true */
