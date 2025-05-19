@@ -8,7 +8,7 @@ console.log('BASE_URL: ', process.env.BASE_URL);
 
 const config: Config = {
   title: 'Verifiable Digital Credentials (VDCs)',
-  tagline: 'Secure Digital Identity, Made Simple',
+  tagline: 'Simplest Wallet SDK for Verifiable Digital Credentials',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
