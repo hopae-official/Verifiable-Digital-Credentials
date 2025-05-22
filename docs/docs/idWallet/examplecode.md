@@ -27,7 +27,7 @@ export const initializeSDK = async () => {
       statusListSupport: true,
       checkFrequency: 'onUse',
     },
-    loggingLevel: __DEV__ ? 'debug' : 'error',
+    loggingLevel: process.env.NODE_ENV === 'development' ? 'debug' : 'error',
   });
 
   return wallet;
