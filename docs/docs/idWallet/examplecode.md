@@ -21,8 +21,8 @@ export const initializeSDK = async () => {
   // Initialize the SDK with configuration
   const wallet = await IDWalletSDK.initialize({
     storageProvider: secureStorageProvider,
-    cryptoSuites: ['P-256', 'ES256'],
-    didMethods: ['did:web', 'did:key'],
+    cryptoSuites: ['ES256'],
+    didMethods: ['did:web'],
     revocationOptions: {
       statusListSupport: true,
       checkFrequency: 'onUse',
