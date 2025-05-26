@@ -45,3 +45,10 @@ export type Claims = {
 };
 
 export type ClaimSet = string[];
+
+export type SdJwtVcCredentialQuery = Credential & {
+  format: 'dc+sd-jwt';
+  meta: {
+    vct_value: string;
+  };
+};

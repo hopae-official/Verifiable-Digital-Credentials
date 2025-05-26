@@ -1,4 +1,5 @@
 import { CredentialBase } from './credentials/credential';
+import { SdJwtVcCredential } from './credentials/sdjwtvc.credential';
 import { CredentialSet, rawDCQL } from './type';
 
 /**
@@ -8,7 +9,16 @@ export class DCQL {
   private _credentials: CredentialBase[] = [];
   private _credential_sets?: CredentialSet[];
 
-  constructor() {}
+  constructor({
+    credentials,
+    credential_sets,
+  }: {
+    credentials?: CredentialBase[];
+    credential_sets?: CredentialSet[];
+  }) {
+    this._credentials = credentials ?? [];
+    this._credential_sets = credential_sets;
+  }
 
   addCredential(credential: CredentialBase) {
     this._credentials.push(credential);
@@ -31,8 +41,17 @@ export class DCQL {
   }
 
   static parse(raw: rawDCQL): DCQL {
-    // TODO: implement
-    return new DCQL();
+    const credentials = raw.credentials.map((c) => {
+      if (c.format === 'dc+sd-jwt') {
+        return SdJwtVcCredential.parseSdJwtCredential(c);
+      }
+      throw new Error('Invalid credential format');
+    });
+
+    return new DCQL({
+      credentials,
+      credential_sets: raw.credential_sets,
+    });
   }
 
   match(data: Record<string, unknown>) {

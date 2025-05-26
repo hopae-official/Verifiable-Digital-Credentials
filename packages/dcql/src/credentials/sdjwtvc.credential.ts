@@ -1,4 +1,10 @@
-import { Claims, ClaimSet, Credential, TrustedAuthority } from '../type';
+import {
+  Claims,
+  ClaimSet,
+  Credential,
+  SdJwtVcCredentialQuery,
+  TrustedAuthority,
+} from '../type';
 import { CredentialBase } from './credential';
 
 export class SdJwtVcCredential implements CredentialBase {
@@ -11,7 +17,23 @@ export class SdJwtVcCredential implements CredentialBase {
   constructor(
     public readonly id: string,
     public readonly vct_value: string,
-  ) {}
+    options?: {
+      multiple?: boolean;
+      trusted_authorities?: TrustedAuthority[];
+      require_cryptographic_holder_binding?: boolean;
+      claims?: Claims[];
+      claim_sets?: ClaimSet[];
+    },
+  ) {
+    if (options) {
+      this._multiple = options.multiple;
+      this._trusted_authorities = options.trusted_authorities;
+      this._require_cryptographic_holder_binding =
+        options.require_cryptographic_holder_binding;
+      this._claims = options.claims;
+      this._claim_sets = options.claim_sets;
+    }
+  }
 
   setMultiple(multiple: boolean) {
     this._multiple = multiple;
@@ -68,5 +90,36 @@ export class SdJwtVcCredential implements CredentialBase {
 
   match(data: Record<string, unknown>): boolean {
     return false;
+  }
+
+  static parseSdJwtCredential(c: Credential): CredentialBase {
+    if (!this.validateCredential(c)) {
+      throw new Error('Invalid credential');
+    }
+
+    const sdJwtVcCredential = new SdJwtVcCredential(c.id, c.meta.vct_value, {
+      multiple: c.multiple,
+      trusted_authorities: c.trusted_authorities,
+      require_cryptographic_holder_binding:
+        c.require_cryptographic_holder_binding,
+      claims: c.claims,
+      claim_sets: c.claim_sets,
+    });
+
+    return sdJwtVcCredential;
+  }
+
+  private static validateCredential(
+    c: Credential,
+  ): c is SdJwtVcCredentialQuery {
+    if (c.format !== 'dc+sd-jwt') {
+      throw new Error('Invalid credential format');
+    }
+
+    if (!c.meta || !('vct_value' in c.meta)) {
+      throw new Error('Invalid credential meta');
+    }
+
+    return true;
   }
 }
