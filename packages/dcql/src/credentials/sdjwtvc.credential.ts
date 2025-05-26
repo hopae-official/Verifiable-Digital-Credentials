@@ -13,6 +13,27 @@ export class SdJwtVcCredential implements CredentialBase {
     public readonly vct_value: string,
   ) {}
 
+  assign({
+    multiple,
+    trusted_authorities,
+    require_cryptographic_holder_binding,
+    claims,
+    claim_sets,
+  }: {
+    multiple?: boolean;
+    trusted_authorities?: TrustedAuthority[];
+    require_cryptographic_holder_binding?: boolean;
+    claims?: Claims[];
+    claim_sets?: ClaimSet[];
+  }) {
+    this._multiple = multiple;
+    this._trusted_authorities = trusted_authorities;
+    this._require_cryptographic_holder_binding =
+      require_cryptographic_holder_binding;
+    this._claims = claims;
+    this._claim_sets = claim_sets;
+  }
+
   setMultiple(multiple: boolean) {
     this._multiple = multiple;
     return this;
