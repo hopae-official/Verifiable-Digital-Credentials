@@ -13,10 +13,10 @@ export class DCQL {
     credentials,
     credential_sets,
   }: {
-    credentials: CredentialBase[];
+    credentials?: CredentialBase[];
     credential_sets?: CredentialSet[];
   }) {
-    this.credentials = credentials;
+    this.credentials = credentials ?? [];
     this.credential_sets = credential_sets;
   }
 

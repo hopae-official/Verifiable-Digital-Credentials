@@ -5,13 +5,13 @@ import { Claims, CredentialSet } from '../type';
 
 describe('DCQL', () => {
   it('should create an instance', () => {
-    const dcql = new DCQL();
+    const dcql = new DCQL({});
     expect(dcql).toBeDefined();
   });
 
   describe('addCredential', () => {
     it('should add a credential', () => {
-      const dcql = new DCQL();
+      const dcql = new DCQL({});
       const credential = new SdJwtVcCredential('test-id', 'test-vct');
 
       const result = dcql.addCredential(credential);
@@ -26,7 +26,7 @@ describe('DCQL', () => {
     });
 
     it('should add multiple credentials', () => {
-      const dcql = new DCQL();
+      const dcql = new DCQL({});
       const credential1 = new SdJwtVcCredential('test-id-1', 'test-vct-1');
       const credential2 = new SdJwtVcCredential('test-id-2', 'test-vct-2');
 
@@ -41,7 +41,7 @@ describe('DCQL', () => {
 
   describe('addCredentialSet', () => {
     it('should add a credential set', () => {
-      const dcql = new DCQL();
+      const dcql = new DCQL({});
       const credentialSet: CredentialSet = {
         options: [['test-id-1'], ['test-id-2']],
         required: true,
@@ -60,7 +60,7 @@ describe('DCQL', () => {
     });
 
     it('should initialize credential_sets array if undefined', () => {
-      const dcql = new DCQL();
+      const dcql = new DCQL({});
       const credentialSet: CredentialSet = {
         options: [['test-id-1']],
       };
@@ -75,7 +75,7 @@ describe('DCQL', () => {
 
   describe('serialize', () => {
     it('should serialize empty DCQL', () => {
-      const dcql = new DCQL();
+      const dcql = new DCQL({});
       const serialized = dcql.serialize();
 
       expect(serialized).toEqual({
@@ -85,7 +85,7 @@ describe('DCQL', () => {
     });
 
     it('should serialize DCQL with credentials and credential sets', () => {
-      const dcql = new DCQL();
+      const dcql = new DCQL({});
       const credential = new SdJwtVcCredential('test-id', 'test-vct');
       const credentialSet: CredentialSet = {
         options: [['test-id']],
