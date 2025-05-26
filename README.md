@@ -40,7 +40,7 @@ Fast, minimal, and efficient. This library is designed to be as lightweight as p
 
 ## Getting Started 🏁
 
-[Verifiable Digital Credentials Docs](https://lukasjhan.github.io/Verifiable-Digital-Credentials/)
+[Verifiable Digital Credentials Docs](https://vdcs.js.org/)
 
 ## Architecture 🏗️
 
