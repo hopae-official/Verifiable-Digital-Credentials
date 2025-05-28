@@ -13,19 +13,19 @@ export class Oid4VciClient {
   private authorizationServerMetadata: AuthorizationServerMetadata | null =
     null;
 
-  constructor(private issuerUrl: string) {
+  constructor() {
     this.axios = axios.create();
   }
 
-  async fetchCredentialIssuerMetadata(): Promise<CredentialIssuerMetadata> {
-    const url = `${this.issuerUrl}/.well-known/openid-credential-issuer`;
+  async fetchCredentialIssuerMetadata(issuerUrl: string): Promise<CredentialIssuerMetadata> {
+    const url = `${issuerUrl}/.well-known/openid-credential-issuer`;
     const response = await this.axios.get<CredentialIssuerMetadata>(url);
     this.credentialIssuerMetadata = response.data;
     return response.data;
   }
 
-  async fetchAuthorizationServerMetadata(): Promise<AuthorizationServerMetadata> {
-    const url = `${this.issuerUrl}/.well-known/oauth-authorization-server`;
+  async fetchAuthorizationServerMetadata(issuerUrl: string): Promise<AuthorizationServerMetadata> {
+    const url = `${issuerUrl}/.well-known/oauth-authorization-server`;
     const response = await this.axios.get<AuthorizationServerMetadata>(url);
     this.authorizationServerMetadata = response.data;
     return response.data;
