@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { DCQL } from '../dcql';
 import { SdJwtVcCredential } from '../credentials/sdjwtvc.credential';
 import { Claims, CredentialSet, rawDCQL } from '../type';
