@@ -50,7 +50,7 @@ VDCs are built with Zero Trust Architecture, Security by Design, and Privacy by 
 - 📉 Data Minimization & Selective Disclosure: We fully support Selective Disclosure. This empowers users to share only the minimum necessary information required for any given verification, significantly reducing data exposure and enhancing user privacy.
 - 🔗 Unlinkability: We strive to implement features that support unlinkability, helping to prevent correlation of user activities across different verification services. This protects users from being tracked or profiled based on their credential usage.
 - 🛡️ Continuous Security Audits: We conduct regular external security audits to continuously validate and strengthen the library's security posture.
-- 🚨 Transparent Vulnerability Handling: We are committed to transparency. If you discover a security vulnerability, please report it promptly via [Link to Vulnerability Reporting Procedure or Email Address Here]. We address all reports seriously and work to resolve them swiftly.
+- 🚨 Transparent Vulnerability Handling: We are committed to transparency. We address all reports seriously and work to resolve them swiftly.
 
 ## Core Dependencies 📦
 
