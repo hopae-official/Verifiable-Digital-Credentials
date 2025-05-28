@@ -12,20 +12,33 @@ export class Oid4VciClient {
   private credentialIssuerMetadata: CredentialIssuerMetadata | null = null;
   private authorizationServerMetadata: AuthorizationServerMetadata | null =
     null;
+  private issuerUrl: string | null = null;
 
   constructor() {
     this.axios = axios.create();
   }
 
-  async fetchCredentialIssuerMetadata(issuerUrl: string): Promise<CredentialIssuerMetadata> {
-    const url = `${issuerUrl}/.well-known/openid-credential-issuer`;
+  async fetchCredentialOffer(issuerUrl: string): Promise<CredentialOffer> {
+    // Todo: implement
+    throw new Error('Not implemented');
+  }
+
+  async fetchCredentialIssuerMetadata(): Promise<CredentialIssuerMetadata> {
+    if (!this.issuerUrl) {
+      throw new Error('Issuer URL is not set. Fetch credential-offer first.');
+    }
+
+    const url = `${this.issuerUrl}/.well-known/openid-credential-issuer`;
     const response = await this.axios.get<CredentialIssuerMetadata>(url);
     this.credentialIssuerMetadata = response.data;
     return response.data;
   }
 
-  async fetchAuthorizationServerMetadata(issuerUrl: string): Promise<AuthorizationServerMetadata> {
-    const url = `${issuerUrl}/.well-known/oauth-authorization-server`;
+  async fetchAuthorizationServerMetadata(): Promise<AuthorizationServerMetadata> {
+    if (!this.issuerUrl) {
+      throw new Error('Issuer URL is not set. Fetch credential-offer first.');
+    }
+    const url = `${this.issuerUrl}/.well-known/oauth-authorization-server`;
     const response = await this.axios.get<AuthorizationServerMetadata>(url);
     this.authorizationServerMetadata = response.data;
     return response.data;
