@@ -42,26 +42,15 @@ Fast, minimal, and efficient. This library is designed to be as lightweight as p
 
 [Verifiable Digital Credentials Docs](https://vdcs.js.org/)
 
-## Architecture 🏗️
+## Security and Privacy 🛡️
 
-### Security First 🛡️
+VDCs are built with Zero Trust Architecture, Security by Design, and Privacy by Design principles at their core. We prioritize safeguarding sensitive user data and upholding privacy.
 
-We take security very seriously. The library is built to help you implement a **Zero Trust** architecture by default:
-
-- **Automatic application of security best practices**
-- Protection against **replay attacks**, **man-in-the-middle attacks**, and **tampering**
-- Built-in **signature validation** and **data integrity checks**
-
-You can rest assured that **your credentials** are safe and protected from common attack vectors.
-
-### Developer Experience 💻
-
-We're all about making developers' lives easier. With this library, you’ll find:
-
-- **Intuitive API design** that's simple to integrate
-- **Comprehensive TypeScript support** with clear types
-- **Rich Examples across various scenarios** to help you understand how to use the library effectively
-- **Detailed error messages** to help you understand what went wrong
+- 🔑 Secure Key and Data Management: We facilitate secure handling of sensitive key materials and data. The SDK is designed to easily integrate with platform-specific secure storage (like Secure Enclave, Keystore, or HSMs) to minimize key exposure risks and protect data at rest.
+- 📉 Data Minimization & Selective Disclosure: We fully support Selective Disclosure. This empowers users to share only the minimum necessary information required for any given verification, significantly reducing data exposure and enhancing user privacy.
+- 🔗 Unlinkability: We strive to implement features that support unlinkability, helping to prevent correlation of user activities across different verification services. This protects users from being tracked or profiled based on their credential usage.
+- 🛡️ Continuous Security Audits: We conduct regular external security audits to continuously validate and strengthen the library's security posture.
+- 🚨 Transparent Vulnerability Handling: We are committed to transparency. If you discover a security vulnerability, please report it promptly via [Link to Vulnerability Reporting Procedure or Email Address Here]. We address all reports seriously and work to resolve them swiftly.
 
 ## Core Dependencies 📦
 
