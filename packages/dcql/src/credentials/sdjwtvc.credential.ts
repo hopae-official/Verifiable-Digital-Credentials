@@ -134,7 +134,7 @@ export class SdJwtVcCredential implements CredentialBase {
         this.matchClaim(claim, data),
       );
 
-      // Only match if we can satisfy at least one claim
+      // Only match if we can satisfy all claims
       if (satisfiableClaims) {
         return { match: true, matchedClaims: this._claims };
       }
