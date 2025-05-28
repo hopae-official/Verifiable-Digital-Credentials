@@ -44,7 +44,7 @@ Fast, minimal, and efficient. This library is designed to be as lightweight as p
 
 ## Security and Privacy 🛡️
 
-VDCs are built with Zero Trust Architecture, Security by Design, and Privacy by Design principles at their core. We prioritize safeguarding sensitive user data and upholding privacy.
+VDCs are built with Security by Design, and Privacy by Design principles at their core. We prioritize safeguarding sensitive user data and upholding privacy.
 
 - 🔑 Secure Key and Data Management: We facilitate secure handling of sensitive key materials and data. The SDK is designed to easily integrate with platform-specific secure storage (like Secure Enclave, Keystore, or HSMs) to minimize key exposure risks and protect data at rest.
 - 📉 Data Minimization & Selective Disclosure: We fully support Selective Disclosure. This empowers users to share only the minimum necessary information required for any given verification, significantly reducing data exposure and enhancing user privacy.
