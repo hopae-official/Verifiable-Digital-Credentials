@@ -38,7 +38,9 @@
         {
           "cameraPermission": "The app scans QR to save a mobile pass or verify your passes."
         }
-      ]
+      ],
+      "expo-font",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true
