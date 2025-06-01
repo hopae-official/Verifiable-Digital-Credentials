@@ -69,7 +69,8 @@ export const getAuthorizationServerUrl = (
 export const fetchAuthorizationServerMetadata = async (
   authorizationServerUrl: string,
 ): Promise<AuthorizationServerMetadata> => {
-  const url = `${authorizationServerUrl}/.well-known/oauth-authorization-server`;
+  const cleanedIdentifier = authorizationServerUrl.replace(/\/$/, '');
+  const url = `${cleanedIdentifier}/.well-known/oauth-authorization-server`;
   const response = await axios.get<AuthorizationServerMetadata>(url);
   return response.data;
 };
