@@ -605,6 +605,9 @@ importers:
 
   packages/oid4vci-client:
     dependencies:
+      '@vdcs/jwt':
+        specifier: workspace:*
+        version: link:../jwt
       '@vdcs/oid4vci':
         specifier: workspace:*
         version: link:../oid4vci

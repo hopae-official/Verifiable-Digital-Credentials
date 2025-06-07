@@ -6,7 +6,6 @@ import {
   AuthorizationServerMetadata,
   isPreAuthorizedCodeGrant,
   PreAuthorizedCodeGrant,
-  AuthorizationDetail,
   TokenResponseDto,
 } from '@vdcs/oid4vci';
 import {
@@ -16,6 +15,7 @@ import {
   parseCredentialOfferUrl,
 } from './utils';
 import { Status } from './type';
+import { type EcPrivateJwk, signJWT } from '@vdcs/jwt';
 
 export class Oid4VciClient {
   private credentialOffer: CredentialOffer;
@@ -74,10 +74,30 @@ export class Oid4VciClient {
     });
   }
 
+  private createProofJwt(c_nonce: string, privateKey: EcPrivateJwk): string {
+    const header = {
+      alg: 'ES256',
+      typ: 'openid4vci-proof+jwt',
+      jwk: {
+        kty: 'EC',
+        crv: 'P-256',
+        x: privateKey.x,
+        y: privateKey.y,
+      },
+    };
+    const payload = {
+      aud: this.credentialIssuerMetadata.credential_issuer,
+      nonce: c_nonce,
+      iat: Math.floor(Date.now() / 1000),
+    };
+    const jwt = signJWT({ header, payload }, privateKey);
+    return jwt;
+  }
+
   async getCredential(payload: {
     credential_configuration_id?: string;
     tx_code?: string;
-    // TODO: add proof
+    privateKey: EcPrivateJwk;
   }): Promise<CredentialResponse> {
     const tokenEndpoint = this.authorizationServerMetadata.token_endpoint;
     const preAuthorizedCode = (
@@ -86,25 +106,14 @@ export class Oid4VciClient {
       'pre-authorized_code'
     ];
 
-    const authorizationDetails: AuthorizationDetail[] | undefined =
-      payload.credential_configuration_id
-        ? [
-            {
-              type: 'openid_credential',
-              credential_configuration_id: payload.credential_configuration_id,
-            },
-          ]
-        : undefined;
-
     const {
-      data: { access_token },
-    } = await axios.post<TokenResponseDto>(
+      data: { access_token, c_nonce },
+    } = await axios.post<TokenResponseDto & { c_nonce: string }>(
       tokenEndpoint,
       {
         grant_type: 'urn:ietf:params:oauth:grant-type:pre-authorized_code',
         'pre-authorized_code': preAuthorizedCode,
         tx_code: payload.tx_code,
-        authorization_details: authorizationDetails,
       },
       {
         headers: {
@@ -115,13 +124,19 @@ export class Oid4VciClient {
 
     this.accessToken = access_token;
 
+    const proofJwt = this.createProofJwt(c_nonce, payload.privateKey);
+
     const credentialEndpoint =
       this.credentialIssuerMetadata.credential_endpoint;
 
     const { data } = await axios.post<CredentialResponse>(
       credentialEndpoint,
       {
-        credential_configuration_id: payload.credential_configuration_id, // TODO: fix
+        credential_configuration_id: payload.credential_configuration_id,
+        proof: {
+          proof_type: 'jwt',
+          jwt: proofJwt,
+        },
       },
       {
         headers: {
