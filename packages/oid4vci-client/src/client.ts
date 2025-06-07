@@ -18,9 +18,9 @@ import { Status } from './type';
 import { type EcPrivateJwk, signJWT } from '@vdcs/jwt';
 
 export class Oid4VciClient {
-  private credentialOffer: CredentialOffer;
-  private credentialIssuerMetadata: CredentialIssuerMetadata;
-  private authorizationServerMetadata: AuthorizationServerMetadata;
+  public credentialOffer: CredentialOffer;
+  public credentialIssuerMetadata: CredentialIssuerMetadata;
+  public authorizationServerMetadata: AuthorizationServerMetadata;
 
   private status: Status;
   private accessToken?: string;
