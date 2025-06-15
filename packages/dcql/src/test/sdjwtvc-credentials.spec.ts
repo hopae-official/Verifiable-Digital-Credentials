@@ -5,16 +5,16 @@ import { Claims, ClaimSet, TrustedAuthority } from '../type';
 describe('Credentials', () => {
   describe('SdJwtVcCredential', () => {
     it('should create an instance with required properties', () => {
-      const credential = new SdJwtVcCredential('test-id', 'test-vct-value');
+      const credential = new SdJwtVcCredential('test-id', ['test-vct-value']);
 
       expect(credential).toBeDefined();
       expect(credential.id).toBe('test-id');
-      expect(credential.vct_value).toBe('test-vct-value');
+      expect(credential.vct_values).toEqual(['test-vct-value']);
     });
 
     describe('setMultiple', () => {
       it('should set multiple flag', () => {
-        const credential = new SdJwtVcCredential('test-id', 'test-vct-value');
+        const credential = new SdJwtVcCredential('test-id', ['test-vct-value']);
 
         const result = credential.setMultiple(true);
 
@@ -29,7 +29,7 @@ describe('Credentials', () => {
 
     describe('setTrustedAuthorities', () => {
       it('should set trusted authorities', () => {
-        const credential = new SdJwtVcCredential('test-id', 'test-vct-value');
+        const credential = new SdJwtVcCredential('test-id', ['test-vct-value']);
         const authorities: TrustedAuthority[] = [
           { type: 'aki', value: ['test-value'] },
         ];
@@ -47,7 +47,7 @@ describe('Credentials', () => {
 
     describe('setRequireCryptographicHolderBinding', () => {
       it('should set cryptographic holder binding requirement', () => {
-        const credential = new SdJwtVcCredential('test-id', 'test-vct-value');
+        const credential = new SdJwtVcCredential('test-id', ['test-vct-value']);
 
         const result = credential.setRequireCryptographicHolderBinding(false);
 
@@ -62,7 +62,7 @@ describe('Credentials', () => {
 
     describe('setClaims', () => {
       it('should set claims', () => {
-        const credential = new SdJwtVcCredential('test-id', 'test-vct-value');
+        const credential = new SdJwtVcCredential('test-id', ['test-vct-value']);
         const claims: Claims[] = [
           { path: ['$.vc.credentialSubject.firstName'], value: ['John'] },
           { path: ['$.vc.credentialSubject.lastName'], value: ['Doe'] },
@@ -81,7 +81,7 @@ describe('Credentials', () => {
 
     describe('setClaimSets', () => {
       it('should set claim sets when claims are properly set', () => {
-        const credential = new SdJwtVcCredential('test-id', 'test-vct-value');
+        const credential = new SdJwtVcCredential('test-id', ['test-vct-value']);
         const claims: Claims[] = [
           {
             id: 'claim1',
@@ -110,7 +110,7 @@ describe('Credentials', () => {
       });
 
       it('should throw error if claims are not set', () => {
-        const credential = new SdJwtVcCredential('test-id', 'test-vct-value');
+        const credential = new SdJwtVcCredential('test-id', ['test-vct-value']);
         const claimSets: ClaimSet[] = [['claim1']];
 
         expect(() => credential.setClaimSets(claimSets)).toThrow(
@@ -119,7 +119,7 @@ describe('Credentials', () => {
       });
 
       it('should throw error if claims do not have IDs', () => {
-        const credential = new SdJwtVcCredential('test-id', 'test-vct-value');
+        const credential = new SdJwtVcCredential('test-id', ['test-vct-value']);
         // Claims without IDs
         const claims: Claims[] = [
           { path: ['$.vc.credentialSubject.firstName'], value: ['John'] },
@@ -137,7 +137,7 @@ describe('Credentials', () => {
 
     describe('serialize', () => {
       it('should serialize credential with all properties', () => {
-        const credential = new SdJwtVcCredential('test-id', 'test-vct-value');
+        const credential = new SdJwtVcCredential('test-id', ['test-vct-value']);
         const authorities: TrustedAuthority[] = [
           { type: 'aki', value: ['test-value'] },
         ];
@@ -162,7 +162,7 @@ describe('Credentials', () => {
         expect(serialized).toEqual({
           id: 'test-id',
           format: 'dc+sd-jwt',
-          meta: { vct_value: 'test-vct-value' },
+          meta: { vct_values: ['test-vct-value'] },
           multiple: true,
           trusted_authorities: authorities,
           require_cryptographic_holder_binding: false,
@@ -172,14 +172,14 @@ describe('Credentials', () => {
       });
 
       it('should serialize credential with minimal properties', () => {
-        const credential = new SdJwtVcCredential('test-id', 'test-vct-value');
+        const credential = new SdJwtVcCredential('test-id', ['test-vct-value']);
 
         const serialized = credential.serialize();
 
         expect(serialized).toEqual({
           id: 'test-id',
           format: 'dc+sd-jwt',
-          meta: { vct_value: 'test-vct-value' },
+          meta: { vct_values: ['test-vct-value'] },
           multiple: undefined,
           trusted_authorities: undefined,
           require_cryptographic_holder_binding: undefined,
@@ -194,9 +194,13 @@ describe('Credentials', () => {
 
       it('should match a simple claim', () => {
         const claim = { path: ['name'] };
-        const credential = new SdJwtVcCredential('test-id', 'test-vct-value', {
-          claims: [claim],
-        });
+        const credential = new SdJwtVcCredential(
+          'test-id',
+          ['test-vct-value'],
+          {
+            claims: [claim],
+          },
+        );
         const data = { vct: 'test-vct-value', name: 'John' };
         expect(credential.match(data)).toStrictEqual({
           match: true,
@@ -206,9 +210,13 @@ describe('Credentials', () => {
 
       it('should match a claim with value restriction', () => {
         const claim = { path: ['age'], value: [30, 40] };
-        const credential = new SdJwtVcCredential('test-id', 'test-vct-value', {
-          claims: [claim],
-        });
+        const credential = new SdJwtVcCredential(
+          'test-id',
+          ['test-vct-value'],
+          {
+            claims: [claim],
+          },
+        );
         const data = { vct: 'test-vct-value', age: 30 };
         expect(credential.match(data)).toStrictEqual({
           match: true,
@@ -218,27 +226,39 @@ describe('Credentials', () => {
 
       it("should not match when value doesn't match restriction", () => {
         const claim = { path: ['age'], value: [40, 50] };
-        const credential = new SdJwtVcCredential('test-id', 'test-vct-value', {
-          claims: [claim],
-        });
+        const credential = new SdJwtVcCredential(
+          'test-id',
+          ['test-vct-value'],
+          {
+            claims: [claim],
+          },
+        );
         const data = { vct: 'test-vct-value', age: 30 };
         expect(credential.match(data)).toStrictEqual({ match: false });
       });
 
       it('should handle errors in path processing gracefully', () => {
         const claim = { path: ['items', null] };
-        const credential = new SdJwtVcCredential('test-id', 'test-vct-value', {
-          claims: [claim],
-        });
+        const credential = new SdJwtVcCredential(
+          'test-id',
+          ['test-vct-value'],
+          {
+            claims: [claim],
+          },
+        );
         const data = { vct: 'test-vct-value', items: 'not-an-array' };
         expect(credential.match(data)).toStrictEqual({ match: false });
       });
 
       it('should match array elements with null in path', () => {
         const claim = { path: ['items', null], value: [3] };
-        const credential = new SdJwtVcCredential('test-id', 'test-vct-value', {
-          claims: [claim],
-        });
+        const credential = new SdJwtVcCredential(
+          'test-id',
+          ['test-vct-value'],
+          {
+            claims: [claim],
+          },
+        );
         const data = { vct: 'test-vct-value', items: [1, 2, 3, 4] };
         expect(credential.match(data)).toStrictEqual({
           match: true,
@@ -248,9 +268,13 @@ describe('Credentials', () => {
 
       it("should return false when claim path doesn't exist", () => {
         const claim = { path: ['nonexistent'] };
-        const credential = new SdJwtVcCredential('test-id', 'test-vct-value', {
-          claims: [claim],
-        });
+        const credential = new SdJwtVcCredential(
+          'test-id',
+          ['test-vct-value'],
+          {
+            claims: [claim],
+          },
+        );
         const data = { vct: 'test-vct-value', name: 'John' };
         expect(credential.match(data)).toStrictEqual({ match: false });
       });

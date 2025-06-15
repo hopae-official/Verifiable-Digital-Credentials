@@ -18,7 +18,7 @@ export class SdJwtVcCredential implements CredentialBase {
 
   constructor(
     public readonly id: string,
-    public readonly vct_value: string,
+    public readonly vct_values: string[],
     options?: {
       multiple?: boolean;
       trusted_authorities?: TrustedAuthority[];
@@ -80,7 +80,7 @@ export class SdJwtVcCredential implements CredentialBase {
     return {
       id: this.id,
       format: 'dc+sd-jwt',
-      meta: { vct_value: this.vct_value },
+      meta: { vct_values: this.vct_values },
       multiple: this._multiple,
       trusted_authorities: this._trusted_authorities,
       require_cryptographic_holder_binding:
@@ -92,7 +92,12 @@ export class SdJwtVcCredential implements CredentialBase {
 
   match(data: Record<string, unknown>): MatchResult {
     // First check if the credential type matches
-    if (data['vct'] !== undefined && data['vct'] !== this.vct_value) {
+    const isVctMatched =
+      data['vct'] !== undefined &&
+      typeof data['vct'] === 'string' &&
+      this.vct_values.includes(data['vct']);
+
+    if (!isVctMatched) {
       return { match: false };
     }
 
@@ -177,7 +182,7 @@ export class SdJwtVcCredential implements CredentialBase {
       throw new Error('Invalid credential');
     }
 
-    const sdJwtVcCredential = new SdJwtVcCredential(c.id, c.meta.vct_value, {
+    const sdJwtVcCredential = new SdJwtVcCredential(c.id, c.meta.vct_values, {
       multiple: c.multiple,
       trusted_authorities: c.trusted_authorities,
       require_cryptographic_holder_binding:
@@ -196,7 +201,7 @@ export class SdJwtVcCredential implements CredentialBase {
       throw new Error('Invalid credential format');
     }
 
-    if (!c.meta || !('vct_value' in c.meta)) {
+    if (!c.meta || !('vct_values' in c.meta)) {
       throw new Error('Invalid credential meta');
     }
 

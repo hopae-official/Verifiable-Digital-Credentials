@@ -6,7 +6,7 @@ describe('pathMatch', () => {
   let credential: SdJwtVcCredential;
 
   beforeEach(() => {
-    credential = new SdJwtVcCredential('test-id', 'test-vct-value');
+    credential = new SdJwtVcCredential('test-id', ['test-vct-value']);
   });
 
   describe('processPathPointer', () => {
