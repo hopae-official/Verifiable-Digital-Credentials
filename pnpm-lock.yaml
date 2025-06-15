@@ -419,6 +419,24 @@ importers:
         specifier: ^5.1.3
         version: 5.7.3
 
+  examples/oid4vp-client:
+    dependencies:
+      '@sd-jwt/core':
+        specifier: ^0.10.0
+        version: 0.10.0
+      '@sd-jwt/crypto-nodejs':
+        specifier: ^0.10.0
+        version: 0.10.0
+      '@sd-jwt/types':
+        specifier: ^0.10.0
+        version: 0.10.0
+      '@sd-jwt/utils':
+        specifier: ^0.10.0
+        version: 0.10.0
+      '@vdcs/oid4vp-client':
+        specifier: workspace:*
+        version: link:../../packages/oid4vp-client
+
   packages/dc-api: {}
 
   packages/dcql: {}
@@ -515,6 +533,12 @@ importers:
 
   packages/oid4vp-client:
     dependencies:
+      '@vdcs/dcql':
+        specifier: workspace:*
+        version: link:../dcql
+      '@vdcs/jwt':
+        specifier: workspace:*
+        version: link:../jwt
       axios:
         specifier: ^1.8.2
         version: 1.8.2
