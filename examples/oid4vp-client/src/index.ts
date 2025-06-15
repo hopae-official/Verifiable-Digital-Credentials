@@ -51,7 +51,7 @@ async function run() {
     { kb: { payload: kbPayload } },
   );
 
-  const result = await client.sendPresenation({ '0': presentation });
+  const result = await client.sendPresentation({ '0': presentation });
   console.log({ result });
 }
 

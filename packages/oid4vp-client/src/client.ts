@@ -17,7 +17,7 @@ export class Oid4VpClient {
     return new Oid4VpClient(request);
   }
 
-  async sendPresenation(vp_token: Record<string, string>) {
+  async sendPresentation(vp_token: Record<string, string>) {
     const body = new URLSearchParams();
     body.append('vp_token', JSON.stringify(vp_token));
     if (this.request.state) {
