@@ -11,7 +11,7 @@ export type Credential = {
 
   /** optional, default is false */
   multiple?: boolean;
-  meta?: { vct_value: string } | { doctype_value: string };
+  meta?: { vct_values: string[] } | { doctype_value: string };
   trusted_authorities?: TrustedAuthority[];
 
   /** optional, default is true */
@@ -25,6 +25,7 @@ export type CredentialIds = Array<string>;
 
 export type CredentialSet = {
   options: CredentialIds[];
+  purpose?: string;
 
   /** optional, default is true */
   required?: boolean;
@@ -49,7 +50,7 @@ export type ClaimSet = string[];
 export type SdJwtVcCredentialQuery = Credential & {
   format: 'dc+sd-jwt';
   meta: {
-    vct_value: string;
+    vct_values: string[];
   };
 };
 

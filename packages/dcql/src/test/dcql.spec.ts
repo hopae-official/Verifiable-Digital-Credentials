@@ -80,7 +80,7 @@ describe('DCQL', () => {
           {
             id: 'test-id',
             format: 'dc+sd-jwt',
-            meta: { vct_value: 'test-vct' },
+            meta: { vct_values: ['test-vct'] },
             multiple: true,
             trusted_authorities: [{ type: 'aki', value: ['test-authority'] }],
             require_cryptographic_holder_binding: true,
@@ -100,20 +100,30 @@ describe('DCQL', () => {
       const rawDcql: rawDCQL = {
         credentials: [
           {
-            id: 'cred-1',
+            id: '0',
             format: 'dc+sd-jwt',
-            meta: { vct_value: 'vct-1' },
-          },
-          {
-            id: 'cred-2',
-            format: 'dc+sd-jwt',
-            meta: { vct_value: 'vct-2' },
+            meta: {
+              vct_values: [
+                'eu.europa.ec.eudi.pid.1',
+                'urn:eu.europa.ec.eudi:pid:1',
+              ],
+            },
+            claims: [
+              {
+                path: ['family_name'],
+                id: 'family_name',
+              },
+              {
+                path: ['given_name'],
+                id: 'given_name',
+              },
+            ],
           },
         ],
         credential_sets: [
           {
-            options: [['cred-1'], ['cred-2']],
-            required: true,
+            options: [['0']],
+            purpose: 'PID (sd-jwt-vc) - first_name and given_name',
           },
         ],
       };
@@ -121,12 +131,9 @@ describe('DCQL', () => {
       const dcql = DCQL.parse(rawDcql);
       const serialized = dcql.serialize();
 
-      expect(serialized.credentials).toHaveLength(2);
+      expect(serialized.credentials).toHaveLength(1);
       expect(serialized.credential_sets).toHaveLength(1);
-      expect(serialized.credential_sets![0].options).toEqual([
-        ['cred-1'],
-        ['cred-2'],
-      ]);
+      expect(serialized.credential_sets![0].options).toEqual([['0']]);
     });
   });
 
@@ -143,7 +150,7 @@ describe('DCQL', () => {
 
     it('should serialize DCQL with credentials and credential sets', () => {
       const dcql = new DCQL({});
-      const credential = new SdJwtVcCredential('test-id', 'test-vct');
+      const credential = new SdJwtVcCredential('test-id', ['test-vct']);
       const credentialSet: CredentialSet = {
         options: [['test-id']],
         required: false,
@@ -166,12 +173,12 @@ describe('DCQL', () => {
           {
             id: 'cred-1',
             format: 'dc+sd-jwt',
-            meta: { vct_value: 'vct-1' },
+            meta: { vct_values: ['vct-1'] },
           },
           {
             id: 'cred-2',
             format: 'dc+sd-jwt',
-            meta: { vct_value: 'vct-2' },
+            meta: { vct_values: ['vct-2'] },
           },
         ],
         credential_sets: [
@@ -192,12 +199,12 @@ describe('DCQL', () => {
           {
             id: 'cred-1',
             format: 'dc+sd-jwt',
-            meta: { vct_value: 'vct-1' },
+            meta: { vct_values: ['vct-1'] },
           },
           {
             id: 'cred-2',
             format: 'dc+sd-jwt',
-            meta: { vct_value: 'vct-2' },
+            meta: { vct_values: ['vct-2'] },
           },
         ],
         credential_sets: [
