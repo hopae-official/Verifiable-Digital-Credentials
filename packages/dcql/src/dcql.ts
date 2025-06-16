@@ -109,21 +109,33 @@ export class DCQL {
       return { match: false };
     }
 
-    // If credential_sets is not defined, return all matched credentials
-    if (!this._credential_sets || this._credential_sets.length === 0) {
-      return {
-        match: true,
-        matchedCredentials: allMatches,
-      };
-    }
-
-    // Handle credential sets if they exist
+    // Credential IDs matched in dataRecords
     const matchedIds = new Set(
       allMatches.map((match) => {
         const serialized = match.dcqlCredential.serialize();
         return serialized.id;
       }),
     );
+
+    // If credential_sets is not defined
+    if (!this._credential_sets || this._credential_sets.length === 0) {
+      // All IDs in Credential Query
+      const allCredentialIds = this._credentials.map((c) => c.serialize().id);
+
+      const everyCredentialSatisfied = allCredentialIds.every((id) =>
+        matchedIds.has(id),
+      );
+      // If any credential is missing in allMatches, we can't match
+      if (!everyCredentialSatisfied) {
+        return { match: false };
+      }
+      // If all credentials are matched, we can match and return all matched credentials
+      return {
+        match: true,
+        matchedCredentials: allMatches,
+      };
+    }
+
 
     // First, separate required credential sets
     const requiredSets = this._credential_sets.filter(

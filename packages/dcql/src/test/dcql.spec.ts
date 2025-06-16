@@ -227,5 +227,64 @@ describe('DCQL', () => {
         ],
       });
     });
+    
+    it('test 2', () => {
+      const rawDcql: rawDCQL = {
+        credentials: [
+          {
+            id: 'cred-1',
+            format: 'dc+sd-jwt',
+            meta: { vct_value: 'vct-1' },
+          },
+          {
+            id: 'cred-2',
+            format: 'dc+sd-jwt',
+            meta: { vct_value: 'vct-2' },
+          },
+        ],
+      };
+      const dcql = DCQL.parse(rawDcql);
+      const result = dcql.match([{ vct: 'vct-1', name: 'name-1' }]);
+      expect(result).toEqual({
+        match: false,
+      });
+    });
+
+    it('test 3', () => {
+      const claim = { path: ['name'], value: ['name-1'] };
+      const rawDcql: rawDCQL = {
+        credentials: [
+          {
+            id: 'cred-1',
+            format: 'dc+sd-jwt',
+            meta: { vct_value: 'vct-1' },
+            claims: [claim]
+          },
+          {
+            id: 'cred-2',
+            format: 'dc+sd-jwt',
+            meta: { vct_value: 'vct-2' },
+          },
+        ],
+        credential_sets: [
+          {
+            options: [['cred-1'], ['cred-2']],
+            required: true,
+          },
+        ],
+      };
+      const dcql = DCQL.parse(rawDcql);
+      const result = dcql.match([{ vct: 'vct-1', name: 'name-1' }]);
+      expect(result).toEqual({
+        match: true,
+        matchedCredentials: [
+          {
+            credential: { vct: 'vct-1', name: 'name-1' },
+            matchedClaims: [claim],
+            dataIndex: 0,
+          },
+        ],
+      });
+    });
   });
 });
