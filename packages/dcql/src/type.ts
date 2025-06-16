@@ -25,6 +25,7 @@ export type CredentialIds = Array<string>;
 
 export type CredentialSet = {
   options: CredentialIds[];
+  purpose?: string;
 
   /** optional, default is true */
   required?: boolean;
