@@ -12,7 +12,7 @@ describe('DCQL', () => {
   describe('addCredential', () => {
     it('should add a credential', () => {
       const dcql = new DCQL({});
-      const credential = new SdJwtVcCredential('test-id', 'test-vct');
+      const credential = new SdJwtVcCredential('test-id', ['test-vct']);
 
       const result = dcql.addCredential(credential);
 
@@ -27,8 +27,8 @@ describe('DCQL', () => {
 
     it('should add multiple credentials', () => {
       const dcql = new DCQL({});
-      const credential1 = new SdJwtVcCredential('test-id-1', 'test-vct-1');
-      const credential2 = new SdJwtVcCredential('test-id-2', 'test-vct-2');
+      const credential1 = new SdJwtVcCredential('test-id-1', ['test-vct-1']);
+      const credential2 = new SdJwtVcCredential('test-id-2', ['test-vct-2']);
 
       dcql.addCredential(credential1).addCredential(credential2);
 
