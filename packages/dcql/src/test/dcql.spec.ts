@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { DCQL } from '../dcql';
 import { SdJwtVcCredential } from '../credentials/sdjwtvc.credential';
-import { Claims, CredentialSet, rawDCQL } from '../type';
+import { CredentialSet, rawDCQL } from '../type';
 
 describe('DCQL', () => {
   it('should create an instance', () => {
@@ -250,26 +250,28 @@ describe('DCQL', () => {
       });
     });
 
-    it('test 3', () => {
-      const claim = { path: ['name'], value: ['name-1'] };
+    it('test 3 - single credential with claim set', () => {
       const rawDcql: rawDCQL = {
         credentials: [
           {
             id: 'cred-1',
             format: 'dc+sd-jwt',
             meta: { vct_values: ['vct-1'] },
-            claims: [claim],
-          },
-          {
-            id: 'cred-2',
-            format: 'dc+sd-jwt',
-            meta: { vct_values: ['vct-2'] },
-          },
-        ],
-        credential_sets: [
-          {
-            options: [['cred-1'], ['cred-2']],
-            required: true,
+            claims: [
+              {
+                path: ['first_name'],
+                id: 'first_name',
+              },
+              {
+                path: ['last_name'],
+                id: 'last_name',
+              },
+              {
+                path: ['name'],
+                id: 'name',
+              },
+            ],
+            claim_sets: [['first_name', 'last_name'], ['name']],
           },
         ],
       };
@@ -280,7 +282,381 @@ describe('DCQL', () => {
         matchedCredentials: [
           {
             credential: { vct: 'vct-1', name: 'name-1' },
-            matchedClaims: [claim],
+            matchedClaims: [
+              {
+                path: ['name'],
+                id: 'name',
+              },
+            ],
+            dataIndex: 0,
+          },
+        ],
+      });
+    });
+
+    it('test 4 - single credential without credential set', () => {
+      const exampleDCQL: rawDCQL = {
+        credentials: [
+          {
+            id: '0',
+            format: 'dc+sd-jwt',
+            meta: {
+              vct_values: [
+                'eu.europa.ec.eudi.pid.1',
+                'urn:eu.europa.ec.eudi:pid:1',
+              ],
+            },
+            claims: [
+              {
+                path: ['family_name'],
+                id: 'family_name',
+              },
+              {
+                path: ['given_name'],
+                id: 'given_name',
+              },
+            ],
+          },
+        ],
+        credential_sets: [
+          {
+            options: [['0']],
+            purpose:
+              'To grant you access we need to verify your ARF compliant PID',
+          },
+        ],
+      };
+
+      const dcql = DCQL.parse(exampleDCQL);
+      const notMatchedCredentials = [
+        {
+          vct: 'eu.europa.ec.eudi.pid.1',
+          name: 'name-1',
+        },
+        {
+          vct: 'eu.europa.ec.eudi.pid.1',
+          name: 'name-2',
+        },
+      ];
+      const result = dcql.match(notMatchedCredentials);
+      expect(result).toEqual({
+        match: false,
+      });
+
+      const matchedCredentials = [
+        {
+          vct: 'eu.europa.ec.eudi.pid.1',
+          family_name: 'Doe',
+          given_name: 'John',
+        },
+      ];
+      const result2 = dcql.match(matchedCredentials);
+      expect(result2).toEqual({
+        match: true,
+        matchedCredentials: [
+          {
+            credential: matchedCredentials[0],
+            matchedClaims: [
+              {
+                path: ['family_name'],
+                id: 'family_name',
+              },
+              {
+                path: ['given_name'],
+                id: 'given_name',
+              },
+            ],
+            dataIndex: 0,
+          },
+        ],
+      });
+    });
+
+    it('test 5 - single credential, with credential set', () => {
+      const exampleDCQL: rawDCQL = {
+        credentials: [
+          {
+            id: '0',
+            format: 'dc+sd-jwt',
+            meta: {
+              vct_values: [
+                'eu.europa.ec.eudi.pid.1',
+                'urn:eu.europa.ec.eudi:pid:1',
+              ],
+            },
+            claims: [
+              {
+                path: ['family_name'],
+                id: 'family_name',
+              },
+              {
+                path: ['given_name'],
+                id: 'given_name',
+              },
+            ],
+          },
+        ],
+        credential_sets: [
+          {
+            options: [['0']],
+            purpose:
+              'To grant you access we need to verify your ARF compliant PID',
+          },
+        ],
+      };
+
+      const dcql = DCQL.parse(exampleDCQL);
+      const notMatchedCredentials = [
+        {
+          vct: 'eu.europa.ec.eudi.pid.1',
+          name: 'name-1',
+        },
+        {
+          vct: 'eu.europa.ec.eudi.pid.1',
+          name: 'name-2',
+        },
+      ];
+      const result = dcql.match(notMatchedCredentials);
+      expect(result).toEqual({
+        match: false,
+      });
+
+      const matchedCredentials = [
+        {
+          vct: 'eu.europa.ec.eudi.pid.1',
+          family_name: 'Doe',
+          given_name: 'John',
+        },
+      ];
+      const result2 = dcql.match(matchedCredentials);
+      expect(result2).toEqual({
+        match: true,
+        matchedCredentials: [
+          {
+            credential: matchedCredentials[0],
+            matchedClaims: [
+              {
+                path: ['family_name'],
+                id: 'family_name',
+              },
+              {
+                path: ['given_name'],
+                id: 'given_name',
+              },
+            ],
+            dataIndex: 0,
+          },
+        ],
+      });
+    });
+
+    it('test 6 - multiple credentials, without credential set', () => {
+      const exampleDCQL: rawDCQL = {
+        credentials: [
+          {
+            id: '0',
+            format: 'dc+sd-jwt',
+            meta: {
+              vct_values: [
+                'eu.europa.ec.eudi.pid.1',
+                'urn:eu.europa.ec.eudi:pid:1',
+              ],
+            },
+            claims: [
+              {
+                path: ['family_name'],
+                id: 'family_name',
+              },
+              {
+                path: ['given_name'],
+                id: 'given_name',
+              },
+            ],
+          },
+          {
+            id: '1',
+            format: 'dc+sd-jwt',
+            meta: {
+              vct_values: ['vct_1', 'vct_2'],
+            },
+            claims: [
+              {
+                path: ['data', 'family_name'],
+                id: 'family_name',
+              },
+              {
+                path: ['data', 'given_name'],
+                id: 'given_name',
+              },
+            ],
+          },
+        ],
+      };
+
+      const dcql = DCQL.parse(exampleDCQL);
+      const notMatched = dcql.match([
+        {
+          vct: 'eu.europa.ec.eudi.pid.1',
+          family_name: 'Doe',
+          given_name: 'John',
+        },
+        {
+          vct: 'vct_1',
+          family_name: 'Doe',
+          given_name: 'John',
+        },
+      ]);
+      expect(notMatched).toEqual({
+        match: false,
+      });
+
+      const matched = dcql.match([
+        {
+          vct: 'eu.europa.ec.eudi.pid.1',
+          family_name: 'Doe',
+          given_name: 'John',
+        },
+        {
+          vct: 'vct_2',
+          data: {
+            family_name: 'Doe',
+            given_name: 'John',
+          },
+        },
+      ]);
+
+      expect(matched).toEqual({
+        match: true,
+        matchedCredentials: [
+          {
+            credential: {
+              vct: 'eu.europa.ec.eudi.pid.1',
+              family_name: 'Doe',
+              given_name: 'John',
+            },
+            matchedClaims: [
+              {
+                path: ['family_name'],
+                id: 'family_name',
+              },
+              {
+                path: ['given_name'],
+                id: 'given_name',
+              },
+            ],
+            dataIndex: 0,
+          },
+          {
+            credential: {
+              vct: 'vct_2',
+              data: {
+                family_name: 'Doe',
+                given_name: 'John',
+              },
+            },
+            matchedClaims: [
+              {
+                path: ['data', 'family_name'],
+                id: 'family_name',
+              },
+              {
+                path: ['data', 'given_name'],
+                id: 'given_name',
+              },
+            ],
+            dataIndex: 1,
+          },
+        ],
+      });
+    });
+
+    it('test 7 - multiple credentials, with credential set', () => {
+      const exampleDCQL: rawDCQL = {
+        credentials: [
+          {
+            id: '0',
+            format: 'dc+sd-jwt',
+            meta: {
+              vct_values: [
+                'eu.europa.ec.eudi.pid.1',
+                'urn:eu.europa.ec.eudi:pid:1',
+              ],
+            },
+            claims: [
+              {
+                path: ['family_name'],
+                id: 'family_name',
+              },
+              {
+                path: ['given_name'],
+                id: 'given_name',
+              },
+            ],
+          },
+          {
+            id: '1',
+            format: 'dc+sd-jwt',
+            meta: {
+              vct_values: ['vct_1', 'vct_2'],
+            },
+            claims: [
+              {
+                path: ['data', 'family_name'],
+                id: 'family_name',
+              },
+              {
+                path: ['data', 'given_name'],
+                id: 'given_name',
+              },
+            ],
+          },
+        ],
+        credential_sets: [
+          {
+            options: [['0'], ['1']],
+          },
+        ],
+      };
+
+      const dcql = DCQL.parse(exampleDCQL);
+      const notMatchedCredentials = [
+        {
+          vct: 'eu.europa.ec.eudi.pid.1',
+          name: 'name-1',
+        },
+        {
+          vct: 'eu.europa.ec.eudi.pid.1',
+          name: 'name-2',
+        },
+      ];
+      const result = dcql.match(notMatchedCredentials);
+      expect(result).toEqual({
+        match: false,
+      });
+
+      const matchedCredentials = [
+        {
+          vct: 'eu.europa.ec.eudi.pid.1',
+          family_name: 'Doe',
+          given_name: 'John',
+        },
+      ];
+      const result2 = dcql.match(matchedCredentials);
+      expect(result2).toEqual({
+        match: true,
+        matchedCredentials: [
+          {
+            credential: matchedCredentials[0],
+            matchedClaims: [
+              {
+                path: ['family_name'],
+                id: 'family_name',
+              },
+              {
+                path: ['given_name'],
+                id: 'given_name',
+              },
+            ],
             dataIndex: 0,
           },
         ],

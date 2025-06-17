@@ -64,8 +64,8 @@ describe('Credentials', () => {
       it('should set claims', () => {
         const credential = new SdJwtVcCredential('test-id', ['test-vct-value']);
         const claims: Claims[] = [
-          { path: ['$.vc.credentialSubject.firstName'], value: ['John'] },
-          { path: ['$.vc.credentialSubject.lastName'], value: ['Doe'] },
+          { path: ['credentialSubject', 'firstName'], value: ['John'] },
+          { path: ['credentialSubject', 'lastName'], value: ['Doe'] },
         ];
 
         const result = credential.setClaims(claims);
@@ -85,12 +85,12 @@ describe('Credentials', () => {
         const claims: Claims[] = [
           {
             id: 'claim1',
-            path: ['$.vc.credentialSubject.firstName'],
+            path: ['credentialSubject', 'firstName'],
             value: ['John'],
           },
           {
             id: 'claim2',
-            path: ['$.vc.credentialSubject.lastName'],
+            path: ['credentialSubject', 'lastName'],
             value: ['Doe'],
           },
         ];
@@ -122,7 +122,7 @@ describe('Credentials', () => {
         const credential = new SdJwtVcCredential('test-id', ['test-vct-value']);
         // Claims without IDs
         const claims: Claims[] = [
-          { path: ['$.vc.credentialSubject.firstName'], value: ['John'] },
+          { path: ['credentialSubject', 'firstName'], value: ['John'] },
         ];
 
         credential.setClaims(claims);
@@ -144,7 +144,7 @@ describe('Credentials', () => {
         const claims: Claims[] = [
           {
             id: 'claim1',
-            path: ['$.vc.credentialSubject.firstName'],
+            path: ['credentialSubject', 'firstName'],
             value: ['John'],
           },
         ];

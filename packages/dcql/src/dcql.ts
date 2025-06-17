@@ -132,10 +132,13 @@ export class DCQL {
       // If all credentials are matched, we can match and return all matched credentials
       return {
         match: true,
-        matchedCredentials: allMatches,
+        matchedCredentials: allMatches.map((match) => ({
+          credential: match.credential,
+          matchedClaims: match.matchedClaims,
+          dataIndex: match.dataIndex,
+        })),
       };
     }
-
 
     // First, separate required credential sets
     const requiredSets = this._credential_sets.filter(
