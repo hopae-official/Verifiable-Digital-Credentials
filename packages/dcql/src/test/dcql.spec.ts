@@ -227,19 +227,19 @@ describe('DCQL', () => {
         ],
       });
     });
-    
+
     it('test 2', () => {
       const rawDcql: rawDCQL = {
         credentials: [
           {
             id: 'cred-1',
             format: 'dc+sd-jwt',
-            meta: { vct_value: 'vct-1' },
+            meta: { vct_values: ['vct-1'] },
           },
           {
             id: 'cred-2',
             format: 'dc+sd-jwt',
-            meta: { vct_value: 'vct-2' },
+            meta: { vct_values: ['vct-2'] },
           },
         ],
       };
@@ -257,13 +257,13 @@ describe('DCQL', () => {
           {
             id: 'cred-1',
             format: 'dc+sd-jwt',
-            meta: { vct_value: 'vct-1' },
-            claims: [claim]
+            meta: { vct_values: ['vct-1'] },
+            claims: [claim],
           },
           {
             id: 'cred-2',
             format: 'dc+sd-jwt',
-            meta: { vct_value: 'vct-2' },
+            meta: { vct_values: ['vct-2'] },
           },
         ],
         credential_sets: [
