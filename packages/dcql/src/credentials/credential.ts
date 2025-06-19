@@ -8,5 +8,5 @@ import { Credential, MatchResult } from '../type';
 export abstract class CredentialBase {
   abstract serialize(): Credential;
 
-  abstract match(data: Record<string, unknown>): MatchResult;
+  abstract match(data: Record<string, unknown>[]): MatchResult;
 }

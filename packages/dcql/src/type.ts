@@ -58,8 +58,10 @@ export type MatchResult =
   | {
       match: false;
       matchedClaims?: undefined;
+      matchedIndices?: undefined;
     }
   | {
       match: true;
       matchedClaims: Claims[];
+      matchedIndices: number[];
     };

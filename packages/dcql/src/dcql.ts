@@ -86,22 +86,21 @@ export class DCQL {
       dataIndex: number;
     }> = [];
 
-    // Check each credential against each data record
+    // Check each credential against the data records
     this._credentials.forEach((credential) => {
-      // Try to match the credential against each data record
-      dataRecords.forEach((data, index) => {
-        const result = credential.match(data);
-
-        // If there's a match, add it to our results
-        if (result.match) {
+      const result = credential.match(dataRecords);
+      if (result.match && result.matchedClaims && result.matchedIndices) {
+        // For multiple=false case, we only get one match from the first matching record
+        // For multiple=true case, we get matches from multiple records that contributed to the match
+        result.matchedIndices.forEach((index) => {
           allMatches.push({
-            credential: data,
+            credential: dataRecords[index],
             dcqlCredential: credential,
             matchedClaims: result.matchedClaims,
             dataIndex: index,
           });
-        }
-      });
+        });
+      }
     });
 
     // If no credentials matched any data, return no match

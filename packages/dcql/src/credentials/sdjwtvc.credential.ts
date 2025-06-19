@@ -90,7 +90,26 @@ export class SdJwtVcCredential implements CredentialBase {
     };
   }
 
-  match(data: Record<string, unknown>): MatchResult {
+  match(dataArray: Record<string, unknown>[]): MatchResult {
+    if (this._multiple) {
+      return this.matchMultiple(dataArray);
+    } else {
+      // Try to match the first data record that can be satisfied
+      for (let i = 0; i < dataArray.length; i++) {
+        const result = this.matchSingle(dataArray[i]);
+        if (result.match && result.matchedClaims) {
+          return {
+            match: true,
+            matchedClaims: result.matchedClaims,
+            matchedIndices: [i]
+          };
+        }
+      }
+      return { match: false };
+    }
+  }
+
+  private matchSingle(data: Record<string, unknown>): Omit<MatchResult, 'matchedIndices'> {
     // First check if the credential type matches
     const isVctMatched =
       data['vct'] !== undefined &&
@@ -142,6 +161,70 @@ export class SdJwtVcCredential implements CredentialBase {
       // Only match if we can satisfy all claims
       if (satisfiableClaims) {
         return { match: true, matchedClaims: this._claims };
+      }
+    }
+
+    return { match: false };
+  }
+
+  private matchMultiple(dataArray: Record<string, unknown>[]): MatchResult {
+    // Check if the data record satisfies the VCT requirements
+    const validRecordsWithIndex = dataArray.map((record, index) => ({
+      record,
+      index,
+      isValid:
+        record['vct'] !== undefined &&
+        typeof record['vct'] === 'string' &&
+        this.vct_values.includes(record['vct'])
+    })).filter(item => item.isValid);
+
+    if (validRecordsWithIndex.length === 0) {
+      return { match: false };
+    }
+
+    const validRecords = validRecordsWithIndex.map(item => item.record);
+    const validIndices = validRecordsWithIndex.map(item => item.index);
+
+    // If claims is absent, the Verifier is requesting no claims
+    if (!this._claims || this._claims.length === 0) {
+      return { match: true, matchedClaims: [], matchedIndices: validIndices };
+    }
+
+    // If claim_sets is present
+    if (this._claim_sets && this._claim_sets.length > 0) {
+      for (const claimSet of this._claim_sets) {
+        const claimsInSet = this._claims.filter(
+          (claim) => claim.id !== undefined && claimSet.includes(claim.id)
+        );
+
+        // Check if all claims can be satisfied by any combination of valid records
+        const allClaimsMatch = claimsInSet.every(claim =>
+          validRecords.some(record => this.matchClaim(claim, record))
+        );
+
+        if (allClaimsMatch && claimsInSet.length > 0) {
+          return {
+            match: true,
+            matchedClaims: claimsInSet,
+            matchedIndices: validIndices
+          };
+        }
+      }
+      return { match: false };
+    }
+    // If claims is present but claim_sets is absent
+    else {
+      // Check if all claims can be satisfied by any combination of valid records
+      const satisfiableClaims = this._claims.every(claim =>
+        validRecords.some(record => this.matchClaim(claim, record))
+      );
+
+      if (satisfiableClaims) {
+        return {
+          match: true,
+          matchedClaims: this._claims,
+          matchedIndices: validIndices
+        };
       }
     }
 

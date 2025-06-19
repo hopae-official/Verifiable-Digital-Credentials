@@ -201,10 +201,11 @@ describe('Credentials', () => {
             claims: [claim],
           },
         );
-        const data = { vct: 'test-vct-value', name: 'John' };
+        const data = [{ vct: 'test-vct-value', name: 'John' }];
         expect(credential.match(data)).toStrictEqual({
           match: true,
           matchedClaims: [{ path: ['name'] }],
+          matchedIndices: [0],
         });
       });
 
@@ -217,10 +218,11 @@ describe('Credentials', () => {
             claims: [claim],
           },
         );
-        const data = { vct: 'test-vct-value', age: 30 };
+        const data = [{ vct: 'test-vct-value', age: 30 }];
         expect(credential.match(data)).toStrictEqual({
           match: true,
           matchedClaims: [{ path: ['age'], value: [30, 40] }],
+          matchedIndices: [0],
         });
       });
 
@@ -233,7 +235,7 @@ describe('Credentials', () => {
             claims: [claim],
           },
         );
-        const data = { vct: 'test-vct-value', age: 30 };
+        const data = [{ vct: 'test-vct-value', age: 30 }];
         expect(credential.match(data)).toStrictEqual({ match: false });
       });
 
@@ -246,7 +248,7 @@ describe('Credentials', () => {
             claims: [claim],
           },
         );
-        const data = { vct: 'test-vct-value', items: 'not-an-array' };
+        const data = [{ vct: 'test-vct-value', items: 'not-an-array' }];
         expect(credential.match(data)).toStrictEqual({ match: false });
       });
 
@@ -259,10 +261,11 @@ describe('Credentials', () => {
             claims: [claim],
           },
         );
-        const data = { vct: 'test-vct-value', items: [1, 2, 3, 4] };
+        const data = [{ vct: 'test-vct-value', items: [1, 2, 3, 4] }];
         expect(credential.match(data)).toStrictEqual({
           match: true,
           matchedClaims: [{ path: ['items', null], value: [3] }],
+          matchedIndices: [0],
         });
       });
 
@@ -275,8 +278,49 @@ describe('Credentials', () => {
             claims: [claim],
           },
         );
-        const data = { vct: 'test-vct-value', name: 'John' };
+        const data = [{ vct: 'test-vct-value', name: 'John' }];
         expect(credential.match(data)).toStrictEqual({ match: false });
+      });
+
+      it('should match claims with multiple data records', () => {
+        const claim1 = { path: ['name'] };
+        const claim2 = { path: ['age'] };
+        const credential = new SdJwtVcCredential(
+          'test-id',
+          ['test-vct-value'],
+          {
+            multiple: true,
+            claims: [claim1, claim2],
+          },
+        );
+        const data = [{ vct: 'test-vct-value', name: 'John' }, { vct: 'test-vct-value', age: '18' }];
+        expect(credential.match(data)).toStrictEqual({
+          match: true,
+          matchedClaims: [{ path: ['name'] }, { path: ['age'] }],
+          matchedIndices: [0, 1],
+        });
+      });
+
+      it('should match claims with multiple data records, claim sets case', () => {
+        const claim1 = { id: 'claim1', path: ['name'] };
+        const claim2 = { id: 'claim2', path: ['age'] };
+        const claim3 = { id: 'claim3', path: ['address'] };
+        const claimSets = [['claim1', 'claim2'], ['claim2', 'claim3']];
+        const credential = new SdJwtVcCredential(
+          'test-id',
+          ['test-vct-value'],
+          {
+            multiple: true,
+            claims: [claim1, claim2, claim3],
+            claim_sets: claimSets,
+          },
+        );
+        const data = [{ vct: 'test-vct-value', name: 'John' }, { vct: 'test-vct-value', age: '18' }];
+        expect(credential.match(data)).toStrictEqual({
+          match: true,
+          matchedClaims: [{ id: 'claim1', path: ['name'] }, { id: 'claim2', path: ['age'] }],
+          matchedIndices: [0, 1],
+        });
       });
     });
   });
