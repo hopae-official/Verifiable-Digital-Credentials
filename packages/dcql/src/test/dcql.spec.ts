@@ -223,6 +223,7 @@ describe('DCQL', () => {
             credential: { vct: 'vct-1', name: 'name-1' },
             matchedClaims: [],
             dataIndex: 0,
+            credentialQueryId: 'cred-1',
           },
         ],
       });
@@ -289,6 +290,7 @@ describe('DCQL', () => {
               },
             ],
             dataIndex: 0,
+            credentialQueryId: 'cred-1',
           },
         ],
       });
@@ -367,6 +369,7 @@ describe('DCQL', () => {
               },
             ],
             dataIndex: 0,
+            credentialQueryId: '0',
           },
         ],
       });
@@ -445,6 +448,7 @@ describe('DCQL', () => {
               },
             ],
             dataIndex: 0,
+            credentialQueryId: '0',
           },
         ],
       });
@@ -545,6 +549,7 @@ describe('DCQL', () => {
               },
             ],
             dataIndex: 0,
+            credentialQueryId: '0',
           },
           {
             credential: {
@@ -565,6 +570,7 @@ describe('DCQL', () => {
               },
             ],
             dataIndex: 1,
+            credentialQueryId: '1',
           },
         ],
       });
@@ -658,6 +664,7 @@ describe('DCQL', () => {
               },
             ],
             dataIndex: 0,
+            credentialQueryId: '0',
           },
         ],
       });

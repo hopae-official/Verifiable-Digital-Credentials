@@ -71,6 +71,7 @@ export class DCQL {
       credential: Record<string, unknown>;
       matchedClaims: Claims[];
       dataIndex: number;
+      credentialQueryId: string;
     }>;
   } {
     // No credentials to match
@@ -135,6 +136,7 @@ export class DCQL {
           credential: match.credential,
           matchedClaims: match.matchedClaims,
           dataIndex: match.dataIndex,
+          credentialQueryId: match.dcqlCredential.serialize().id,
         })),
       };
     }
@@ -162,6 +164,7 @@ export class DCQL {
           credential: matches.credential,
           matchedClaims: matches.matchedClaims,
           dataIndex: matches.dataIndex,
+          credentialQueryId: matches.dcqlCredential.serialize().id,
         };
       }),
     };
